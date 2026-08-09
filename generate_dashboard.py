@@ -21,7 +21,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - 3-Zone Custom Gradients)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -280,9 +280,29 @@ def build_watchlist_rows(items):
         p_last, p_supp, p_ma50, p_ma200 = calc_pct(item['last']), calc_pct(item['supp']), calc_pct(item['ma50']), calc_pct(item['ma200'])
         
         pct_val = max(0.0, min(100.0, item['pct']))
-        r_col = int(34 + (239 - 34) * (pct_val / 100.0))
-        g_col = int(197 + (68 - 197) * (pct_val / 100.0))
-        b_col = int(94 + (68 - 94) * (pct_val / 100.0))
+        
+        # 3-Zone Custom Gradients:
+        # 0% to 40%: Green gradient (Darker green to Bright Green)
+        # 40% to 60%: Yellow gradient / zone
+        # 60% to 100%: Red gradient (Yellow-Red to Bright Red)
+        if pct_val <= 40.0:
+            # 0% to 40%: Darker green [22, 160, 90] to Bright Green [34, 197, 94]
+            factor = pct_val / 40.0
+            r_col = int(22 + (34 - 22) * factor)
+            g_col = int(160 + (197 - 160) * factor)
+            b_col = int(90 + (94 - 90) * factor)
+        elif pct_val <= 60.0:
+            # 40% to 60%: Gradient of Yellow
+            factor = (pct_val - 40.0) / 20.0
+            r_col = int(230 + (250 - 230) * factor)
+            g_col = int(180 + (204 - 180) * factor)
+            b_col = int(20 + (21 - 20) * factor)
+        else:
+            # 60% to 100%: Gradient of Red (Yellow [250, 204, 21] to Bright Red [239, 68, 68])
+            factor = (pct_val - 60.0) / 40.0
+            r_col = int(250 + (239 - 250) * factor)
+            g_col = int(204 + (68 - 204) * factor)
+            b_col = int(21 + (68 - 21) * factor)
         
         rows += f"""<tr class="watchlist-row">
             <td class="col-ticker"><strong>${item['ticker']}</strong></td>
@@ -374,7 +394,6 @@ movers_header_html = """<thead><tr class="movers-row"><th class="col-movers-tick
 news_header_html = """<thead><tr class="news-row"><th class="col-news-ticker">Ticker</th><th class="col-news-headline">Latest Article Headline</th><th class="col-news-source">Source</th><th class="col-news-date">Published</th></tr></thead>"""
 master_header_html = """<thead><tr class="master-row"><th class="col-master-ticker">Ticker</th><th class="col-master-name">Company Name</th><th class="col-master-industry">Industry</th><th class="col-master-price" style="text-align:right;">Price</th><th class="col-master-cap" style="text-align:right;">Market Cap</th><th class="col-master-gauge" style="text-align:center;">52W Pos</th></tr></thead>"""
 
-# Changed from f"""...""" to standard multiline string """...""" so Python doesn't confuse CSS curly braces for f-string placeholders
 condensed_css = f"""
 :root{{--bg-dark:#130924;--bg-card:#21123b;--bg-row-alt:#190d30;--text-main:#f8fafc;--text-muted:#a78bfa;--accent-cyan:#38bdf8;--accent-orange:#fb923c;--accent-yellow:#facc15;--accent-red:#ef4444;--accent-green:#22c55e;--border-color:#3b2063;--channel-bar:#582f91;}}
 *{{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}}
