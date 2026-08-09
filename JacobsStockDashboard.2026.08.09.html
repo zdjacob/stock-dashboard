@@ -1,0 +1,1495 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Jacob's Stock Dashboard</title><style>:root{--bg-dark:#130924;--bg-card:#21123b;--bg-row-alt:#190d30;--text-main:#f8fafc;--text-muted:#a78bfa;--accent-cyan:#38bdf8;--accent-orange:#fb923c;--accent-yellow:#facc15;--accent-red:#f87171;--accent-green:#4ade80;--border-color:#3b2063;--channel-bar:#582f91;}*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}body{background-color:var(--bg-dark);color:var(--text-main);padding:8px 6px;font-size:0.72rem;line-height:1.15;}.container{width:99.5%;max-width:1920px;margin:0 auto;}header{padding-bottom:6px;border-bottom:1px solid var(--border-color);margin-bottom:8px;}h1{font-size:1.2rem;color:var(--accent-cyan);}.timestamp-banner{background-color:rgba(56,189,248,0.1);color:var(--accent-cyan);border:1px solid rgba(56,189,248,0.25);padding:4px 10px;border-radius:4px;font-size:0.68rem;font-weight:600;display:inline-block;margin-top:4px;}.legend-bar{background-color:var(--bg-card);padding:5px 12px;border-radius:6px;border:1px solid var(--border-color);display:flex;gap:12px;align-items:center;margin-bottom:8px;font-size:0.72rem;}.legend-item{display:flex;align-items:center;gap:4px;font-weight:500;}.dot-cyan{width:7px;height:7px;background-color:var(--accent-cyan);border-radius:50%;display:inline-block;}.bar-orange{width:3px;height:9px;background-color:var(--accent-orange);display:inline-block;}.diamond-yellow{width:6px;height:6px;background-color:var(--accent-yellow);transform:rotate(45deg);display:inline-block;}.square-red{width:6px;height:6px;background-color:var(--accent-red);display:inline-block;}.line-grid{width:1px;height:10px;border-right:1px dashed var(--text-muted);display:inline-block;margin:0 1px;}.dual-grid-wrapper{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;}.grid-column{flex:1;background-color:var(--bg-card);border-radius:6px;border:1px solid var(--border-color);padding:3px;overflow-x:auto;}table{width:100%;border-collapse:collapse;text-align:left;}th{background-color:#281545;padding:4px 6px;color:var(--text-muted);font-weight:600;border-bottom:1px solid var(--border-color);font-size:0.72rem;}td{padding:4px 6px;border-bottom:1px solid var(--border-color);vertical-align:middle;white-space:nowrap;font-size:0.72rem;overflow:hidden;text-overflow:ellipsis;}tr:nth-child(even){background-color:var(--bg-row-alt);}tr:hover{background-color:rgba(167,139,250,0.12);}
+
+/* Strict Table Layout Rules */
+.watchlist-row { display: table; width: 100%; table-layout: fixed; }
+.col-ticker { width: 70px; }
+.col-bar { width: auto; }
+.col-low52 { width: 85px; text-align: right; }
+.col-price { width: 85px; text-align: right; }
+.col-high52 { width: 85px; text-align: right; }
+.col-mini-gauge { width: 110px; text-align: center; }
+
+.movers-row { display: table; width: 100%; table-layout: fixed; }
+.col-movers-ticker { width: 65px; }
+.col-movers-score { width: 65px; }
+.col-movers-combined { width: 135px; }
+
+.combined-cell { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+
+.earnings-row { display: table; width: 100%; table-layout: fixed; }
+.col-earn-ticker { width: 60px; }
+.col-earn-price { width: 70px; text-align: right; }
+.col-earn-date { width: 130px; } /* Widened Date Column */
+.col-earn-status { width: 100px; }
+.col-earn-eps { width: 55px; }
+.col-earn-move { width: auto; }
+
+.news-row { display: table; width: 100%; table-layout: fixed; }
+.col-news-ticker { width: 65px; }
+.col-news-headline { width: auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.col-news-source { width: 100px; }
+.col-news-date { width: 90px; }
+
+.news-link { color: var(--text-main); text-decoration: none; font-weight: 500; }
+.news-link:hover { color: var(--accent-cyan); text-decoration: underline; }
+
+.master-row { display: table; width: 100%; table-layout: fixed; }
+.col-master-ticker { width: 65px; }
+.col-master-name { width: 160px; overflow: hidden; text-overflow: ellipsis; }
+.col-master-industry { width: 150px; overflow: hidden; text-overflow: ellipsis; }
+.col-master-price { width: 85px; text-align: right; }
+.col-master-cap { width: 95px; text-align: right; }
+.col-master-gauge { width: 75px; text-align: center; }
+
+.range-bar-container{position:relative;width:100%;height:5px;background-color:var(--channel-bar);border-radius:3px;margin:2px 0;overflow:visible;}.grid-line-33{position:absolute;top:-3px;bottom:-3px;left:33.33%;border-left:1px dashed rgba(255,255,255,0.35);z-index:1;pointer-events:none;}.grid-line-66{position:absolute;top:-3px;bottom:-3px;left:66.66%;border-left:1px dashed rgba(255,255,255,0.35);z-index:1;pointer-events:none;}.marker-cyan{position:absolute;top:-2px;width:9px;height:9px;background-color:var(--accent-cyan);border-radius:50%;border:1px solid #fff;transform:translateX(-50%);z-index:4;cursor:pointer;}.marker-orange{position:absolute;top:-2.5px;width:2.5px;height:10px;background-color:var(--accent-orange);transform:translateX(-50%);z-index:2;cursor:pointer;}.marker-yellow{position:absolute;top:-1px;width:7px;height:7px;background-color:var(--accent-yellow);transform:rotate(45deg);z-index:3;cursor:pointer;border:1px solid #000;}.marker-red{position:absolute;top:-1px;width:7px;height:7px;background-color:var(--accent-red);transform:translateX(-50%);z-index:3;cursor:pointer;border:1px solid #fff;}.mini-gauge-container{position:relative;width:48px;height:4px;background-color:#432170;border-radius:2px;display:inline-block;vertical-align:middle;overflow:visible;}.mini-gauge-fill{height:100%;background:linear-gradient(90deg,rgba(56,189,248,0.3),rgba(56,189,248,0.8));border-radius:2px;}.mini-gauge-dot{position:absolute;top:-2px;width:7px;height:7px;background-color:var(--accent-cyan);border-radius:50%;border:1px solid #fff;transform:translateX(-50%);z-index:2;}.mini-gauge-label{font-size:0.68rem;font-weight:bold;color:var(--accent-cyan);margin-left:4px;display:inline-block;vertical-align:middle;width:28px;text-align:right;}.axis-labels{display:flex;justify-content:space-between;color:var(--text-muted);font-size:0.62rem;margin-top:1px;font-weight:600;}.section-title{font-size:1.05rem;color:var(--accent-yellow);margin-bottom:6px;display:flex;align-items:center;gap:6px;font-weight:bold;}.badge-reported{background-color:rgba(74,222,128,0.2);color:var(--accent-green);padding:1px 4px;border-radius:3px;font-weight:bold;font-size:0.68rem;}.badge-confirmed{background-color:rgba(56,189,248,0.2);color:var(--accent-cyan);padding:1px 4px;border-radius:3px;font-weight:bold;font-size:0.68rem;}.badge-unconfirmed{background-color:rgba(251,146,60,0.2);color:var(--accent-orange);padding:1px 4px;border-radius:3px;font-weight:bold;font-size:0.68rem;}
+
+.badge-next-month{background-color:rgba(250,204,21,0.25);color:#facc15;border:1px solid rgba(250,204,21,0.5);padding:1px 5px;border-radius:3px;font-weight:bold;font-size:0.68rem;}
+.badge-month-after{background-color:rgba(74,222,128,0.25);color:#4ade80;border:1px solid rgba(74,222,128,0.5);padding:1px 5px;border-radius:3px;font-weight:bold;font-size:0.68rem;}
+.badge-upcoming{background-color:rgba(244,63,94,0.25);color:#fb7185;border:1px solid rgba(244,63,94,0.5);padding:1px 5px;border-radius:3px;font-weight:bold;font-size:0.68rem;}
+
+.return-badge { padding: 1px 4px; border-radius: 3px; font-size: 0.68rem; font-weight: 600; display: inline-block; min-width: 58px; text-align: center; }
+.badge-pos { background-color: rgba(74, 222, 128, 0.18); color: var(--accent-green); border: 1px solid rgba(74, 222, 128, 0.3); }
+.badge-strong-pos { background-color: rgba(74, 222, 128, 0.35); color: #22c55e; border: 1px solid #4ade80; font-weight: bold; }
+.badge-neg { background-color: rgba(248, 113, 113, 0.18); color: var(--accent-red); border: 1px solid rgba(248, 113, 113, 0.3); }
+.badge-strong-neg { background-color: rgba(248, 113, 113, 0.35); color: #ef4444; border: 1px solid #f87171; font-weight: bold; }
+.badge-neutral { background: transparent; color: var(--text-main); border: 1px solid transparent; font-weight: normal; }
+
+.price-col { color: var(--text-muted); font-size: 0.68rem; font-weight: 500; font-family: monospace; text-align: right; }
+
+.month-pill { display: inline-block; padding: 1px 4px; border-radius: 3px; font-size: 0.62rem; font-weight: bold; margin-right: 3px; text-transform: uppercase; }
+.month-pill.m-shade-1 { background-color: rgba(56, 189, 248, 0.25); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); }
+.month-pill.m-shade-2 { background-color: rgba(167, 139, 250, 0.25); color: #a78bfa; border: 1px solid rgba(167, 139, 250, 0.4); }
+.month-pill.m-shade-3 { background-color: rgba(250, 204, 21, 0.25); color: #facc15; border: 1px solid rgba(250, 204, 21, 0.4); }
+.month-pill.m-shade-4 { background-color: rgba(251, 146, 60, 0.25); color: #fb923c; border: 1px solid rgba(251, 146, 60, 0.4); }
+.month-pill.m-shade-tbd { background-color: rgba(100, 116, 139, 0.25); color: #94a3b8; border: 1px solid rgba(100, 116, 139, 0.4); }
+</style></head>
+<body><div class="container"><header><h1>📊 Jacob's Technical Watchlist & Market Dashboard</h1>
+<div class="timestamp-banner">⏱️ Report Generated: Aug 09, 2026 at 15:38:50</div>
+</header>
+<div class="legend-bar"><span style="color:var(--text-muted);font-weight:600;">Indicator Key:</span><div class="legend-item"><span class="dot-cyan"></span> Live Price</div><div class="legend-item"><span class="bar-orange"></span> Support Level</div><div class="legend-item"><span class="diamond-yellow"></span> 50-Day Moving Avg</div><div class="legend-item"><span class="square-red"></span> 200-Day Moving Avg</div><div class="legend-item"><span class="line-grid"></span> 33% / 66% Range Dividers</div></div>
+
+<div class="dual-grid-wrapper">
+    <div class="grid-column"><table><thead><tr class="watchlist-row"><th class="col-ticker">Ticker</th><th class="col-bar" style="text-align:center;">Range Bar (33% & 66% Grids)<div class="axis-labels"><span>0%</span><span style="color:#a78bfa;">33%</span><span style="color:#a78bfa;">66%</span><span>100%</span></div></th><th class="col-low52" style="text-align:right;">52W Low</th><th class="col-price" style="text-align:right;">Price</th><th class="col-high52" style="text-align:right;">52W High</th><th class="col-mini-gauge" style="text-align:center;">Gauge</th></tr></thead><tbody><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$SNOW</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:88.87376818395121%;" title="SNOW Support: $307.69"></div>
+            <div class="marker-yellow" style="left:91.82074143594559%;" title="SNOW 50d MA: $313.97"></div>
+            <div class="marker-red" style="left:80.96198967620836%;" title="SNOW 200d MA: $290.83"></div>
+            <div class="marker-cyan" style="left:99.57297043641485%;" title="SNOW Price: $330.49"></div></div></td>
+            <td class="col-low52">$118.30</td><td class="col-price">$330.49</td><td class="col-high52">$331.40</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:99.57297043641485%;"></div><div class="mini-gauge-dot" style="left:99.57297043641485%;"></div></div><span class="mini-gauge-label">99.6%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$CRWD</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:85.2472506920027%;" title="CRWD Support: $199.63"></div>
+            <div class="marker-yellow" style="left:88.29206254208124%;" title="CRWD 50d MA: $203.70"></div>
+            <div class="marker-red" style="left:77.0629161367547%;" title="CRWD 200d MA: $188.69"></div>
+            <div class="marker-cyan" style="left:96.31181267300066%;" title="CRWD Price: $214.42"></div></div></td>
+            <td class="col-low52">$85.68</td><td class="col-price">$214.42</td><td class="col-high52">$219.35</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:96.31181267300066%;"></div><div class="mini-gauge-dot" style="left:96.31181267300066%;"></div></div><span class="mini-gauge-label">96.3%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$ETN</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:72.5353078294255%;" title="ETN Support: $417.72"></div>
+            <div class="marker-yellow" style="left:78.38338132455782%;" title="ETN 50d MA: $426.25"></div>
+            <div class="marker-red" style="left:56.84903331962155%;" title="ETN 200d MA: $394.84"></div>
+            <div class="marker-cyan" style="left:93.76114081996437%;" title="ETN Price: $448.68"></div></div></td>
+            <td class="col-low52">$311.92</td><td class="col-price">$448.68</td><td class="col-high52">$457.78</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:93.76114081996437%;"></div><div class="mini-gauge-dot" style="left:93.76114081996437%;"></div></div><span class="mini-gauge-label">93.8%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$JPM</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:64.06436233611444%;" title="JPM Support: $332.85"></div>
+            <div class="marker-yellow" style="left:72.15733015494634%;" title="JPM 50d MA: $339.64"></div>
+            <div class="marker-red" style="left:42.33611442193086%;" title="JPM 200d MA: $314.62"></div>
+            <div class="marker-cyan" style="left:93.46841477949937%;" title="JPM Price: $357.52"></div></div></td>
+            <td class="col-low52">$279.10</td><td class="col-price">$357.52</td><td class="col-high52">$363.00</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:93.46841477949937%;"></div><div class="mini-gauge-dot" style="left:93.46841477949937%;"></div></div><span class="mini-gauge-label">93.5%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$LLY</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:76.73693800246137%;" title="LLY Support: $1,103.90"></div>
+            <div class="marker-yellow" style="left:80.33627950836704%;" title="LLY 50d MA: $1,126.42"></div>
+            <div class="marker-red" style="left:67.07050042354597%;" title="LLY 200d MA: $1,043.42"></div>
+            <div class="marker-cyan" style="left:89.81252097751211%;" title="LLY Price: $1,185.71"></div></div></td>
+            <td class="col-low52">$623.78</td><td class="col-price">$1,185.71</td><td class="col-high52">$1,249.45</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:89.81252097751211%;"></div><div class="mini-gauge-dot" style="left:89.81252097751211%;"></div></div><span class="mini-gauge-label">89.8%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$REGN</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:67.55917318196423%;" title="REGN Support: $730.24"></div>
+            <div class="marker-yellow" style="left:72.87851201313768%;" title="REGN 50d MA: $745.14"></div>
+            <div class="marker-red" style="left:53.27906893720324%;" title="REGN 200d MA: $690.24"></div>
+            <div class="marker-cyan" style="left:86.88015422512584%;" title="REGN Price: $784.36"></div></div></td>
+            <td class="col-low52">$541.00</td><td class="col-price">$784.36</td><td class="col-high52">$821.11</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:86.88015422512584%;"></div><div class="mini-gauge-dot" style="left:86.88015422512584%;"></div></div><span class="mini-gauge-label">86.9%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$AMZN</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:65.28508771929825%;" title="AMZN Support: $255.54"></div>
+            <div class="marker-yellow" style="left:71.00877192982456%;" title="AMZN 50d MA: $260.76"></div>
+            <div class="marker-red" style="left:49.93421052631579%;" title="AMZN 200d MA: $241.54"></div>
+            <div class="marker-cyan" style="left:86.0526315789474%;" title="AMZN Price: $274.48"></div></div></td>
+            <td class="col-low52">$196.00</td><td class="col-price">$274.48</td><td class="col-high52">$287.20</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:86.0526315789474%;"></div><div class="mini-gauge-dot" style="left:86.0526315789474%;"></div></div><span class="mini-gauge-label">86.1%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$V</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:54.44555444555444%;" title="V Support: $337.49"></div>
+            <div class="marker-yellow" style="left:63.049450549450526%;" title="V 50d MA: $344.38"></div>
+            <div class="marker-red" style="left:31.35614385614386%;" title="V 200d MA: $319.00"></div>
+            <div class="marker-cyan" style="left:85.67682317682315%;" title="V Price: $362.50"></div></div></td>
+            <td class="col-low52">$293.89</td><td class="col-price">$362.50</td><td class="col-high52">$373.97</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:85.67682317682315%;"></div><div class="mini-gauge-dot" style="left:85.67682317682315%;"></div></div><span class="mini-gauge-label">85.7%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$NVDA</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:61.32192631433696%;" title="NVDA Support: $208.51"></div>
+            <div class="marker-yellow" style="left:67.18642196771077%;" title="NVDA 50d MA: $212.76"></div>
+            <div class="marker-red" style="left:45.54988271008696%;" title="NVDA 200d MA: $197.08"></div>
+            <div class="marker-cyan" style="left:82.64109286601354%;" title="NVDA Price: $223.96"></div></div></td>
+            <td class="col-low52">$164.07</td><td class="col-price">$223.96</td><td class="col-high52">$236.54</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:82.64109286601354%;"></div><div class="mini-gauge-dot" style="left:82.64109286601354%;"></div></div><span class="mini-gauge-label">82.6%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$VRTX</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:58.03587077174739%;" title="VRTX Support: $461.84"></div>
+            <div class="marker-yellow" style="left:63.54501372904131%;" title="VRTX 50d MA: $471.27"></div>
+            <div class="marker-red" style="left:43.25524332534909%;" title="VRTX 200d MA: $436.54"></div>
+            <div class="marker-cyan" style="left:78.0335339136531%;" title="VRTX Price: $496.07"></div></div></td>
+            <td class="col-low52">$362.50</td><td class="col-price">$496.07</td><td class="col-high52">$533.67</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:78.0335339136531%;"></div><div class="mini-gauge-dot" style="left:78.0335339136531%;"></div></div><span class="mini-gauge-label">78.0%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$AAPL</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:58.69989842956479%;" title="AAPL Support: $291.71"></div>
+            <div class="marker-yellow" style="left:63.34869911711854%;" title="AAPL 50d MA: $297.66"></div>
+            <div class="marker-red" style="left:46.214548011563416%;" title="AAPL 200d MA: $275.73"></div>
+            <div class="marker-cyan" style="left:75.59184311274318%;" title="AAPL Price: $313.33"></div></div></td>
+            <td class="col-low52">$216.58</td><td class="col-price">$313.33</td><td class="col-high52">$344.57</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:75.59184311274318%;"></div><div class="mini-gauge-dot" style="left:75.59184311274318%;"></div></div><span class="mini-gauge-label">75.6%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$GOOGL</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:63.244353182751546%;" title="GOOGL Support: $329.85"></div>
+            <div class="marker-yellow" style="left:66.38510360276273%;" title="GOOGL 50d MA: $336.58"></div>
+            <div class="marker-red" style="left:54.81146163897702%;" title="GOOGL 200d MA: $311.78"></div>
+            <div class="marker-cyan" style="left:74.65465745753221%;" title="GOOGL Price: $354.30"></div></div></td>
+            <td class="col-low52">$194.33</td><td class="col-price">$354.30</td><td class="col-high52">$408.61</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:74.65465745753221%;"></div><div class="mini-gauge-dot" style="left:74.65465745753221%;"></div></div><span class="mini-gauge-label">74.7%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$GS</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:58.4983498349835%;" title="GS Support: $967.88"></div>
+            <div class="marker-yellow" style="left:62.9025064668629%;" title="GS 50d MA: $987.63"></div>
+            <div class="marker-red" style="left:46.67514048702168%;" title="GS 200d MA: $914.86"></div>
+            <div class="marker-cyan" style="left:74.49380073142447%;" title="GS Price: $1,039.61"></div></div></td>
+            <td class="col-low52">$705.55</td><td class="col-price">$1,039.61</td><td class="col-high52">$1,153.99</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:74.49380073142447%;"></div><div class="mini-gauge-dot" style="left:74.49380073142447%;"></div></div><span class="mini-gauge-label">74.5%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$BA</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:53.467388502191284%;" title="BA Support: $218.25"></div>
+            <div class="marker-yellow" style="left:59.20340293890176%;" title="BA 50d MA: $222.70"></div>
+            <div class="marker-red" style="left:38.05104408352666%;" title="BA 200d MA: $206.29"></div>
+            <div class="marker-cyan" style="left:74.31038927558647%;" title="BA Price: $234.42"></div></div></td>
+            <td class="col-low52">$176.77</td><td class="col-price">$234.42</td><td class="col-high52">$254.35</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:74.31038927558647%;"></div><div class="mini-gauge-dot" style="left:74.31038927558647%;"></div></div><span class="mini-gauge-label">74.3%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$ANET</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:60.90465278469664%;" title="ANET Support: $175.65"></div>
+            <div class="marker-yellow" style="left:64.48141875062271%;" title="ANET 50d MA: $179.24"></div>
+            <div class="marker-red" style="left:51.3201155723822%;" title="ANET 200d MA: $166.03"></div>
+            <div class="marker-cyan" style="left:73.87665637142572%;" title="ANET Price: $188.67"></div></div></td>
+            <td class="col-low52">$114.52</td><td class="col-price">$188.67</td><td class="col-high52">$214.89</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:73.87665637142572%;"></div><div class="mini-gauge-dot" style="left:73.87665637142572%;"></div></div><span class="mini-gauge-label">73.9%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$MSFT</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:56.859964795619014%;" title="MSFT Support: $465.49"></div>
+            <div class="marker-yellow" style="left:61.50498728730687%;" title="MSFT 50d MA: $474.99"></div>
+            <div class="marker-red" style="left:44.39174652845688%;" title="MSFT 200d MA: $439.99"></div>
+            <div class="marker-cyan" style="left:73.72873068648542%;" title="MSFT Price: $499.99"></div></div></td>
+            <td class="col-low52">$349.20</td><td class="col-price">$499.99</td><td class="col-high52">$553.72</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:73.72873068648542%;"></div><div class="mini-gauge-dot" style="left:73.72873068648542%;"></div></div><span class="mini-gauge-label">73.7%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$BLK</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:46.468352338456455%;" title="BLK Support: $1,057.98"></div>
+            <div class="marker-yellow" style="left:53.60436291522059%;" title="BLK 50d MA: $1,079.57"></div>
+            <div class="marker-red" style="left:27.311188233349853%;" title="BLK 200d MA: $1,000.02"></div>
+            <div class="marker-cyan" style="left:72.38472979672783%;" title="BLK Price: $1,136.39"></div></div></td>
+            <td class="col-low52">$917.39</td><td class="col-price">$1,136.39</td><td class="col-high52">$1,219.94</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:72.38472979672783%;"></div><div class="mini-gauge-dot" style="left:72.38472979672783%;"></div></div><span class="mini-gauge-label">72.4%</span></td>
+        </tr></tbody></table></div>
+    <div class="grid-column"><table><thead><tr class="watchlist-row"><th class="col-ticker">Ticker</th><th class="col-bar" style="text-align:center;">Range Bar (33% & 66% Grids)<div class="axis-labels"><span>0%</span><span style="color:#a78bfa;">33%</span><span style="color:#a78bfa;">66%</span><span>100%</span></div></th><th class="col-low52" style="text-align:right;">52W Low</th><th class="col-price" style="text-align:right;">Price</th><th class="col-high52" style="text-align:right;">52W High</th><th class="col-mini-gauge" style="text-align:center;">Gauge</th></tr></thead><tbody><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$DDOG</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:61.51712803656718%;" title="DDOG Support: $217.79"></div>
+            <div class="marker-yellow" style="left:63.79744235016176%;" title="DDOG 50d MA: $222.23"></div>
+            <div class="marker-red" style="left:55.39006727954393%;" title="DDOG 200d MA: $205.86"></div>
+            <div class="marker-cyan" style="left:69.8063787170664%;" title="DDOG Price: $233.93"></div></div></td>
+            <td class="col-low52">$98.01</td><td class="col-price">$233.93</td><td class="col-high52">$292.72</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:69.8063787170664%;"></div><div class="mini-gauge-dot" style="left:69.8063787170664%;"></div></div><span class="mini-gauge-label">69.8%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$GEV</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:58.85277418967226%;" title="GEV Support: $921.99"></div>
+            <div class="marker-yellow" style="left:61.678031782270416%;" title="GEV 50d MA: $940.80"></div>
+            <div class="marker-red" style="left:51.266184024752924%;" title="GEV 200d MA: $871.48"></div>
+            <div class="marker-cyan" style="left:69.11592417915828%;" title="GEV Price: $990.32"></div></div></td>
+            <td class="col-low52">$530.16</td><td class="col-price">$990.32</td><td class="col-high52">$1,195.94</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:69.11592417915828%;"></div><div class="mini-gauge-dot" style="left:69.11592417915828%;"></div></div><span class="mini-gauge-label">69.1%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$AVGO</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:54.60047858114766%;" title="AVGO Support: $398.24"></div>
+            <div class="marker-yellow" style="left:58.415051846291%;" title="AVGO 50d MA: $406.37"></div>
+            <div class="marker-red" style="left:44.36728757096608%;" title="AVGO 200d MA: $376.43"></div>
+            <div class="marker-cyan" style="left:68.45118003096701%;" title="AVGO Price: $427.76"></div></div></td>
+            <td class="col-low52">$281.87</td><td class="col-price">$427.76</td><td class="col-high52">$495.00</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:68.45118003096701%;"></div><div class="mini-gauge-dot" style="left:68.45118003096701%;"></div></div><span class="mini-gauge-label">68.5%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$MU</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:61.72206150968791%;" title="MU Support: $817.02"></div>
+            <div class="marker-yellow" style="left:63.17896190384633%;" title="MU 50d MA: $833.69"></div>
+            <div class="marker-red" style="left:57.81019218500101%;" title="MU 200d MA: $772.26"></div>
+            <div class="marker-cyan" style="left:67.01392226951347%;" title="MU Price: $877.57"></div></div></td>
+            <td class="col-low52">$110.79</td><td class="col-price">$877.57</td><td class="col-high52">$1,255.00</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:67.01392226951347%;"></div><div class="mini-gauge-dot" style="left:67.01392226951347%;"></div></div><span class="mini-gauge-label">67.0%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$CAT</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:56.67964071856289%;" title="CAT Support: $784.08"></div>
+            <div class="marker-yellow" style="left:59.074850299401206%;" title="CAT 50d MA: $800.08"></div>
+            <div class="marker-red" style="left:50.25000000000001%;" title="CAT 200d MA: $741.13"></div>
+            <div class="marker-cyan" style="left:65.37874251497007%;" title="CAT Price: $842.19"></div></div></td>
+            <td class="col-low52">$405.46</td><td class="col-price">$842.19</td><td class="col-high52">$1,073.46</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:65.37874251497007%;"></div><div class="mini-gauge-dot" style="left:65.37874251497007%;"></div></div><span class="mini-gauge-label">65.4%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$PLTR</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:53.15867523479978%;" title="PLTR Support: $160.14"></div>
+            <div class="marker-yellow" style="left:56.39149777558081%;" title="PLTR 50d MA: $163.41"></div>
+            <div class="marker-red" style="left:44.488383588729604%;" title="PLTR 200d MA: $151.37"></div>
+            <div class="marker-cyan" style="left:64.89372219476024%;" title="PLTR Price: $172.01"></div></div></td>
+            <td class="col-low52">$106.37</td><td class="col-price">$172.01</td><td class="col-high52">$207.52</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:64.89372219476024%;"></div><div class="mini-gauge-dot" style="left:64.89372219476024%;"></div></div><span class="mini-gauge-label">64.9%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$VRT</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:51.638340223549214%;" title="VRT Support: $253.60"></div>
+            <div class="marker-yellow" style="left:53.62119124177001%;" title="VRT 50d MA: $258.78"></div>
+            <div class="marker-red" style="left:46.32139029245138%;" title="VRT 200d MA: $239.71"></div>
+            <div class="marker-cyan" style="left:58.834787934466384%;" title="VRT Price: $272.40"></div></div></td>
+            <td class="col-low52">$118.70</td><td class="col-price">$272.40</td><td class="col-high52">$379.94</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:58.834787934466384%;"></div><div class="mini-gauge-dot" style="left:58.834787934466384%;"></div></div><span class="mini-gauge-label">58.8%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$MRVL</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:52.96900610937267%;" title="MRVL Support: $203.63"></div>
+            <div class="marker-yellow" style="left:54.514975413500224%;" title="MRVL 50d MA: $207.78"></div>
+            <div class="marker-red" style="left:48.811652510803164%;" title="MRVL 200d MA: $192.47"></div>
+            <div class="marker-cyan" style="left:58.590374012814785%;" title="MRVL Price: $218.72"></div></div></td>
+            <td class="col-low52">$61.44</td><td class="col-price">$218.72</td><td class="col-high52">$329.88</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:58.590374012814785%;"></div><div class="mini-gauge-dot" style="left:58.590374012814785%;"></div></div><span class="mini-gauge-label">58.6%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$BE</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:53.37475826649337%;" title="BE Support: $204.21"></div>
+            <div class="marker-yellow" style="left:54.693592873220695%;" title="BE 50d MA: $208.37"></div>
+            <div class="marker-red" style="left:49.82721998541674%;" title="BE 200d MA: $193.02"></div>
+            <div class="marker-cyan" style="left:58.17138509336463%;" title="BE Price: $219.34"></div></div></td>
+            <td class="col-low52">$35.85</td><td class="col-price">$219.34</td><td class="col-high52">$351.28</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:58.17138509336463%;"></div><div class="mini-gauge-dot" style="left:58.17138509336463%;"></div></div><span class="mini-gauge-label">58.2%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$TSM</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:42.00069258072896%;" title="TSM Support: $391.06"></div>
+            <div class="marker-yellow" style="left:45.45493896632329%;" title="TSM 50d MA: $399.04"></div>
+            <div class="marker-red" style="left:32.7287680720284%;" title="TSM 200d MA: $369.64"></div>
+            <div class="marker-cyan" style="left:54.54506103367677%;" title="TSM Price: $420.04"></div></div></td>
+            <td class="col-low52">$294.03</td><td class="col-price">$420.04</td><td class="col-high52">$525.05</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:54.54506103367677%;"></div><div class="mini-gauge-dot" style="left:54.54506103367677%;"></div></div><span class="mini-gauge-label">54.5%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$GLW</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:43.606352862146736%;" title="GLW Support: $154.25"></div>
+            <div class="marker-yellow" style="left:45.1177966508325%;" title="GLW 50d MA: $157.40"></div>
+            <div class="marker-red" style="left:39.551844921069055%;" title="GLW 200d MA: $145.80"></div>
+            <div class="marker-cyan" style="left:49.09073460966365%;" title="GLW Price: $165.68"></div></div></td>
+            <td class="col-low52">$63.37</td><td class="col-price">$165.68</td><td class="col-high52">$271.78</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:49.09073460966365%;"></div><div class="mini-gauge-dot" style="left:49.09073460966365%;"></div></div><span class="mini-gauge-label">49.1%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$AXON</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:35.27537134379751%;" title="AXON Support: $531.61"></div>
+            <div class="marker-yellow" style="left:37.2625872268723%;" title="AXON 50d MA: $542.46"></div>
+            <div class="marker-red" style="left:29.94194032857745%;" title="AXON 200d MA: $502.49"></div>
+            <div class="marker-cyan" style="left:42.491620725654315%;" title="AXON Price: $571.01"></div></div></td>
+            <td class="col-low52">$339.01</td><td class="col-price">$571.01</td><td class="col-high52">$885.00</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:42.491620725654315%;"></div><div class="mini-gauge-dot" style="left:42.491620725654315%;"></div></div><span class="mini-gauge-label">42.5%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$COST</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:15.195690064965936%;" title="COST Support: $882.42"></div>
+            <div class="marker-yellow" style="left:22.33005862779274%;" title="COST 50d MA: $900.43"></div>
+            <div class="marker-red" style="left:0%;" title="COST 200d MA: $834.08"></div>
+            <div class="marker-cyan" style="left:41.102836317540834%;" title="COST Price: $947.82"></div></div></td>
+            <td class="col-low52">$844.06</td><td class="col-price">$947.82</td><td class="col-high52">$1,096.50</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:41.102836317540834%;"></div><div class="mini-gauge-dot" style="left:41.102836317540834%;"></div></div><span class="mini-gauge-label">41.1%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$SPOT</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:14.407224002330318%;" title="SPOT Support: $454.46"></div>
+            <div class="marker-yellow" style="left:17.10748616370522%;" title="SPOT 50d MA: $463.73"></div>
+            <div class="marker-red" style="left:7.154092630352463%;" title="SPOT 200d MA: $429.56"></div>
+            <div class="marker-cyan" style="left:24.21788523157588%;" title="SPOT Price: $488.14"></div></div></td>
+            <td class="col-low52">$405.00</td><td class="col-price">$488.14</td><td class="col-high52">$748.30</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:24.21788523157588%;"></div><div class="mini-gauge-dot" style="left:24.21788523157588%;"></div></div><span class="mini-gauge-label">24.2%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$ISRG</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:8.753768479168945%;" title="ISRG Support: $352.67"></div>
+            <div class="marker-yellow" style="left:11.36900221568414%;" title="ISRG 50d MA: $359.87"></div>
+            <div class="marker-red" style="left:1.7362246195198248%;" title="ISRG 200d MA: $333.35"></div>
+            <div class="marker-cyan" style="left:18.248519850350515%;" title="ISRG Price: $378.81"></div></div></td>
+            <td class="col-low52">$328.57</td><td class="col-price">$378.81</td><td class="col-high52">$603.88</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:18.248519850350515%;"></div><div class="mini-gauge-dot" style="left:18.248519850350515%;"></div></div><span class="mini-gauge-label">18.2%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$NFLX</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:6.392990426740221%;" title="NFLX Support: $69.02"></div>
+            <div class="marker-yellow" style="left:8.680837254583821%;" title="NFLX 50d MA: $70.43"></div>
+            <div class="marker-red" style="left:0.2596138244361457%;" title="NFLX 200d MA: $65.24"></div>
+            <div class="marker-cyan" style="left:14.700632808697067%;" title="NFLX Price: $74.14"></div></div></td>
+            <td class="col-low52">$65.08</td><td class="col-price">$74.14</td><td class="col-high52">$126.71</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:14.700632808697067%;"></div><div class="mini-gauge-dot" style="left:14.700632808697067%;"></div></div><span class="mini-gauge-label">14.7%</span></td>
+        </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$COIN</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:1.4788063105873355%;" title="COIN Support: $143.00"></div>
+            <div class="marker-yellow" style="left:2.588861433187597%;" title="COIN 50d MA: $145.92"></div>
+            <div class="marker-red" style="left:0%;" title="COIN 200d MA: $135.17"></div>
+            <div class="marker-cyan" style="left:5.5084584679718605%;" title="COIN Price: $153.60"></div></div></td>
+            <td class="col-low52">$139.11</td><td class="col-price">$153.60</td><td class="col-high52">$402.16</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:5.5084584679718605%;"></div><div class="mini-gauge-dot" style="left:5.5084584679718605%;"></div></div><span class="mini-gauge-label">5.5%</span></td>
+        </tr></tbody></table></div>
+</div>
+
+<div class="dual-grid-wrapper">
+    <div class="grid-column">
+        <div class="section-title">🚀 Significant Movers (Ranked by Multi-Timeframe Score)</div>
+        <table>
+            <thead><tr class="movers-row"><th class="col-movers-ticker">Ticker</th><th class="col-movers-score">Score ↓</th><th class="col-movers-combined">1D Return / Price</th><th class="col-movers-combined">10D Return / Price</th><th class="col-movers-combined">30D Return / Price</th></tr></thead>
+            <tbody>
+                <tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$PLTR</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">+2.62</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+10.32%</span><span class="price-col">$172.01</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+39.94%</span><span class="price-col">$122.92</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+60.35%</span><span class="price-col">$107.27</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$AXON</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">+1.48</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-pos">+9.29%</span><span class="price-col">$571.01</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+13.67%</span><span class="price-col">$502.34</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+28.39%</span><span class="price-col">$444.73</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$SNOW</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">+1.06</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-pos">+3.93%</span><span class="price-col">$330.49</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+23.29%</span><span class="price-col">$268.06</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+45.55%</span><span class="price-col">$227.06</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$CRWD</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">+0.64</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-pos">+3.39%</span><span class="price-col">$214.42</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+16.99%</span><span class="price-col">$183.28</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+26.38%</span><span class="price-col">$169.66</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$MSFT</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">+0.63</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">+0.03%</span><span class="price-col">$499.99</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+30.99%</span><span class="price-col">$381.70</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+41.71%</span><span class="price-col">$352.83</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$REGN</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">+0.44</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">+1.59%</span><span class="price-col">$784.36</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+19.57%</span><span class="price-col">$656.01</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+26.48%</span><span class="price-col">$620.14</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$GLW</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">+0.37</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-pos">+5.41%</span><span class="price-col">$165.68</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+12.98%</span><span class="price-col">$146.65</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-neg">-27.34%</span><span class="price-col">$228.01</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$COIN</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">+0.30</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-pos">+5.63%</span><span class="price-col">$153.60</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">-2.96%</span><span class="price-col">$158.29</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">+7.77%</span><span class="price-col">$142.52</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$AMZN</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">+0.23</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">+0.82%</span><span class="price-col">$274.48</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+18.25%</span><span class="price-col">$232.11</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+20.91%</span><span class="price-col">$227.01</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$MRVL</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">+0.17</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-pos">+3.89%</span><span class="price-col">$218.72</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+12.61%</span><span class="price-col">$194.23</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-neg">-22.24%</span><span class="price-col">$281.26</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$NVDA</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">+0.14</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-pos">+2.27%</span><span class="price-col">$223.96</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-pos">+8.28%</span><span class="price-col">$206.84</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+14.42%</span><span class="price-col">$195.74</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$AVGO</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">+0.13</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">+1.71%</span><span class="price-col">$427.76</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+12.00%</span><span class="price-col">$381.92</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+12.89%</span><span class="price-col">$378.91</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$SPOT</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">-0.01</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-pos">+2.75%</span><span class="price-col">$488.14</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">+1.14%</span><span class="price-col">$482.66</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+10.64%</span><span class="price-col">$441.21</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$BA</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">-0.03</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">+0.96%</span><span class="price-col">$234.42</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+11.88%</span><span class="price-col">$209.52</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">+7.47%</span><span class="price-col">$218.12</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$ISRG</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">-0.07</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">+1.36%</span><span class="price-col">$378.81</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+12.24%</span><span class="price-col">$337.50</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">-5.22%</span><span class="price-col">$399.69</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$BLK</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">-0.11</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">+0.63%</span><span class="price-col">$1,136.39</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-pos">+7.65%</span><span class="price-col">$1,055.67</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+16.92%</span><span class="price-col">$971.92</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$ETN</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">-0.19</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">+0.11%</span><span class="price-col">$448.68</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+11.04%</span><span class="price-col">$404.07</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">+6.86%</span><span class="price-col">$419.87</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$NFLX</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">-0.27</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">+0.61%</span><span class="price-col">$74.14</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-pos">+5.78%</span><span class="price-col">$70.09</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">+4.57%</span><span class="price-col">$70.90</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$DDOG</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">-0.33</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-pos">+2.02%</span><span class="price-col">$233.93</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neg">-5.24%</span><span class="price-col">$246.86</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">+5.88%</span><span class="price-col">$220.94</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$GOOGL</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">-0.40</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">-0.96%</span><span class="price-col">$354.30</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+10.81%</span><span class="price-col">$319.74</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">+3.08%</span><span class="price-col">$343.71</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$ANET</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">-0.50</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">-1.90%</span><span class="price-col">$188.67</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-pos">+8.44%</span><span class="price-col">$173.99</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+14.03%</span><span class="price-col">$165.45</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$AAPL</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">-0.55</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">+0.29%</span><span class="price-col">$313.33</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neg">-5.91%</span><span class="price-col">$333.02</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+13.88%</span><span class="price-col">$275.15</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$V</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">-0.75</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neg">-2.15%</span><span class="price-col">$362.50</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">+1.90%</span><span class="price-col">$355.74</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">+9.68%</span><span class="price-col">$330.52</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$GEV</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">-0.85</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">-1.00%</span><span class="price-col">$990.32</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">-2.41%</span><span class="price-col">$1,014.75</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">-8.77%</span><span class="price-col">$1,085.47</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$BE</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">-0.97</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neg">-4.20%</span><span class="price-col">$219.34</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-pos">+18.63%</span><span class="price-col">$184.89</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-neg">-29.06%</span><span class="price-col">$309.18</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$MU</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">-1.00</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">-0.44%</span><span class="price-col">$877.57</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">-4.71%</span><span class="price-col">$920.95</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-neg">-27.69%</span><span class="price-col">$1,213.56</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$VRT</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">-1.02</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">-1.01%</span><span class="price-col">$272.40</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neg">-6.19%</span><span class="price-col">$290.36</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-neg">-16.33%</span><span class="price-col">$325.57</span></div></td>
+        </tr><tr class="movers-row">
+            <td class="col-movers-ticker"><strong>$CAT</strong></td>
+            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">-1.14</span></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neutral">-1.72%</span><span class="price-col">$842.19</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-neg">-5.24%</span><span class="price-col">$888.73</span></div></td>
+            <td class="col-movers-combined"><div class="combined-cell"><span class="return-badge badge-strong-neg">-20.32%</span><span class="price-col">$1,057.01</span></div></td>
+        </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="grid-column">
+        <div class="section-title">📅 Quarterly Results Schedule</div>
+        <table>
+            <thead><tr class="earnings-row"><th class="col-earn-ticker">Ticker</th><th class="col-earn-price" style="text-align:right;">Price</th><th class="col-earn-date">Date</th><th class="col-earn-status">Status</th><th class="col-earn-eps">EPS</th><th class="col-earn-move">Earnings Move ⚡</th></tr></thead>
+            <tbody>
+                <tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$PLTR</strong></td>
+            <td class="col-earn-price price-col"><strong>$172.01</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-1">AUG</span> 2026-08-03</td>
+            <td class="col-earn-status"><span class="badge-reported">Reported</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$0.41</strong></td>
+            <td class="col-earn-move"><span class="return-badge badge-pos">+29.45%</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$VRTX</strong></td>
+            <td class="col-earn-price price-col"><strong>$496.07</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-1">AUG</span> 2026-08-03</td>
+            <td class="col-earn-status"><span class="badge-reported">Reported</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$4.73</strong></td>
+            <td class="col-earn-move"><span class="return-badge badge-pos">+1.70%</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$ANET</strong></td>
+            <td class="col-earn-price price-col"><strong>$188.67</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-1">AUG</span> 2026-08-04</td>
+            <td class="col-earn-status"><span class="badge-reported">Reported</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$1.02</strong></td>
+            <td class="col-earn-move"><span class="return-badge badge-pos">+3.04%</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$CAT</strong></td>
+            <td class="col-earn-price price-col"><strong>$842.19</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-1">AUG</span> 2026-08-04</td>
+            <td class="col-earn-status"><span class="badge-reported">Reported</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$8.17</strong></td>
+            <td class="col-earn-move"><span class="return-badge badge-pos">+1.87%</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$SPOT</strong></td>
+            <td class="col-earn-price price-col"><strong>$488.14</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-1">AUG</span> 2026-08-04</td>
+            <td class="col-earn-status"><span class="badge-reported">Reported</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$2.63</strong></td>
+            <td class="col-earn-move"><span class="return-badge badge-neg">-2.72%</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$AXON</strong></td>
+            <td class="col-earn-price price-col"><strong>$571.01</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-1">AUG</span> 2026-08-05</td>
+            <td class="col-earn-status"><span class="badge-reported">Reported</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$1.88</strong></td>
+            <td class="col-earn-move"><span class="return-badge badge-pos">+0.38%</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$LLY</strong></td>
+            <td class="col-earn-price price-col"><strong>$1,185.71</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-1">AUG</span> 2026-08-05</td>
+            <td class="col-earn-status"><span class="badge-reported">Reported</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$8.38</strong></td>
+            <td class="col-earn-move"><span class="return-badge badge-neg">-0.51%</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$DDOG</strong></td>
+            <td class="col-earn-price price-col"><strong>$233.93</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-1">AUG</span> 2026-08-06</td>
+            <td class="col-earn-status"><span class="badge-reported">Reported</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$0.65</strong></td>
+            <td class="col-earn-move"><span class="return-badge badge-neg">-1.73%</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$CRWD</strong></td>
+            <td class="col-earn-price price-col"><strong>$214.42</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-1">AUG</span> 2026-08-26</td>
+            <td class="col-earn-status"><span class="badge-upcoming">Upcoming (17d)</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$0.30</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$NVDA</strong></td>
+            <td class="col-earn-price price-col"><strong>$223.96</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-1">AUG</span> 2026-08-26</td>
+            <td class="col-earn-status"><span class="badge-upcoming">Upcoming (17d)</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$2.13</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$MRVL</strong></td>
+            <td class="col-earn-price price-col"><strong>$218.72</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-1">AUG</span> 2026-08-27</td>
+            <td class="col-earn-status"><span class="badge-upcoming">Upcoming (18d)</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$0.94</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$AVGO</strong></td>
+            <td class="col-earn-price price-col"><strong>$427.76</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-2">SEP</span> 2026-09-02</td>
+            <td class="col-earn-status"><span class="badge-next-month">Next Month</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$3.30</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$SNOW</strong></td>
+            <td class="col-earn-price price-col"><strong>$330.49</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-2">SEP</span> 2026-09-02</td>
+            <td class="col-earn-status"><span class="badge-next-month">Next Month</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$0.46</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$MU</strong></td>
+            <td class="col-earn-price price-col"><strong>$877.57</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-2">SEP</span> 2026-09-21</td>
+            <td class="col-earn-status"><span class="badge-next-month">Next Month</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$32.25</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$COST</strong></td>
+            <td class="col-earn-price price-col"><strong>$947.82</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-2">SEP</span> 2026-09-24</td>
+            <td class="col-earn-status"><span class="badge-next-month">Next Month</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$6.69</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$BLK</strong></td>
+            <td class="col-earn-price price-col"><strong>$1,136.39</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-12</td>
+            <td class="col-earn-status"><span class="badge-month-after">Month After</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$14.42</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$GS</strong></td>
+            <td class="col-earn-price price-col"><strong>$1,039.61</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-13</td>
+            <td class="col-earn-status"><span class="badge-month-after">Month After</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$16.90</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$JPM</strong></td>
+            <td class="col-earn-price price-col"><strong>$357.52</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-13</td>
+            <td class="col-earn-status"><span class="badge-month-after">Month After</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$5.89</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$ISRG</strong></td>
+            <td class="col-earn-price price-col"><strong>$378.81</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-19</td>
+            <td class="col-earn-status"><span class="badge-month-after">Month After</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$2.69</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$NFLX</strong></td>
+            <td class="col-earn-price price-col"><strong>$74.14</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-19</td>
+            <td class="col-earn-status"><span class="badge-month-after">Month After</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$0.84</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$GEV</strong></td>
+            <td class="col-earn-price price-col"><strong>$990.32</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-20</td>
+            <td class="col-earn-status"><span class="badge-month-after">Month After</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$4.15</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$VRT</strong></td>
+            <td class="col-earn-price price-col"><strong>$272.40</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-20</td>
+            <td class="col-earn-status"><span class="badge-month-after">Month After</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$1.83</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$BE</strong></td>
+            <td class="col-earn-price price-col"><strong>$219.34</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-26</td>
+            <td class="col-earn-status"><span class="badge-month-after">Month After</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$0.68</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$GLW</strong></td>
+            <td class="col-earn-price price-col"><strong>$165.68</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-26</td>
+            <td class="col-earn-status"><span class="badge-month-after">Month After</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$0.88</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$REGN</strong></td>
+            <td class="col-earn-price price-col"><strong>$784.36</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-26</td>
+            <td class="col-earn-status"><span class="badge-month-after">Month After</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$13.70</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$V</strong></td>
+            <td class="col-earn-price price-col"><strong>$362.50</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-26</td>
+            <td class="col-earn-status"><span class="badge-month-after">Month After</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$3.50</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$BA</strong></td>
+            <td class="col-earn-price price-col"><strong>$234.42</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-27</td>
+            <td class="col-earn-status"><span class="badge-month-after">Month After</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$-0.13</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$GOOGL</strong></td>
+            <td class="col-earn-price price-col"><strong>$354.30</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-27</td>
+            <td class="col-earn-status"><span class="badge-month-after">Month After</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$3.10</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$MSFT</strong></td>
+            <td class="col-earn-price price-col"><strong>$499.99</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-27</td>
+            <td class="col-earn-status"><span class="badge-month-after">Month After</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$4.73</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$AAPL</strong></td>
+            <td class="col-earn-price price-col"><strong>$313.33</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-28</td>
+            <td class="col-earn-status"><span class="badge-month-after">Month After</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$2.05</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$AMZN</strong></td>
+            <td class="col-earn-price price-col"><strong>$274.48</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-28</td>
+            <td class="col-earn-status"><span class="badge-month-after">Month After</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$1.94</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$COIN</strong></td>
+            <td class="col-earn-price price-col"><strong>$153.60</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-28</td>
+            <td class="col-earn-status"><span class="badge-month-after">Month After</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$0.49</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$ETN</strong></td>
+            <td class="col-earn-price price-col"><strong>$448.68</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-4">NOV</span> 2026-11-02</td>
+            <td class="col-earn-status"><span class="badge-unconfirmed">Unconfirmed Est.</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$3.54</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$TSM</strong></td>
+            <td class="col-earn-price price-col"><strong>$420.04</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-tbd">TBD</span> TBD / Next Qtr</td>
+            <td class="col-earn-status"><span class="badge-unconfirmed">Unconfirmed Est.</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">N/A</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="dual-grid-wrapper">
+    <div class="grid-column">
+        <div class="section-title">📰 Critical Company News (Grid 1)</div>
+        <table>
+            <thead><tr class="news-row"><th class="col-news-ticker">Ticker</th><th class="col-news-headline">Latest Article Headline</th><th class="col-news-source">Source</th><th class="col-news-date">Published</th></tr></thead>
+            <tbody>
+                <tr class="news-row">
+            <td class="col-news-ticker"><strong>$AAPL</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=d226c0827db4cf033b5f7069480759ec71e4452367304ab451be53e5ff2d4b68" target="_blank" class="news-link">Apple tests China's CXMT memory chips for iPhones and MacBooks, WSJ reports</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 12:06</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$AMZN</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=8ece32cf7a99465fead4629449fc21bd4a86b7cbeea98f61cd2f1acd372e03c7" target="_blank" class="news-link">3 Artificial Intelligence (AI) Stocks to Load Up On in August</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 12:30</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$ANET</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=3f23aab49d3a9a1f97ff66182493296a080367683309b51d3e5a4154b4398170" target="_blank" class="news-link">Arista Networks: Strong Quarterly Earnings Keeps The Buy Thesis Intact</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">SeekingAlpha</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 09:00</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$AVGO</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=281b685ec6364503a8f2be16ea0f984ae2e0cd562970fb08f0d9d5f715f121ba" target="_blank" class="news-link">Top Semiconductor Stock Outpacing Nvidia With a 36% Gain Over 6 Months</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 13:20</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$AXON</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=49a089785d65e4e5b073af0613fe59824a7ba20ef12efd5766ff41645abfb797" target="_blank" class="news-link">$10,000 in Axon Stock a Decade Ago Would Be Worth About $329,000 Today. The Stock Is Down Over the Past Year.</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 08, 09:43</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$BA</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=a0c4429a7ba3ae623c662ca40b69ebe65bfd097189c86f9f325adbbff53d7b0f" target="_blank" class="news-link">Transdigm Group Q3 Earnings Call Highlights</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 09:03</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$BE</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=58f47eb231a52d3fbbc7f0dfb5f24bbaa6c41278dfe1876b12e3b823eb500825" target="_blank" class="news-link">10 Industrials Stocks Whale Activity In Today’s Session</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Benzinga</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 07, 13:35</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$BLK</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=acc82f849084e3ae3bbffdc1d64e0f237b42521a8c4e1da05c62f45ccd23a9f9" target="_blank" class="news-link">Strategy (MSTR) vs BlackRock’s IBIT: Which Bitcoin Bet Has Held Up Better in 2026?</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 12:55</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$CAT</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=dc5b1f3df9fd34ca061fc97816b99d46bbe40b24e9d6e0a40ed048a5e17c8ca4" target="_blank" class="news-link">Earnings beats ease concerns over record U.S. stock rally - WSJ</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 07:08</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$COIN</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=c9c6a23c435d478639e32224525c136e3363611d1b2650f212079f26e153129e" target="_blank" class="news-link">Coinbase stock price today: August 7, 2026</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 07, 23:49</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$COST</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=9cec613f80deeddea082c19e67a79210861f0ab5ae8a2374d1f536991e8ceb62" target="_blank" class="news-link">Walmart (WMT) Stock Price Prediction: Where Our Price Target Sees the Stock Going Over the Next 12 Months</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 12:00</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$CRWD</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=cc2eacdcc1aec8217adf334ddde1141cb772d662d58ad1a593e0877b493d43c3" target="_blank" class="news-link">Jim Cramer Favors Fortinet (FTNT) Alongside CrowdStrike (CRWD) and Palo Alto (PANW)</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 08, 13:50</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$DDOG</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=9876a608377c0f227365c5fac089d114df14bed8b305a3f51bb41189e69cdecc" target="_blank" class="news-link">Datadog: Best Of Breed For Multiple Reasons</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">SeekingAlpha</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 06:34</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$ETN</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=40fda781bbd4712cbd387775dc256c219f210b3d33f75154ed64687b49beb317" target="_blank" class="news-link">Eaton (ETN) Q2 2026 Earnings Call Transcript</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 08, 02:31</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$GEV</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=4d88951ac6066dd305522d678ffd349dec999cc22ad8dd0af0c1545ff651c0dd" target="_blank" class="news-link">Does AirJoule Technologies (AIRJ) Using GE Vernova’s Campus Showcase Reframe Its Industrial Water Strategy?</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 08, 21:15</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$GLW</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=deff1d4247207aac2c94f55973825d0ce38ade9e08234210a6c7618171e2655c" target="_blank" class="news-link">Wall Street Week Ahead</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">SeekingAlpha</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 03:11</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$GOOGL</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=2e278b11eb5aff29c140ae859415179f05d198ee275380f1215e54663638593c" target="_blank" class="news-link">Nvidia CEO Jensen Huang Told Investors in Seoul to "Buy at a Discount" During the Recent AI Stock Sell-Off. Here's Whether His Call Has Paid Off.</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 11:15</td>
+        </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="grid-column">
+        <div class="section-title">📰 Critical Company News (Grid 2)</div>
+        <table>
+            <thead><tr class="news-row"><th class="col-news-ticker">Ticker</th><th class="col-news-headline">Latest Article Headline</th><th class="col-news-source">Source</th><th class="col-news-date">Published</th></tr></thead>
+            <tbody>
+                <tr class="news-row">
+            <td class="col-news-ticker"><strong>$GS</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=162672f97f387ecbcce674305b3f627ca07b69cc386c6356122228b147a1efa4" target="_blank" class="news-link">Barrick Chairman's Planned Overhaul Meets Investor Backlash</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 12:01</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$ISRG</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=d2317de655bbe9049b1e6c799ed3a0c71d3b83931654cecd4b996611ac38f945" target="_blank" class="news-link">Intuitive Surgical (ISRG) Stock Looks Fairly Valued Despite Its 33% Slide</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 02:08</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$JPM</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=d22c7c1c3053f6e9567affb165cf449669ac6d1f7616afdca46dc26be79cc4c8" target="_blank" class="news-link">You saved $1.5M in your 401(k) — now the IRS wants $56,603 a year, and that's just the start</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 13:00</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$LLY</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=04feb778c0bf43bc03b43f2a84b0a57a91dec9c1b9b10d9afc4fa15db7c8c132" target="_blank" class="news-link">Eli Lilly (LLY) Posts Blowout Growth And Raises Its Outlook</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 08:51</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$MRVL</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=d0f9c67598ffdbade8934d2501626965b8caaa3bd05f9a909949b5b01099fec8" target="_blank" class="news-link">Benzinga Bulls And Bears: Palantir, Marvell, AppLovin</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Benzinga</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 08, 08:30</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$MSFT</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=ecc86509bd56887ef1723f7ad5d1d05909c4931bf4219eaed134a49e0d26d695" target="_blank" class="news-link">'Very little to like': Wall Street assesses surprise July jobs report as stocks jump</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 11:35</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$MU</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=8ece32cf7a99465fead4629449fc21bd4a86b7cbeea98f61cd2f1acd372e03c7" target="_blank" class="news-link">3 Artificial Intelligence (AI) Stocks to Load Up On in August</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 12:30</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$NFLX</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=deff1d4247207aac2c94f55973825d0ce38ade9e08234210a6c7618171e2655c" target="_blank" class="news-link">Wall Street Week Ahead</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">SeekingAlpha</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 03:11</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$NVDA</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=5711eec883ff6cf34d6135c0859b123c960dd79de91114ed71c3cddac8c450dc" target="_blank" class="news-link">3 High-Yield Dividend Stocks to Load Up On Before 2026 Ends</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 13:52</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$PLTR</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=a79093d5406b0a63bb4ccab4c5b908c2882ac5ec9a76cb8f64d681b07e39fffc" target="_blank" class="news-link">USA Today Q2 Earnings Call Highlights</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 09:03</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$REGN</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=6e6628b589862d33e59c226c841ee0d1bace982e3f3f1326c64fc54c64df69be" target="_blank" class="news-link">Regeneron Pharmaceuticals (REGN) Keeps Buybacks And Dividend In Focus As Fair Value Stays In Sight</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 08, 23:11</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$SNOW</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=23284d2c9340ebbcb480958322cb238ffead0a0d28a52ad46f3b3592a3e2438b" target="_blank" class="news-link">Stock Market Today, Aug. 7: Palantir Surges on Bank of America Upbeat View After Strong Earnings</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 07, 21:05</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$SPOT</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=06fffbad869d23c6cb921639401066357b9fd1d8223ba6396888e1c260040b2f" target="_blank" class="news-link">Wasatch Micro Cap Fund Q2 2026 Contributors And Detractors</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">SeekingAlpha</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 07, 01:20</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$V</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=67a12f998d09e3a8032fc7543984727ae385b02a09472666c7971ce61d490975" target="_blank" class="news-link">Top 50 High-Quality Dividend Growth Stocks For August 2026</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">SeekingAlpha</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 02:50</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$VRT</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=57f5f8fadf189d1db24c665750f17643fe9396e9411379d5c8153b4059803dbf" target="_blank" class="news-link">SMCI's Q4 Has To Address A $14B Cash Hole (Earnings Preview)</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">SeekingAlpha</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 08:30</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$VRTX</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=3b7a86f6ceb88fe11df34224171d2e64d74b5e8b7d5f7a718f923ea58fe91d9c" target="_blank" class="news-link">Tracking Tweedy Browne Portfolio - Q2 2026 Update</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">SeekingAlpha</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 08, 22:59</td>
+        </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="dual-grid-wrapper" style="margin-top:6px;">
+    <div class="grid-column">
+        <div class="section-title">📋 Tracked Tickers (Sorted by Ticker)</div>
+        <table>
+            <thead><tr class="master-row"><th class="col-master-ticker">Ticker</th><th class="col-master-name">Company Name</th><th class="col-master-industry">Industry</th><th class="col-master-price" style="text-align:right;">Price</th><th class="col-master-cap" style="text-align:right;">Market Cap</th><th class="col-master-gauge" style="text-align:center;">52W Pos</th></tr></thead>
+            <tbody>
+                <tr class="master-row">
+            <td class="col-master-ticker"><strong>$AAPL</strong></td>
+            <td class="col-master-name">Apple Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
+            <td class="col-master-price price-col"><strong>$313.33</strong></td>
+            <td class="col-master-cap price-col">$4,572,794M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">75.6%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$AMZN</strong></td>
+            <td class="col-master-name">Amazon.com Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
+            <td class="col-master-price price-col"><strong>$274.48</strong></td>
+            <td class="col-master-cap price-col">$2,960,628M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">86.1%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$ANET</strong></td>
+            <td class="col-master-name">Arista Networks Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
+            <td class="col-master-price price-col"><strong>$188.67</strong></td>
+            <td class="col-master-cap price-col">$237,955M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">73.9%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$AVGO</strong></td>
+            <td class="col-master-name">Broadcom Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
+            <td class="col-master-price price-col"><strong>$427.76</strong></td>
+            <td class="col-master-cap price-col">$2,035,102M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">68.5%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$AXON</strong></td>
+            <td class="col-master-name">Axon Enterprise Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Aerospace & Defense</span></td>
+            <td class="col-master-price price-col"><strong>$571.01</strong></td>
+            <td class="col-master-cap price-col">$46,025M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">42.5%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$BA</strong></td>
+            <td class="col-master-name">Boeing Co</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Aerospace & Defense</span></td>
+            <td class="col-master-price price-col"><strong>$234.42</strong></td>
+            <td class="col-master-cap price-col">$185,279M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">74.3%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$BE</strong></td>
+            <td class="col-master-name">Bloom Energy Corp</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
+            <td class="col-master-price price-col"><strong>$219.34</strong></td>
+            <td class="col-master-cap price-col">$64,602M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">58.2%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$BLK</strong></td>
+            <td class="col-master-name">BlackRock Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
+            <td class="col-master-price price-col"><strong>$1,136.39</strong></td>
+            <td class="col-master-cap price-col">$184,780M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">72.4%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$CAT</strong></td>
+            <td class="col-master-name">Caterpillar Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
+            <td class="col-master-price price-col"><strong>$842.19</strong></td>
+            <td class="col-master-cap price-col">$387,134M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">65.4%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$COIN</strong></td>
+            <td class="col-master-name">Coinbase Global Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
+            <td class="col-master-price price-col"><strong>$153.60</strong></td>
+            <td class="col-master-cap price-col">$40,525M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">5.5%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$COST</strong></td>
+            <td class="col-master-name">Costco Wholesale Corp</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Consumer</span></td>
+            <td class="col-master-price price-col"><strong>$947.82</strong></td>
+            <td class="col-master-cap price-col">$420,338M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">41.1%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$CRWD</strong></td>
+            <td class="col-master-name">CrowdStrike Holdings Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
+            <td class="col-master-price price-col"><strong>$214.42</strong></td>
+            <td class="col-master-cap price-col">$218,335M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">96.3%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$DDOG</strong></td>
+            <td class="col-master-name">Datadog Inc (Pre-Reincorporation)</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
+            <td class="col-master-price price-col"><strong>$233.93</strong></td>
+            <td class="col-master-cap price-col">$83,270M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">69.8%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$ETN</strong></td>
+            <td class="col-master-name">Eaton Corporation PLC</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
+            <td class="col-master-price price-col"><strong>$448.68</strong></td>
+            <td class="col-master-cap price-col">$174,267M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">93.8%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$GEV</strong></td>
+            <td class="col-master-name">GE Vernova Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
+            <td class="col-master-price price-col"><strong>$990.32</strong></td>
+            <td class="col-master-cap price-col">$263,755M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">69.1%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$GLW</strong></td>
+            <td class="col-master-name">Corning Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
+            <td class="col-master-price price-col"><strong>$165.68</strong></td>
+            <td class="col-master-cap price-col">$142,715M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">49.1%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$GOOGL</strong></td>
+            <td class="col-master-name">Alphabet Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
+            <td class="col-master-price price-col"><strong>$354.30</strong></td>
+            <td class="col-master-cap price-col">$4,333,089M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">74.7%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$GS</strong></td>
+            <td class="col-master-name">Goldman Sachs Group Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
+            <td class="col-master-price price-col"><strong>$1,039.61</strong></td>
+            <td class="col-master-cap price-col">$302,705M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">74.5%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$ISRG</strong></td>
+            <td class="col-master-name">Intuitive Surgical Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
+            <td class="col-master-price price-col"><strong>$378.81</strong></td>
+            <td class="col-master-cap price-col">$133,825M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">18.2%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$JPM</strong></td>
+            <td class="col-master-name">JPMorgan Chase & Co</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
+            <td class="col-master-price price-col"><strong>$357.52</strong></td>
+            <td class="col-master-cap price-col">$957,979M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">93.5%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$LLY</strong></td>
+            <td class="col-master-name">Eli Lilly and Co</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
+            <td class="col-master-price price-col"><strong>$1,185.71</strong></td>
+            <td class="col-master-cap price-col">$1,116,176M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">89.8%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$MRVL</strong></td>
+            <td class="col-master-name">Marvell Technology Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
+            <td class="col-master-price price-col"><strong>$218.72</strong></td>
+            <td class="col-master-cap price-col">$191,548M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">58.6%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$MSFT</strong></td>
+            <td class="col-master-name">Microsoft Corp</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
+            <td class="col-master-price price-col"><strong>$499.99</strong></td>
+            <td class="col-master-cap price-col">$3,712,698M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">73.7%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$MU</strong></td>
+            <td class="col-master-name">Micron Technology Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
+            <td class="col-master-price price-col"><strong>$877.57</strong></td>
+            <td class="col-master-cap price-col">$991,121M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">67.0%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$NFLX</strong></td>
+            <td class="col-master-name">Netflix Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Consumer</span></td>
+            <td class="col-master-price price-col"><strong>$74.14</strong></td>
+            <td class="col-master-cap price-col">$308,715M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">14.7%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$NVDA</strong></td>
+            <td class="col-master-name">NVIDIA Corp</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
+            <td class="col-master-price price-col"><strong>$223.96</strong></td>
+            <td class="col-master-cap price-col">$5,419,832M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">82.6%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$PLTR</strong></td>
+            <td class="col-master-name">Palantir Technologies Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
+            <td class="col-master-price price-col"><strong>$172.01</strong></td>
+            <td class="col-master-cap price-col">$413,356M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">64.9%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$REGN</strong></td>
+            <td class="col-master-name">Regeneron Pharmaceuticals Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
+            <td class="col-master-price price-col"><strong>$784.36</strong></td>
+            <td class="col-master-cap price-col">$80,754M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">86.9%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$SNOW</strong></td>
+            <td class="col-master-name">Snowflake Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
+            <td class="col-master-price price-col"><strong>$330.49</strong></td>
+            <td class="col-master-cap price-col">$114,548M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">99.6%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$SPOT</strong></td>
+            <td class="col-master-name">Spotify Technology SA</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Consumer</span></td>
+            <td class="col-master-price price-col"><strong>$488.14</strong></td>
+            <td class="col-master-cap price-col">$100,499M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">24.2%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$TSM</strong></td>
+            <td class="col-master-name">TSM</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
+            <td class="col-master-price price-col"><strong>$420.04</strong></td>
+            <td class="col-master-cap price-col">N/A</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">54.5%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$V</strong></td>
+            <td class="col-master-name">Visa Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
+            <td class="col-master-price price-col"><strong>$362.50</strong></td>
+            <td class="col-master-cap price-col">$691,685M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">85.7%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$VRT</strong></td>
+            <td class="col-master-name">Vertiv Holdings Co</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
+            <td class="col-master-price price-col"><strong>$272.40</strong></td>
+            <td class="col-master-cap price-col">$93,002M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">58.8%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$VRTX</strong></td>
+            <td class="col-master-name">Vertex Pharmaceuticals Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
+            <td class="col-master-price price-col"><strong>$496.07</strong></td>
+            <td class="col-master-cap price-col">$121,091M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">78.0%</span></td>
+        </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="grid-column">
+        <div class="section-title">🏭 Tracked Tickers (Sorted by Industry)</div>
+        <table>
+            <thead><tr class="master-row"><th class="col-master-ticker">Ticker</th><th class="col-master-name">Company Name</th><th class="col-master-industry">Industry</th><th class="col-master-price" style="text-align:right;">Price</th><th class="col-master-cap" style="text-align:right;">Market Cap</th><th class="col-master-gauge" style="text-align:center;">52W Pos</th></tr></thead>
+            <tbody>
+                <tr class="master-row">
+            <td class="col-master-ticker"><strong>$AXON</strong></td>
+            <td class="col-master-name">Axon Enterprise Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Aerospace & Defense</span></td>
+            <td class="col-master-price price-col"><strong>$571.01</strong></td>
+            <td class="col-master-cap price-col">$46,025M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">42.5%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$BA</strong></td>
+            <td class="col-master-name">Boeing Co</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Aerospace & Defense</span></td>
+            <td class="col-master-price price-col"><strong>$234.42</strong></td>
+            <td class="col-master-cap price-col">$185,279M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">74.3%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$AAPL</strong></td>
+            <td class="col-master-name">Apple Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
+            <td class="col-master-price price-col"><strong>$313.33</strong></td>
+            <td class="col-master-cap price-col">$4,572,794M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">75.6%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$AMZN</strong></td>
+            <td class="col-master-name">Amazon.com Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
+            <td class="col-master-price price-col"><strong>$274.48</strong></td>
+            <td class="col-master-cap price-col">$2,960,628M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">86.1%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$GOOGL</strong></td>
+            <td class="col-master-name">Alphabet Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
+            <td class="col-master-price price-col"><strong>$354.30</strong></td>
+            <td class="col-master-cap price-col">$4,333,089M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">74.7%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$MSFT</strong></td>
+            <td class="col-master-name">Microsoft Corp</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
+            <td class="col-master-price price-col"><strong>$499.99</strong></td>
+            <td class="col-master-cap price-col">$3,712,698M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">73.7%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$ISRG</strong></td>
+            <td class="col-master-name">Intuitive Surgical Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
+            <td class="col-master-price price-col"><strong>$378.81</strong></td>
+            <td class="col-master-cap price-col">$133,825M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">18.2%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$LLY</strong></td>
+            <td class="col-master-name">Eli Lilly and Co</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
+            <td class="col-master-price price-col"><strong>$1,185.71</strong></td>
+            <td class="col-master-cap price-col">$1,116,176M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">89.8%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$REGN</strong></td>
+            <td class="col-master-name">Regeneron Pharmaceuticals Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
+            <td class="col-master-price price-col"><strong>$784.36</strong></td>
+            <td class="col-master-cap price-col">$80,754M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">86.9%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$VRTX</strong></td>
+            <td class="col-master-name">Vertex Pharmaceuticals Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
+            <td class="col-master-price price-col"><strong>$496.07</strong></td>
+            <td class="col-master-cap price-col">$121,091M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">78.0%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$COST</strong></td>
+            <td class="col-master-name">Costco Wholesale Corp</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Consumer</span></td>
+            <td class="col-master-price price-col"><strong>$947.82</strong></td>
+            <td class="col-master-cap price-col">$420,338M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">41.1%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$NFLX</strong></td>
+            <td class="col-master-name">Netflix Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Consumer</span></td>
+            <td class="col-master-price price-col"><strong>$74.14</strong></td>
+            <td class="col-master-cap price-col">$308,715M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">14.7%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$SPOT</strong></td>
+            <td class="col-master-name">Spotify Technology SA</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Consumer</span></td>
+            <td class="col-master-price price-col"><strong>$488.14</strong></td>
+            <td class="col-master-cap price-col">$100,499M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">24.2%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$ANET</strong></td>
+            <td class="col-master-name">Arista Networks Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
+            <td class="col-master-price price-col"><strong>$188.67</strong></td>
+            <td class="col-master-cap price-col">$237,955M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">73.9%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$BE</strong></td>
+            <td class="col-master-name">Bloom Energy Corp</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
+            <td class="col-master-price price-col"><strong>$219.34</strong></td>
+            <td class="col-master-cap price-col">$64,602M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">58.2%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$CAT</strong></td>
+            <td class="col-master-name">Caterpillar Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
+            <td class="col-master-price price-col"><strong>$842.19</strong></td>
+            <td class="col-master-cap price-col">$387,134M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">65.4%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$ETN</strong></td>
+            <td class="col-master-name">Eaton Corporation PLC</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
+            <td class="col-master-price price-col"><strong>$448.68</strong></td>
+            <td class="col-master-cap price-col">$174,267M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">93.8%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$GEV</strong></td>
+            <td class="col-master-name">GE Vernova Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
+            <td class="col-master-price price-col"><strong>$990.32</strong></td>
+            <td class="col-master-cap price-col">$263,755M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">69.1%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$GLW</strong></td>
+            <td class="col-master-name">Corning Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
+            <td class="col-master-price price-col"><strong>$165.68</strong></td>
+            <td class="col-master-cap price-col">$142,715M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">49.1%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$VRT</strong></td>
+            <td class="col-master-name">Vertiv Holdings Co</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
+            <td class="col-master-price price-col"><strong>$272.40</strong></td>
+            <td class="col-master-cap price-col">$93,002M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">58.8%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$BLK</strong></td>
+            <td class="col-master-name">BlackRock Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
+            <td class="col-master-price price-col"><strong>$1,136.39</strong></td>
+            <td class="col-master-cap price-col">$184,780M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">72.4%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$COIN</strong></td>
+            <td class="col-master-name">Coinbase Global Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
+            <td class="col-master-price price-col"><strong>$153.60</strong></td>
+            <td class="col-master-cap price-col">$40,525M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">5.5%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$GS</strong></td>
+            <td class="col-master-name">Goldman Sachs Group Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
+            <td class="col-master-price price-col"><strong>$1,039.61</strong></td>
+            <td class="col-master-cap price-col">$302,705M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">74.5%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$JPM</strong></td>
+            <td class="col-master-name">JPMorgan Chase & Co</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
+            <td class="col-master-price price-col"><strong>$357.52</strong></td>
+            <td class="col-master-cap price-col">$957,979M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">93.5%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$V</strong></td>
+            <td class="col-master-name">Visa Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
+            <td class="col-master-price price-col"><strong>$362.50</strong></td>
+            <td class="col-master-cap price-col">$691,685M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">85.7%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$AVGO</strong></td>
+            <td class="col-master-name">Broadcom Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
+            <td class="col-master-price price-col"><strong>$427.76</strong></td>
+            <td class="col-master-cap price-col">$2,035,102M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">68.5%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$MRVL</strong></td>
+            <td class="col-master-name">Marvell Technology Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
+            <td class="col-master-price price-col"><strong>$218.72</strong></td>
+            <td class="col-master-cap price-col">$191,548M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">58.6%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$MU</strong></td>
+            <td class="col-master-name">Micron Technology Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
+            <td class="col-master-price price-col"><strong>$877.57</strong></td>
+            <td class="col-master-cap price-col">$991,121M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">67.0%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$NVDA</strong></td>
+            <td class="col-master-name">NVIDIA Corp</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
+            <td class="col-master-price price-col"><strong>$223.96</strong></td>
+            <td class="col-master-cap price-col">$5,419,832M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">82.6%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$TSM</strong></td>
+            <td class="col-master-name">TSM</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
+            <td class="col-master-price price-col"><strong>$420.04</strong></td>
+            <td class="col-master-cap price-col">N/A</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">54.5%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$CRWD</strong></td>
+            <td class="col-master-name">CrowdStrike Holdings Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
+            <td class="col-master-price price-col"><strong>$214.42</strong></td>
+            <td class="col-master-cap price-col">$218,335M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">96.3%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$DDOG</strong></td>
+            <td class="col-master-name">Datadog Inc (Pre-Reincorporation)</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
+            <td class="col-master-price price-col"><strong>$233.93</strong></td>
+            <td class="col-master-cap price-col">$83,270M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">69.8%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$PLTR</strong></td>
+            <td class="col-master-name">Palantir Technologies Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
+            <td class="col-master-price price-col"><strong>$172.01</strong></td>
+            <td class="col-master-cap price-col">$413,356M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">64.9%</span></td>
+        </tr><tr class="master-row">
+            <td class="col-master-ticker"><strong>$SNOW</strong></td>
+            <td class="col-master-name">Snowflake Inc</td>
+            <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
+            <td class="col-master-price price-col"><strong>$330.49</strong></td>
+            <td class="col-master-cap price-col">$114,548M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">99.6%</span></td>
+        </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</div></body></html>
