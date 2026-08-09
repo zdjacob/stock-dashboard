@@ -1,2 +1,0 @@
-# stock-dashboard
-stock-dashboard
