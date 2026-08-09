@@ -9,6 +9,8 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # 👈 This grants the bot permission to push changes
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
