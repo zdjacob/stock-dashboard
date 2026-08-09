@@ -374,7 +374,16 @@ movers_header_html = """<thead><tr class="movers-row"><th class="col-movers-tick
 news_header_html = """<thead><tr class="news-row"><th class="col-news-ticker">Ticker</th><th class="col-news-headline">Latest Article Headline</th><th class="col-news-source">Source</th><th class="col-news-date">Published</th></tr></thead>"""
 master_header_html = """<thead><tr class="master-row"><th class="col-master-ticker">Ticker</th><th class="col-master-name">Company Name</th><th class="col-master-industry">Industry</th><th class="col-master-price" style="text-align:right;">Price</th><th class="col-master-cap" style="text-align:right;">Market Cap</th><th class="col-master-gauge" style="text-align:center;">52W Pos</th></tr></thead>"""
 
-condensed_css = f""":root{{--bg-dark:#130924;--bg-card:#21123b;--bg-row-alt:#190d30;--text-main:#f8fafc;--text-muted:#a78bfa;--accent-cyan:#38bdf8;--accent-orange:#fb923c;--accent-yellow:#facc15;--accent-red:#ef4444;--accent-green:#22c55e;--border-color:#3b2063;--channel-bar:#582f91;}}*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}body{{background-color:var(--bg-dark);color:var(--text-main);padding:8px 6px;font-size:0.72rem;line-height:1.15;}}.container{{width:99.5%;max-width:1920px;margin:0 auto;}}header{{padding-bottom:6px;border-bottom:1px solid var(--border-color);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}}h1{{font-size:1.2rem;color:var(--accent-cyan);}}.header-meta{{display:flex;gap:16px;align-items:center;flex-wrap:wrap;}}.timestamp-banner{{background-color:rgba(56,189,248,0.1);color:var(--accent-cyan);border:1px solid rgba(56,189,248,0.25);padding:4px 10px;border-radius:4px;font-size:0.68rem;font-weight:600;display:inline-block;}}
+# Changed from f"""...""" to standard multiline string """...""" so Python doesn't confuse CSS curly braces for f-string placeholders
+condensed_css = f"""
+:root{{--bg-dark:#130924;--bg-card:#21123b;--bg-row-alt:#190d30;--text-main:#f8fafc;--text-muted:#a78bfa;--accent-cyan:#38bdf8;--accent-orange:#fb923c;--accent-yellow:#facc15;--accent-red:#ef4444;--accent-green:#22c55e;--border-color:#3b2063;--channel-bar:#582f91;}}
+*{{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}}
+body{{background-color:var(--bg-dark);color:var(--text-main);padding:8px 6px;font-size:0.72rem;line-height:1.15;}}
+.container{{width:99.5%;max-width:1920px;margin:0 auto;}}
+header{{padding-bottom:6px;border-bottom:1px solid var(--border-color);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}}
+h1{{font-size:1.2rem;color:var(--accent-cyan);}}
+.header-meta{{display:flex;gap:16px;align-items:center;flex-wrap:wrap;}}
+.timestamp-banner{{background-color:rgba(56,189,248,0.1);color:var(--accent-cyan);border:1px solid rgba(56,189,248,0.25);padding:4px 10px;border-radius:4px;font-size:0.68rem;font-weight:600;display:inline-block;}}
 
 .speed-dial-card{{background-color:var(--bg-card);border:1px solid var(--border-color);border-radius:6px;padding:6px 12px;display:flex;align-items:center;gap:12px;}}
 .speed-dial-container{{position:relative;width:60px;height:30px;overflow:hidden;}}
@@ -383,7 +392,90 @@ condensed_css = f""":root{{--bg-dark:#130924;--bg-card:#21123b;--bg-row-alt:#190
 .speed-dial-pin{{position:absolute;bottom:-2px;left:26px;width:8px;height:8px;background-color:var(--accent-cyan);border-radius:50%;border:1px solid #fff;z-index:4;}}
 .speed-dial-info{{display:flex;flex-direction:column;font-size:0.68rem;font-weight:bold;}}
 
-.legend-bar{{background-color:var(--bg-card);padding:5px 12px;border-radius:6px;border:1px solid var(--border-color);display:flex;gap:12px;align-items:center;margin-bottom:8px;font-size:0.72rem;}}.legend-item{{display:flex;align-items:center;gap:4px;font-weight:500;}}.dot-cyan{{width:7px;height:7px;background-color:var(--accent-cyan);border-radius:50%;display:inline-block;}}.bar-orange{{width:3px;height:9px;background-color:var(--accent-orange);display:inline-block;}}.diamond-yellow{{width:6px;height:6px;background-color:var(--accent-yellow);transform:rotate(45deg);display:inline-block;}}.square-red{{width:6px;height:6px;background-color:var(--accent-red);display:inline-block;}}.line-grid{{width:1px;height:10px;border-right:1px dashed var(--text-muted);display:inline-block;margin:0 1px;}}.dual-grid-wrapper{{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;}}.grid-column{{flex:1;background-color:var(--bg-card);border-radius:6px;border:1px solid var(--border-color);padding:3px;overflow-x:auto;}}table{{width:100%;border-collapse:collapse;text-align:left;}}th{{background-color:#281545;padding:4px 6px;color:var(--text-muted);font-weight:600;border-bottom:1px solid var(--border-color);font-size:0.72rem;}}td{{padding:4px 6px;border-bottom:1px solid var(--border-color);vertical-align:middle;white-space:nowrap;font-size:0.72rem;overflow:hidden;text-overflow:ellipsis;}}tr:nth-child(even){{background-color:var(--bg-row-alt);}}tr:hover{{background-color:rgba(167,139,250,0.12);}}.watchlist-row{{display:table;width:100%;table-layout:fixed;}}.col-ticker{{width:70px;}}.col-bar{{width:auto;}}.col-low52{{width:85px;text-align:right;}}.col-price{{width:85px;text-align:right;}}.col-high52{{width:85px;text-align:right;}}.col-mini-gauge{{width:75px;text-align:center;}}.movers-row{{display:table;width:100%;table-layout:fixed;}}.col-movers-ticker{{width:65px;}}.col-movers-score{{width:65px;}}.col-movers-combined{{width:135px;}}.combined-cell{{display:flex;justify-content:space-between;align-items:center;width:100%;}}.earnings-row{{display:table;width:100%;table-layout:fixed;}}.col-earn-ticker{{width:60px;}}.col-earn-price{{width:70px;text-align:right;}}.col-earn-date{{width:130px;}}.col-earn-status{{width:100px;}}.col-earn-eps{{width:55px;}}.col-earn-move{{width:auto;}}.news-row{{display:table;width:100%;table-layout:fixed;}}.col-news-ticker{{width:65px;}}.col-news-headline{{width:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}}.col-news-source{{width:100px;}}.col-news-date{{width:90px;}}.news-link{{color:var(--text-main);text-decoration:none;font-weight:500;}}.news-link:hover{{color:var(--accent-cyan);text-decoration:underline;}}.master-row{{display:table;width:100%;table-layout:fixed;}}.col-master-ticker{{width:65px;}}.col-master-name{{width:160px;overflow:hidden;text-overflow:ellipsis;}}.col-master-industry{{width:150px;overflow:hidden;text-overflow:ellipsis;}}.col-master-price{{width:85px;text-align:right;}}.col-master-cap{{width:95px;text-align:right;}}.col-master-gauge{{width:75px;text-align:center;}}.range-bar-container{{position:relative;width:100%;height:5px;background-color:var(--channel-bar);border-radius:3px;margin:2px 0;overflow:visible;}}.grid-line-33{{position:absolute;top:-3px;bottom:-3px;left:33.33%;border-left:1px dashed rgba(255,255,255,0.35);z-index:1;pointer-events:none;}}.grid-line-66{{position:absolute;top:-3px;bottom:-3px;left:66.66%;border-left:1px dashed rgba(255,255,255,0.35);z-index:1;pointer-events:none;}}.marker-cyan{{position:absolute;top:-2px;width:9px;height:9px;background-color:var(--accent-cyan);border-radius:50%;border:1px solid #fff;transform:translateX(-50%);z-index:4;cursor:pointer;}}.marker-orange{{position:absolute;top:-2.5px;width:2.5px;height:10px;background-color:var(--accent-orange);transform:translateX(-50%);z-index:2;cursor:pointer;}}.marker-yellow{{position:absolute;top:-1px;width:7px;height:7px;background-color:var(--accent-yellow);transform:rotate(45deg);z-index:3;cursor:pointer;border:1px solid #000;}}.marker-red{{position:absolute;top:-1px;width:7px;height:7px;background-color:var(--accent-red);transform:translateX(-50%);z-index:3;cursor:pointer;border:1px solid #fff;}}.gauge-number{{font-size:0.72rem;font-weight:bold;}}.axis-labels{{display:flex;justify-content:space-between;color:var(--text-muted);font-size:0.62rem;margin-top:1px;font-weight:600;}}.section-title{{font-size:1.05rem;color:var(--accent-yellow);margin-bottom:6px;display:flex;align-items:center;gap:6px;font-weight:bold;}}.badge-reported{{background-color:rgba(74,222,128,0.2);color:var(--accent-green);padding:1px 4px;border-radius:3px;font-weight:bold;font-size:0.68rem;}}.badge-confirmed{{background-color:rgba(56,189,248,0.2);color:var(--accent-cyan);padding:1px 4px;border-radius:3px;font-weight:bold;font-size:0.68rem;}}.badge-unconfirmed{{background-color:rgba(251,146,60,0.2);color:var(--accent-orange);padding:1px 4px;border-radius:3px;font-weight:bold;font-size:0.68rem;}}.badge-next-month{{background-color:rgba(250,204,21,0.25);color:#facc15;border:1px solid rgba(250,204,21,0.5);padding:1px 5px;border-radius:3px;font-weight:bold;font-size:0.68rem;}}.badge-month-after{{background-color:rgba(74,222,128,0.25);color:#4ade80;border:1px solid rgba(74,222,128,0.5);padding:1px 5px;border-radius:3px;font-weight:bold;font-size:0.68rem;}}.badge-upcoming{{background-color:rgba(244,63,94,0.25);color:#fb7185;border:1px solid rgba(244,63,94,0.5);padding:1px 5px;border-radius:3px;font-weight:bold;font-size:0.68rem;}}.return-badge{{padding:1px 4px;border-radius:3px;font-size:0.68rem;font-weight:600;display:inline-block;min-width:58px;text-align:center;}}.badge-pos{{background-color:rgba(74,222,128,0.18);color:var(--accent-green);border:1px solid rgba(74,222,128,0.3);}}.badge-strong-pos{{background-color:rgba(74,222,128,0.35);color:#22c55e;border:1px solid #4ade80;font-weight:bold;}}.badge-neg{{background-color:rgba(248,113,113,0.18);color:var(--accent-red);border:1px solid rgba(248,113,113,0.3);}}.badge-strong-neg{{background-color:rgba(248,113,113,0.35);color:#ef4444;border:1px solid #f87171;font-weight:bold;}}.badge-neutral{{background:transparent;color:var(--text-main);border:1px solid transparent;font-weight:normal;}}.price-col{{color:var(--text-muted);font-size:0.68rem;font-weight:500;font-family:monospace;text-align:right;}}.month-pill{{display:inline-block;padding:1px 4px;border-radius:3px;font-size:0.62rem;font-weight:bold;margin-right:3px;text-transform:uppercase;}}.month-pill.m-shade-1{{background-color:rgba(56,189,248,0.25);color:#38bdf8;border:1px solid rgba(56,189,248,0.4);}}.month-pill.m-shade-2{{background-color:rgba(167,139,250,0.25);color:#a78bfa;border:1px solid rgba(167,139,250,0.4);}}.month-pill.m-shade-3{{background-color:rgba(250,204,21,0.25);color:#facc15;border:1px solid rgba(250,204,21,0.4);}}.month-pill.m-shade-4{{background-color:rgba(251,146,60,0.25);color:#fb923c;border:1px solid rgba(251,146,60,0.4);}}.month-pill.m-shade-tbd{{background-color:rgba(100,116,139,0.25);color:#94a3b8;border:1px solid rgba(100,116,139,0.4);}}"""
+.legend-bar{{background-color:var(--bg-card);padding:5px 12px;border-radius:6px;border:1px solid var(--border-color);display:flex;gap:12px;align-items:center;margin-bottom:8px;font-size:0.72rem;}}
+.legend-item{{display:flex;align-items:center;gap:4px;font-weight:500;}}
+.dot-cyan{{width:7px;height:7px;background-color:var(--accent-cyan);border-radius:50%;display:inline-block;}}
+.bar-orange{{width:3px;height:9px;background-color:var(--accent-orange);display:inline-block;}}
+.diamond-yellow{{width:6px;height:6px;background-color:var(--accent-yellow);transform:rotate(45deg);display:inline-block;}}
+.square-red{{width:6px;height:6px;background-color:var(--accent-red);display:inline-block;}}
+.line-grid{{width:1px;height:10px;border-right:1px dashed var(--text-muted);display:inline-block;margin:0 1px;}}
+.dual-grid-wrapper{{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;}}
+.grid-column{{flex:1;background-color:var(--bg-card);border-radius:6px;border:1px solid var(--border-color);padding:3px;overflow-x:auto;}}
+table{{width:100%;border-collapse:collapse;text-align:left;}}
+th{{background-color:#281545;padding:4px 6px;color:var(--text-muted);font-weight:600;border-bottom:1px solid var(--border-color);font-size:0.72rem;}}
+td{{padding:4px 6px;border-bottom:1px solid var(--border-color);vertical-align:middle;white-space:nowrap;font-size:0.72rem;overflow:hidden;text-overflow:ellipsis;}}
+tr:nth-child(even){{background-color:var(--bg-row-alt);}}
+tr:hover{{background-color:rgba(167,139,250,0.12);}}
+
+.watchlist-row{{display:table;width:100%;table-layout:fixed;}}
+.col-ticker{{width:70px;}}
+.col-bar{{width:auto;}}
+.col-low52{{width:85px;text-align:right;}}
+.col-price{{width:85px;text-align:right;}}
+.col-high52{{width:85px;text-align:right;}}
+.col-mini-gauge{{width:75px;text-align:center;}}
+
+.movers-row{{display:table;width:100%;table-layout:fixed;}}
+.col-movers-ticker{{width:65px;}}
+.col-movers-score{{width:65px;}}
+.col-movers-combined{{width:135px;}}
+.combined-cell{{display:flex;justify-content:space-between;align-items:center;width:100%;}}
+
+.earnings-row{{display:table;width:100%;table-layout:fixed;}}
+.col-earn-ticker{{width:60px;}}
+.col-earn-price{{width:70px;text-align:right;}}
+.col-earn-date{{width:130px;}}
+.col-earn-status{{width:100px;}}
+.col-earn-eps{{width:55px;}}
+.col-earn-move{{width:auto;}}
+
+.news-row{{display:table;width:100%;table-layout:fixed;}}
+.col-news-ticker{{width:65px;}}
+.col-news-headline{{width:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}}
+.col-news-source{{width:100px;}}
+.col-news-date{{width:90px;}}
+.news-link{{color:var(--text-main);text-decoration:none;font-weight:500;}}
+.news-link:hover{{color:var(--accent-cyan);text-decoration:underline;}}
+
+.master-row{{display:table;width:100%;table-layout:fixed;}}
+.col-master-ticker{{width:65px;}}
+.col-master-name{{width:160px;overflow:hidden;text-overflow:ellipsis;}}
+.col-master-industry{{width:150px;overflow:hidden;text-overflow:ellipsis;}}
+.col-master-price{{width:85px;text-align:right;}}
+.col-master-cap{{width:95px;text-align:right;}}
+.col-master-gauge{{width:75px;text-align:center;}}
+
+.range-bar-container{{position:relative;width:100%;height:5px;background-color:var(--channel-bar);border-radius:3px;margin:2px 0;overflow:visible;}}
+.grid-line-33{{position:absolute;top:-3px;bottom:-3px;left:33.33%;border-left:1px dashed rgba(255,255,255,0.35);z-index:1;pointer-events:none;}}
+.grid-line-66{{position:absolute;top:-3px;bottom:-3px;left:66.66%;border-left:1px dashed rgba(255,255,255,0.35);z-index:1;pointer-events:none;}}
+.marker-cyan{{position:absolute;top:-2px;width:9px;height:9px;background-color:var(--accent-cyan);border-radius:50%;border:1px solid #fff;transform:translateX(-50%);z-index:4;cursor:pointer;}}
+.marker-orange{{position:absolute;top:-2.5px;width:2.5px;height:10px;background-color:var(--accent-orange);transform:translateX(-50%);z-index:2;cursor:pointer;}}
+.marker-yellow{{position:absolute;top:-1px;width:7px;height:7px;background-color:var(--accent-yellow);transform:rotate(45deg);z-index:3;cursor:pointer;border:1px solid #000;}}
+.marker-red{{position:absolute;top:-1px;width:7px;height:7px;background-color:var(--accent-red);transform:translateX(-50%);z-index:3;cursor:pointer;border:1px solid #fff;}}
+
+.gauge-number{{font-size:0.72rem;font-weight:bold;}}
+.axis-labels{{display:flex;justify-content:space-between;color:var(--text-muted);font-size:0.62rem;margin-top:1px;font-weight:600;}}
+.section-title{{font-size:1.05rem;color:var(--accent-yellow);margin-bottom:6px;display:flex;align-items:center;gap:6px;font-weight:bold;}}
+.badge-reported{{background-color:rgba(74,222,128,0.2);color:var(--accent-green);padding:1px 4px;border-radius:3px;font-weight:bold;font-size:0.68rem;}}
+.badge-confirmed{{background-color:rgba(56,189,248,0.2);color:var(--accent-cyan);padding:1px 4px;border-radius:3px;font-weight:bold;font-size:0.68rem;}}
+.badge-unconfirmed{{background-color:rgba(251,146,60,0.2);color:var(--accent-orange);padding:1px 4px;border-radius:3px;font-weight:bold;font-size:0.68rem;}}
+.badge-next-month{{background-color:rgba(250,204,21,0.25);color:#facc15;border:1px solid rgba(250,204,21,0.5);padding:1px 5px;border-radius:3px;font-weight:bold;font-size:0.68rem;}}
+.badge-month-after{{background-color:rgba(74,222,128,0.25);color:#4ade80;border:1px solid rgba(74,222,128,0.5);padding:1px 5px;border-radius:3px;font-weight:bold;font-size:0.68rem;}}
+.badge-upcoming{{background-color:rgba(244,63,94,0.25);color:#fb7185;border:1px solid rgba(244,63,94,0.5);padding:1px 5px;border-radius:3px;font-weight:bold;font-size:0.68rem;}}
+.return-badge{{padding:1px 4px;border-radius:3px;font-size:0.68rem;font-weight:600;display:inline-block;min-width:58px;text-align:center;}}
+.badge-pos{{background-color:rgba(74,222,128,0.18);color:var(--accent-green);border:1px solid rgba(74,222,128,0.3);}}
+.badge-strong-pos{{background-color:rgba(74,222,128,0.35);color:#22c55e;border:1px solid #4ade80;font-weight:bold;}}
+.badge-neg{{background-color:rgba(248,113,113,0.18);color:var(--accent-red);border:1px solid rgba(248,113,113,0.3);}}
+.badge-strong-neg{{background-color:rgba(248,113,113,0.35);color:#ef4444;border:1px solid #f87171;font-weight:bold;}}
+.badge-neutral{{background:transparent;color:var(--text-main);border:1px solid transparent;font-weight:normal;}}
+.price-col{{color:var(--text-muted);font-size:0.68rem;font-weight:500;font-family:monospace;text-align:right;}}
+.month-pill{{display:inline-block;padding:1px 4px;border-radius:3px;font-size:0.62rem;font-weight:bold;margin-right:3px;text-transform:uppercase;}}
+.month-pill.m-shade-1{{background-color:rgba(56,189,248,0.25);color:#38bdf8;border:1px solid rgba(56,189,248,0.4);}}
+.month-pill.m-shade-2{{background-color:rgba(167,139,250,0.25);color:#a78bfa;border:1px solid rgba(167,139,250,0.4);}}
+.month-pill.m-shade-3{{background-color:rgba(250,204,21,0.25);color:#facc15;border:1px solid rgba(250,204,21,0.4);}}
+.month-pill.m-shade-4{{background-color:rgba(251,146,60,0.25);color:#fb923c;border:1px solid rgba(251,146,60,0.4);}}
+.month-pill.m-shade-tbd{{background-color:rgba(100,116,139,0.25);color:#94a3b8;border:1px solid rgba(100,116,139,0.4);}}
+"""
 
 mid_news = (len(news_list) + 1) // 2
 news_left, news_right = news_list[:mid_news], news_list[mid_news:]
@@ -396,7 +488,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
         <div class="speed-dial-card">
             <div class="speed-dial-container">
                 <div class="speed-dial-arc"></div>
-                <div class="speed-dial-needle"></div>
+                <div class="speed-dial-needle" style="transform: rotate({needle_rotation}deg);"></div>
                 <div class="speed-dial-pin"></div>
             </div>
             <div class="speed-dial-info">
