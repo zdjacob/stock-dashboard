@@ -25,8 +25,8 @@ jobs:
       - name: Run Dashboard Generator
         run: |
           python generate_dashboard.py
-          # Rename output file to index.html for web hosting
-          mv stock_dashboard_7d_120d.html index.html
+          # ✅ NEW CORRECT COMMAND: Finds any file starting with JacobsStockDashboard and copies it to index.html
+          cp JacobsStockDashboard.*.html index.html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
