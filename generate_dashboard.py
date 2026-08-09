@@ -52,7 +52,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Gradient Gauges)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Dark Red/Green Graded Gauges)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -495,9 +495,9 @@ condensed_css = """:root{--bg-dark:#130924;--bg-card:#21123b;--bg-row-alt:#190d3
 
 .range-bar-container{position:relative;width:100%;height:5px;background-color:var(--channel-bar);border-radius:3px;margin:2px 0;overflow:visible;}.grid-line-33{position:absolute;top:-3px;bottom:-3px;left:33.33%;border-left:1px dashed rgba(255,255,255,0.35);z-index:1;pointer-events:none;}.grid-line-66{position:absolute;top:-3px;bottom:-3px;left:66.66%;border-left:1px dashed rgba(255,255,255,0.35);z-index:1;pointer-events:none;}.marker-cyan{position:absolute;top:-2px;width:9px;height:9px;background-color:var(--accent-cyan);border-radius:50%;border:1px solid #fff;transform:translateX(-50%);z-index:4;cursor:pointer;}.marker-orange{position:absolute;top:-2.5px;width:2.5px;height:10px;background-color:var(--accent-orange);transform:translateX(-50%);z-index:2;cursor:pointer;}.marker-yellow{position:absolute;top:-1px;width:7px;height:7px;background-color:var(--accent-yellow);transform:rotate(45deg);z-index:3;cursor:pointer;border:1px solid #000;}.marker-red{position:absolute;top:-1px;width:7px;height:7px;background-color:var(--accent-red);transform:translateX(-50%);z-index:3;cursor:pointer;border:1px solid #fff;}
 
-/* 🎨 Gradient Mini-Gauge Styling */
+/* 🎨 Dark Red (<20%) to Dark Green (>80%) Graded Mini-Gauge Styling */
 .mini-gauge-container{position:relative;width:48px;height:5px;background-color:#432170;border-radius:3px;display:inline-block;vertical-align:middle;overflow:visible;}
-.mini-gauge-fill{height:100%;background:linear-gradient(90deg, #f87171 0%, #fb923c 35%, #facc15 70%, #4ade80 100%);border-radius:3px;opacity:0.85;}
+.mini-gauge-fill{height:100%;background:linear-gradient(90deg, #991b1b 0%, #dc2626 20%, #fb923c 40%, #facc15 60%, #4ade80 80%, #166534 100%);border-radius:3px;opacity:0.95;}
 .mini-gauge-dot{position:absolute;top:-2px;width:9px;height:9px;background-color:var(--accent-cyan);border-radius:50%;border:1px solid #fff;transform:translateX(-50%);z-index:2;}
 .mini-gauge-label{font-size:0.68rem;font-weight:bold;color:var(--accent-cyan);margin-left:4px;display:inline-block;vertical-align:middle;width:28px;text-align:right;}
 
@@ -615,6 +615,6 @@ output_path = os.path.join(os.getcwd(), output_filename)
 with open(output_path, "w", encoding="utf-8") as f:
     f.write(html_content)
 
-print(f"\n🌐 Dashboard successfully generated with gradient gauges and saved to: {output_filename}")
+print(f"\n🌐 Dashboard successfully generated with graded dark-red/dark-green gauges and saved to: {output_filename}")
 print(f"⏱️ Timestamp included: {generation_timestamp_str}")
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
