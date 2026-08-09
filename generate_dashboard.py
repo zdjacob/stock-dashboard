@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[91]:
-
-
 import os, time, datetime, webbrowser, requests, statistics
 
 # ==========================================
@@ -36,7 +30,7 @@ CUSTOM_INDUSTRY_MAP = {
     "VRT":  "Engineering And Chips",
     
     # Semiconductors
-    "TSM":  "Semiconductors",  # 👈 Re-mapped TSM to Semiconductors
+    "TSM":  "Semiconductors",
     
     # Big Guys
     "AAPL": "Big Guys",
@@ -58,7 +52,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - TSM Mapped to Semiconductors)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Gradient Gauges)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -499,7 +493,15 @@ condensed_css = """:root{--bg-dark:#130924;--bg-card:#21123b;--bg-row-alt:#190d3
 .col-master-cap { width: 95px; text-align: right; }
 .col-master-gauge { width: 75px; text-align: center; }
 
-.range-bar-container{position:relative;width:100%;height:5px;background-color:var(--channel-bar);border-radius:3px;margin:2px 0;overflow:visible;}.grid-line-33{position:absolute;top:-3px;bottom:-3px;left:33.33%;border-left:1px dashed rgba(255,255,255,0.35);z-index:1;pointer-events:none;}.grid-line-66{position:absolute;top:-3px;bottom:-3px;left:66.66%;border-left:1px dashed rgba(255,255,255,0.35);z-index:1;pointer-events:none;}.marker-cyan{position:absolute;top:-2px;width:9px;height:9px;background-color:var(--accent-cyan);border-radius:50%;border:1px solid #fff;transform:translateX(-50%);z-index:4;cursor:pointer;}.marker-orange{position:absolute;top:-2.5px;width:2.5px;height:10px;background-color:var(--accent-orange);transform:translateX(-50%);z-index:2;cursor:pointer;}.marker-yellow{position:absolute;top:-1px;width:7px;height:7px;background-color:var(--accent-yellow);transform:rotate(45deg);z-index:3;cursor:pointer;border:1px solid #000;}.marker-red{position:absolute;top:-1px;width:7px;height:7px;background-color:var(--accent-red);transform:translateX(-50%);z-index:3;cursor:pointer;border:1px solid #fff;}.mini-gauge-container{position:relative;width:48px;height:4px;background-color:#432170;border-radius:2px;display:inline-block;vertical-align:middle;overflow:visible;}.mini-gauge-fill{height:100%;background:linear-gradient(90deg,rgba(56,189,248,0.3),rgba(56,189,248,0.8));border-radius:2px;}.mini-gauge-dot{position:absolute;top:-2px;width:7px;height:7px;background-color:var(--accent-cyan);border-radius:50%;border:1px solid #fff;transform:translateX(-50%);z-index:2;}.mini-gauge-label{font-size:0.68rem;font-weight:bold;color:var(--accent-cyan);margin-left:4px;display:inline-block;vertical-align:middle;width:28px;text-align:right;}.axis-labels{display:flex;justify-content:space-between;color:var(--text-muted);font-size:0.62rem;margin-top:1px;font-weight:600;}.section-title{font-size:1.05rem;color:var(--accent-yellow);margin-bottom:6px;display:flex;align-items:center;gap:6px;font-weight:bold;}.badge-reported{background-color:rgba(74,222,128,0.2);color:var(--accent-green);padding:1px 4px;border-radius:3px;font-weight:bold;font-size:0.68rem;}.badge-confirmed{background-color:rgba(56,189,248,0.2);color:var(--accent-cyan);padding:1px 4px;border-radius:3px;font-weight:bold;font-size:0.68rem;}.badge-unconfirmed{background-color:rgba(251,146,60,0.2);color:var(--accent-orange);padding:1px 4px;border-radius:3px;font-weight:bold;font-size:0.68rem;}
+.range-bar-container{position:relative;width:100%;height:5px;background-color:var(--channel-bar);border-radius:3px;margin:2px 0;overflow:visible;}.grid-line-33{position:absolute;top:-3px;bottom:-3px;left:33.33%;border-left:1px dashed rgba(255,255,255,0.35);z-index:1;pointer-events:none;}.grid-line-66{position:absolute;top:-3px;bottom:-3px;left:66.66%;border-left:1px dashed rgba(255,255,255,0.35);z-index:1;pointer-events:none;}.marker-cyan{position:absolute;top:-2px;width:9px;height:9px;background-color:var(--accent-cyan);border-radius:50%;border:1px solid #fff;transform:translateX(-50%);z-index:4;cursor:pointer;}.marker-orange{position:absolute;top:-2.5px;width:2.5px;height:10px;background-color:var(--accent-orange);transform:translateX(-50%);z-index:2;cursor:pointer;}.marker-yellow{position:absolute;top:-1px;width:7px;height:7px;background-color:var(--accent-yellow);transform:rotate(45deg);z-index:3;cursor:pointer;border:1px solid #000;}.marker-red{position:absolute;top:-1px;width:7px;height:7px;background-color:var(--accent-red);transform:translateX(-50%);z-index:3;cursor:pointer;border:1px solid #fff;}
+
+/* 🎨 Gradient Mini-Gauge Styling */
+.mini-gauge-container{position:relative;width:48px;height:5px;background-color:#432170;border-radius:3px;display:inline-block;vertical-align:middle;overflow:visible;}
+.mini-gauge-fill{height:100%;background:linear-gradient(90deg, #f87171 0%, #fb923c 35%, #facc15 70%, #4ade80 100%);border-radius:3px;opacity:0.85;}
+.mini-gauge-dot{position:absolute;top:-2px;width:9px;height:9px;background-color:var(--accent-cyan);border-radius:50%;border:1px solid #fff;transform:translateX(-50%);z-index:2;}
+.mini-gauge-label{font-size:0.68rem;font-weight:bold;color:var(--accent-cyan);margin-left:4px;display:inline-block;vertical-align:middle;width:28px;text-align:right;}
+
+.axis-labels{display:flex;justify-content:space-between;color:var(--text-muted);font-size:0.62rem;margin-top:1px;font-weight:600;}.section-title{font-size:1.05rem;color:var(--accent-yellow);margin-bottom:6px;display:flex;align-items:center;gap:6px;font-weight:bold;}.badge-reported{background-color:rgba(74,222,128,0.2);color:var(--accent-green);padding:1px 4px;border-radius:3px;font-weight:bold;font-size:0.68rem;}.badge-confirmed{background-color:rgba(56,189,248,0.2);color:var(--accent-cyan);padding:1px 4px;border-radius:3px;font-weight:bold;font-size:0.68rem;}.badge-unconfirmed{background-color:rgba(251,146,60,0.2);color:var(--accent-orange);padding:1px 4px;border-radius:3px;font-weight:bold;font-size:0.68rem;}
 
 .badge-next-month{background-color:rgba(250,204,21,0.25);color:#facc15;border:1px solid rgba(250,204,21,0.5);padding:1px 5px;border-radius:3px;font-weight:bold;font-size:0.68rem;}
 .badge-month-after{background-color:rgba(74,222,128,0.25);color:#4ade80;border:1px solid rgba(74,222,128,0.5);padding:1px 5px;border-radius:3px;font-weight:bold;font-size:0.68rem;}
@@ -613,7 +615,6 @@ output_path = os.path.join(os.getcwd(), output_filename)
 with open(output_path, "w", encoding="utf-8") as f:
     f.write(html_content)
 
-print(f"\n🌐 Dashboard successfully generated and saved to: {output_filename}")
+print(f"\n🌐 Dashboard successfully generated with gradient gauges and saved to: {output_filename}")
 print(f"⏱️ Timestamp included: {generation_timestamp_str}")
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-
