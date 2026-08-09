@@ -41,7 +41,15 @@
 .col-master-cap { width: 95px; text-align: right; }
 .col-master-gauge { width: 75px; text-align: center; }
 
-.range-bar-container{position:relative;width:100%;height:5px;background-color:var(--channel-bar);border-radius:3px;margin:2px 0;overflow:visible;}.grid-line-33{position:absolute;top:-3px;bottom:-3px;left:33.33%;border-left:1px dashed rgba(255,255,255,0.35);z-index:1;pointer-events:none;}.grid-line-66{position:absolute;top:-3px;bottom:-3px;left:66.66%;border-left:1px dashed rgba(255,255,255,0.35);z-index:1;pointer-events:none;}.marker-cyan{position:absolute;top:-2px;width:9px;height:9px;background-color:var(--accent-cyan);border-radius:50%;border:1px solid #fff;transform:translateX(-50%);z-index:4;cursor:pointer;}.marker-orange{position:absolute;top:-2.5px;width:2.5px;height:10px;background-color:var(--accent-orange);transform:translateX(-50%);z-index:2;cursor:pointer;}.marker-yellow{position:absolute;top:-1px;width:7px;height:7px;background-color:var(--accent-yellow);transform:rotate(45deg);z-index:3;cursor:pointer;border:1px solid #000;}.marker-red{position:absolute;top:-1px;width:7px;height:7px;background-color:var(--accent-red);transform:translateX(-50%);z-index:3;cursor:pointer;border:1px solid #fff;}.mini-gauge-container{position:relative;width:48px;height:4px;background-color:#432170;border-radius:2px;display:inline-block;vertical-align:middle;overflow:visible;}.mini-gauge-fill{height:100%;background:linear-gradient(90deg,rgba(56,189,248,0.3),rgba(56,189,248,0.8));border-radius:2px;}.mini-gauge-dot{position:absolute;top:-2px;width:7px;height:7px;background-color:var(--accent-cyan);border-radius:50%;border:1px solid #fff;transform:translateX(-50%);z-index:2;}.mini-gauge-label{font-size:0.68rem;font-weight:bold;color:var(--accent-cyan);margin-left:4px;display:inline-block;vertical-align:middle;width:28px;text-align:right;}.axis-labels{display:flex;justify-content:space-between;color:var(--text-muted);font-size:0.62rem;margin-top:1px;font-weight:600;}.section-title{font-size:1.05rem;color:var(--accent-yellow);margin-bottom:6px;display:flex;align-items:center;gap:6px;font-weight:bold;}.badge-reported{background-color:rgba(74,222,128,0.2);color:var(--accent-green);padding:1px 4px;border-radius:3px;font-weight:bold;font-size:0.68rem;}.badge-confirmed{background-color:rgba(56,189,248,0.2);color:var(--accent-cyan);padding:1px 4px;border-radius:3px;font-weight:bold;font-size:0.68rem;}.badge-unconfirmed{background-color:rgba(251,146,60,0.2);color:var(--accent-orange);padding:1px 4px;border-radius:3px;font-weight:bold;font-size:0.68rem;}
+.range-bar-container{position:relative;width:100%;height:5px;background-color:var(--channel-bar);border-radius:3px;margin:2px 0;overflow:visible;}.grid-line-33{position:absolute;top:-3px;bottom:-3px;left:33.33%;border-left:1px dashed rgba(255,255,255,0.35);z-index:1;pointer-events:none;}.grid-line-66{position:absolute;top:-3px;bottom:-3px;left:66.66%;border-left:1px dashed rgba(255,255,255,0.35);z-index:1;pointer-events:none;}.marker-cyan{position:absolute;top:-2px;width:9px;height:9px;background-color:var(--accent-cyan);border-radius:50%;border:1px solid #fff;transform:translateX(-50%);z-index:4;cursor:pointer;}.marker-orange{position:absolute;top:-2.5px;width:2.5px;height:10px;background-color:var(--accent-orange);transform:translateX(-50%);z-index:2;cursor:pointer;}.marker-yellow{position:absolute;top:-1px;width:7px;height:7px;background-color:var(--accent-yellow);transform:rotate(45deg);z-index:3;cursor:pointer;border:1px solid #000;}.marker-red{position:absolute;top:-1px;width:7px;height:7px;background-color:var(--accent-red);transform:translateX(-50%);z-index:3;cursor:pointer;border:1px solid #fff;}
+
+/* 🎨 Gradient Mini-Gauge Styling */
+.mini-gauge-container{position:relative;width:48px;height:5px;background-color:#432170;border-radius:3px;display:inline-block;vertical-align:middle;overflow:visible;}
+.mini-gauge-fill{height:100%;background:linear-gradient(90deg, #f87171 0%, #fb923c 35%, #facc15 70%, #4ade80 100%);border-radius:3px;opacity:0.85;}
+.mini-gauge-dot{position:absolute;top:-2px;width:9px;height:9px;background-color:var(--accent-cyan);border-radius:50%;border:1px solid #fff;transform:translateX(-50%);z-index:2;}
+.mini-gauge-label{font-size:0.68rem;font-weight:bold;color:var(--accent-cyan);margin-left:4px;display:inline-block;vertical-align:middle;width:28px;text-align:right;}
+
+.axis-labels{display:flex;justify-content:space-between;color:var(--text-muted);font-size:0.62rem;margin-top:1px;font-weight:600;}.section-title{font-size:1.05rem;color:var(--accent-yellow);margin-bottom:6px;display:flex;align-items:center;gap:6px;font-weight:bold;}.badge-reported{background-color:rgba(74,222,128,0.2);color:var(--accent-green);padding:1px 4px;border-radius:3px;font-weight:bold;font-size:0.68rem;}.badge-confirmed{background-color:rgba(56,189,248,0.2);color:var(--accent-cyan);padding:1px 4px;border-radius:3px;font-weight:bold;font-size:0.68rem;}.badge-unconfirmed{background-color:rgba(251,146,60,0.2);color:var(--accent-orange);padding:1px 4px;border-radius:3px;font-weight:bold;font-size:0.68rem;}
 
 .badge-next-month{background-color:rgba(250,204,21,0.25);color:#facc15;border:1px solid rgba(250,204,21,0.5);padding:1px 5px;border-radius:3px;font-weight:bold;font-size:0.68rem;}
 .badge-month-after{background-color:rgba(74,222,128,0.25);color:#4ade80;border:1px solid rgba(74,222,128,0.5);padding:1px 5px;border-radius:3px;font-weight:bold;font-size:0.68rem;}
@@ -64,7 +72,7 @@
 .month-pill.m-shade-tbd { background-color: rgba(100, 116, 139, 0.25); color: #94a3b8; border: 1px solid rgba(100, 116, 139, 0.4); }
 </style></head>
 <body><div class="container"><header><h1>📊 Jacob's Technical Watchlist & Market Dashboard</h1>
-<div class="timestamp-banner">⏱️ Report Generated: Aug 09, 2026 at 17:37:35</div>
+<div class="timestamp-banner">⏱️ Report Generated: Aug 09, 2026 at 18:22:02</div>
 </header>
 <div class="legend-bar"><span style="color:var(--text-muted);font-weight:600;">Indicator Key:</span><div class="legend-item"><span class="dot-cyan"></span> Live Price</div><div class="legend-item"><span class="bar-orange"></span> Support Level</div><div class="legend-item"><span class="diamond-yellow"></span> 50-Day Moving Avg</div><div class="legend-item"><span class="square-red"></span> 200-Day Moving Avg</div><div class="legend-item"><span class="line-grid"></span> 33% / 66% Range Dividers</div></div>
 
@@ -114,15 +122,6 @@
             <div class="marker-cyan" style="left:89.81252097751211%;" title="LLY Price: $1,185.71"></div></div></td>
             <td class="col-low52">$623.78</td><td class="col-price">$1,185.71</td><td class="col-high52">$1,249.45</td>
             <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:89.81252097751211%;"></div><div class="mini-gauge-dot" style="left:89.81252097751211%;"></div></div><span class="mini-gauge-label">89.8%</span></td>
-        </tr><tr class="watchlist-row">
-            <td class="col-ticker"><strong>$REGN</strong></td>
-            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
-            <div class="marker-orange" style="left:67.55917318196423%;" title="REGN Support: $730.24"></div>
-            <div class="marker-yellow" style="left:72.87851201313768%;" title="REGN 50d MA: $745.14"></div>
-            <div class="marker-red" style="left:53.27906893720324%;" title="REGN 200d MA: $690.24"></div>
-            <div class="marker-cyan" style="left:86.88015422512584%;" title="REGN Price: $784.36"></div></div></td>
-            <td class="col-low52">$541.00</td><td class="col-price">$784.36</td><td class="col-high52">$821.11</td>
-            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:86.88015422512584%;"></div><div class="mini-gauge-dot" style="left:86.88015422512584%;"></div></div><span class="mini-gauge-label">86.9%</span></td>
         </tr><tr class="watchlist-row">
             <td class="col-ticker"><strong>$AMZN</strong></td>
             <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
@@ -222,8 +221,7 @@
             <div class="marker-cyan" style="left:72.38472979672783%;" title="BLK Price: $1,136.39"></div></div></td>
             <td class="col-low52">$917.39</td><td class="col-price">$1,136.39</td><td class="col-high52">$1,219.94</td>
             <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:72.38472979672783%;"></div><div class="mini-gauge-dot" style="left:72.38472979672783%;"></div></div><span class="mini-gauge-label">72.4%</span></td>
-        </tr></tbody></table></div>
-    <div class="grid-column"><table><thead><tr class="watchlist-row"><th class="col-ticker">Ticker</th><th class="col-bar" style="text-align:center;">Range Bar (33% & 66% Grids)<div class="axis-labels"><span>0%</span><span style="color:#a78bfa;">33%</span><span style="color:#a78bfa;">66%</span><span>100%</span></div></th><th class="col-low52" style="text-align:right;">52W Low</th><th class="col-price" style="text-align:right;">Price</th><th class="col-high52" style="text-align:right;">52W High</th><th class="col-mini-gauge" style="text-align:center;">Gauge</th></tr></thead><tbody><tr class="watchlist-row">
+        </tr><tr class="watchlist-row">
             <td class="col-ticker"><strong>$DDOG</strong></td>
             <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
             <div class="marker-orange" style="left:61.51712803656718%;" title="DDOG Support: $217.79"></div>
@@ -232,7 +230,8 @@
             <div class="marker-cyan" style="left:69.8063787170664%;" title="DDOG Price: $233.93"></div></div></td>
             <td class="col-low52">$98.01</td><td class="col-price">$233.93</td><td class="col-high52">$292.72</td>
             <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:69.8063787170664%;"></div><div class="mini-gauge-dot" style="left:69.8063787170664%;"></div></div><span class="mini-gauge-label">69.8%</span></td>
-        </tr><tr class="watchlist-row">
+        </tr></tbody></table></div>
+    <div class="grid-column"><table><thead><tr class="watchlist-row"><th class="col-ticker">Ticker</th><th class="col-bar" style="text-align:center;">Range Bar (33% & 66% Grids)<div class="axis-labels"><span>0%</span><span style="color:#a78bfa;">33%</span><span style="color:#a78bfa;">66%</span><span>100%</span></div></th><th class="col-low52" style="text-align:right;">52W Low</th><th class="col-price" style="text-align:right;">Price</th><th class="col-high52" style="text-align:right;">52W High</th><th class="col-mini-gauge" style="text-align:center;">Gauge</th></tr></thead><tbody><tr class="watchlist-row">
             <td class="col-ticker"><strong>$GEV</strong></td>
             <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
             <div class="marker-orange" style="left:58.85277418967226%;" title="GEV Support: $921.99"></div>
@@ -305,14 +304,23 @@
             <td class="col-low52">$35.85</td><td class="col-price">$219.34</td><td class="col-high52">$351.28</td>
             <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:58.17138509336463%;"></div><div class="mini-gauge-dot" style="left:58.17138509336463%;"></div></div><span class="mini-gauge-label">58.2%</span></td>
         </tr><tr class="watchlist-row">
+            <td class="col-ticker"><strong>$REGN</strong></td>
+            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+            <div class="marker-orange" style="left:42.00046360686139%;" title="REGN Support: $730.24"></div>
+            <div class="marker-yellow" style="left:45.45433472415392%;" title="REGN 50d MA: $745.14"></div>
+            <div class="marker-red" style="left:32.72832637923042%;" title="REGN 200d MA: $690.24"></div>
+            <div class="marker-cyan" style="left:54.54566527584609%;" title="REGN Price: $784.36"></div></div></td>
+            <td class="col-low52">$549.05</td><td class="col-price">$784.36</td><td class="col-high52">$980.45</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:54.54566527584609%;"></div><div class="mini-gauge-dot" style="left:54.54566527584609%;"></div></div><span class="mini-gauge-label">54.5%</span></td>
+        </tr><tr class="watchlist-row">
             <td class="col-ticker"><strong>$TSM</strong></td>
             <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
-            <div class="marker-orange" style="left:42.00069258072896%;" title="TSM Support: $391.06"></div>
-            <div class="marker-yellow" style="left:45.45493896632329%;" title="TSM 50d MA: $399.04"></div>
-            <div class="marker-red" style="left:32.7287680720284%;" title="TSM 200d MA: $369.64"></div>
-            <div class="marker-cyan" style="left:54.54506103367677%;" title="TSM Price: $420.04"></div></div></td>
-            <td class="col-low52">$294.03</td><td class="col-price">$420.04</td><td class="col-high52">$525.05</td>
-            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:54.54506103367677%;"></div><div class="mini-gauge-dot" style="left:54.54506103367677%;"></div></div><span class="mini-gauge-label">54.5%</span></td>
+            <div class="marker-orange" style="left:41.04560622914349%;" title="TSM Support: $391.06"></div>
+            <div class="marker-yellow" style="left:43.51130886169818%;" title="TSM 50d MA: $399.04"></div>
+            <div class="marker-red" style="left:34.42714126807563%;" title="TSM 200d MA: $369.64"></div>
+            <div class="marker-cyan" style="left:50.0%;" title="TSM Price: $420.04"></div></div></td>
+            <td class="col-low52">$258.22</td><td class="col-price">$420.04</td><td class="col-high52">$581.86</td>
+            <td class="col-mini-gauge"><div class="mini-gauge-container"><div class="mini-gauge-fill" style="width:50.0%;"></div><div class="mini-gauge-dot" style="left:50.0%;"></div></div><span class="mini-gauge-label">50.0%</span></td>
         </tr><tr class="watchlist-row">
             <td class="col-ticker"><strong>$GLW</strong></td>
             <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
@@ -690,6 +698,13 @@
             <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$5.89</strong></td>
             <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
         </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$TSM</strong></td>
+            <td class="col-earn-price price-col"><strong>$420.04</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-14</td>
+            <td class="col-earn-status"><span class="badge-month-after">Month After</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$28.88</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
             <td class="col-earn-ticker"><strong>$ISRG</strong></td>
             <td class="col-earn-price price-col"><strong>$378.81</strong></td>
             <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-19</td>
@@ -730,13 +745,6 @@
             <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-26</td>
             <td class="col-earn-status"><span class="badge-month-after">Month After</span></td>
             <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$0.88</strong></td>
-            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
-        </tr><tr class="earnings-row">
-            <td class="col-earn-ticker"><strong>$REGN</strong></td>
-            <td class="col-earn-price price-col"><strong>$784.36</strong></td>
-            <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-26</td>
-            <td class="col-earn-status"><span class="badge-month-after">Month After</span></td>
-            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$13.70</strong></td>
             <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
         </tr><tr class="earnings-row">
             <td class="col-earn-ticker"><strong>$V</strong></td>
@@ -795,8 +803,8 @@
             <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$3.54</strong></td>
             <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
         </tr><tr class="earnings-row">
-            <td class="col-earn-ticker"><strong>$TSM</strong></td>
-            <td class="col-earn-price price-col"><strong>$420.04</strong></td>
+            <td class="col-earn-ticker"><strong>$REGN</strong></td>
+            <td class="col-earn-price price-col"><strong>$784.36</strong></td>
             <td class="col-earn-date"><span class="month-pill m-shade-tbd">TBD</span> TBD / Next Qtr</td>
             <td class="col-earn-status"><span class="badge-unconfirmed">Unconfirmed Est.</span></td>
             <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">N/A</strong></td>
@@ -815,9 +823,9 @@
             <tbody>
                 <tr class="news-row">
             <td class="col-news-ticker"><strong>$AAPL</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=d226c0827db4cf033b5f7069480759ec71e4452367304ab451be53e5ff2d4b68" target="_blank" class="news-link">Apple tests China's CXMT memory chips for iPhones and MacBooks, WSJ reports</a></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=f45e2379d3532d14de2026567c166f0c4f8f943f936b39a9525a667fa4d3d729" target="_blank" class="news-link">Forget VFIAX: Vanguard Sells You the Same S&P 500 Fund Without the $3,000 Toll, or the $75 Fee Fidelity Charges to Buy It</a></td>
             <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 12:06</td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 16:04</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$AMZN</strong></td>
             <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=6d9ae46012fdad75a3a2fc4f0a2a6e59909101eb9ad86f065e8efed616b80ed4" target="_blank" class="news-link">Jeff Bezos breaks his own Amazon record</a></td>
@@ -875,9 +883,9 @@
             <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 08, 13:50</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$DDOG</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=9876a608377c0f227365c5fac089d114df14bed8b305a3f51bb41189e69cdecc" target="_blank" class="news-link">Datadog: Best Of Breed For Multiple Reasons</a></td>
-            <td class="col-news-source"><span class="badge-confirmed">SeekingAlpha</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 06:34</td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=1c091081275b773c72149dd5f2850308c5c6feadcaf7c527f7464fe3e4a50c75" target="_blank" class="news-link">Datadog coverage update: BofA stays bullish on weakness</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 16:47</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$ETN</strong></td>
             <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=40fda781bbd4712cbd387775dc256c219f210b3d33f75154ed64687b49beb317" target="_blank" class="news-link">Eaton (ETN) Q2 2026 Earnings Call Transcript</a></td>
@@ -895,9 +903,9 @@
             <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 03:11</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$GOOGL</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=2e278b11eb5aff29c140ae859415179f05d198ee275380f1215e54663638593c" target="_blank" class="news-link">Nvidia CEO Jensen Huang Told Investors in Seoul to "Buy at a Discount" During the Recent AI Stock Sell-Off. Here's Whether His Call Has Paid Off.</a></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=eb6481e70394104b9930f21986077c90913cfdbd870e4089f3acc44e190ebbc4" target="_blank" class="news-link">A $13.5 Billion Berkshire Hathaway Mystery: What Is Greg Abel Buying Beyond Alphabet?</a></td>
             <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 11:15</td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 17:05</td>
         </tr>
             </tbody>
         </table>
@@ -935,14 +943,14 @@
             <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 08, 08:30</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$MSFT</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=c8cd4fe7182debb6de90358aa178ef070789157646744ff27eb1e44009accaee" target="_blank" class="news-link">Microsoft Sits 12% Below Its High After the Largest One-Day Market Value Gain on Record. Here's What History Suggests Comes Next.</a></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=f45e2379d3532d14de2026567c166f0c4f8f943f936b39a9525a667fa4d3d729" target="_blank" class="news-link">Forget VFIAX: Vanguard Sells You the Same S&P 500 Fund Without the $3,000 Toll, or the $75 Fee Fidelity Charges to Buy It</a></td>
             <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 14:43</td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 16:04</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$MU</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=a52dc31b76306e7b3c258491daac4f2f49f9b8368777c39b125ff98b6bfd9cc3" target="_blank" class="news-link">Nvidia and Micron Have Driven the S&P 500’s 2026 Rally to Record Highs. History Says It’s Not Over</a></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=94308ef42d235b245bc7e10b205a677f62304b920cc33bc7c3c10feb84fe4105" target="_blank" class="news-link">Micron Has Surged 207% This Year. Brace for a Steep Pullback.</a></td>
             <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 15:33</td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 17:45</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$NFLX</strong></td>
             <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=deff1d4247207aac2c94f55973825d0ce38ade9e08234210a6c7618171e2655c" target="_blank" class="news-link">Wall Street Week Ahead</a></td>
@@ -950,19 +958,14 @@
             <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 03:11</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$NVDA</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=160794764eced766bfcdfb3db6d530a61a7a9044663d87493d8bf5908c443b29" target="_blank" class="news-link">Here's How Many Shares of PepsiCo You'd Need for $20,000 in Yearly Dividends</a></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=94308ef42d235b245bc7e10b205a677f62304b920cc33bc7c3c10feb84fe4105" target="_blank" class="news-link">Micron Has Surged 207% This Year. Brace for a Steep Pullback.</a></td>
             <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 15:37</td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 17:45</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$PLTR</strong></td>
             <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=430b8af128c0c7e986ebabd2d830669153ec4475c6a641bccdbe70a743e66214" target="_blank" class="news-link">Palantir vs. Salesforce: Two Visions of Enterprise AI, One Clear Winner</a></td>
             <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
             <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 14:30</td>
-        </tr><tr class="news-row">
-            <td class="col-news-ticker"><strong>$REGN</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=6e6628b589862d33e59c226c841ee0d1bace982e3f3f1326c64fc54c64df69be" target="_blank" class="news-link">Regeneron Pharmaceuticals (REGN) Keeps Buybacks And Dividend In Focus As Fair Value Stays In Sight</a></td>
-            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 08, 23:11</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$SNOW</strong></td>
             <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=23284d2c9340ebbcb480958322cb238ffead0a0d28a52ad46f3b3592a3e2438b" target="_blank" class="news-link">Stock Market Today, Aug. 7: Palantir Surges on Bank of America Upbeat View After Strong Earnings</a></td>
@@ -973,6 +976,11 @@
             <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=06fffbad869d23c6cb921639401066357b9fd1d8223ba6396888e1c260040b2f" target="_blank" class="news-link">Wasatch Micro Cap Fund Q2 2026 Contributors And Detractors</a></td>
             <td class="col-news-source"><span class="badge-confirmed">SeekingAlpha</span></td>
             <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 07, 01:20</td>
+        </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$TSM</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=3b927a14a18d57bb82a7fd5ecacd77c7fce9a6ee9183da869696a924d72adf22" target="_blank" class="news-link">Tracking Ken Fisher's Fisher Asset Management Portfolio - Q2 2026 Update</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">SeekingAlpha</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 07, 22:05</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$V</strong></td>
             <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=67a12f998d09e3a8032fc7543984727ae385b02a09472666c7971ce61d490975" target="_blank" class="news-link">Top 50 High-Quality Dividend Growth Stocks For August 2026</a></td>
@@ -1191,11 +1199,11 @@
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">64.9%</span></td>
         </tr><tr class="master-row">
             <td class="col-master-ticker"><strong>$REGN</strong></td>
-            <td class="col-master-name">Regeneron Pharmaceuticals Inc</td>
+            <td class="col-master-name">REGN</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
             <td class="col-master-price price-col"><strong>$784.36</strong></td>
-            <td class="col-master-cap price-col">$80,754M</td>
-            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">86.9%</span></td>
+            <td class="col-master-cap price-col">N/A</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">54.5%</span></td>
         </tr><tr class="master-row">
             <td class="col-master-ticker"><strong>$SNOW</strong></td>
             <td class="col-master-name">Snowflake Inc</td>
@@ -1212,11 +1220,11 @@
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">24.2%</span></td>
         </tr><tr class="master-row">
             <td class="col-master-ticker"><strong>$TSM</strong></td>
-            <td class="col-master-name">TSM</td>
+            <td class="col-master-name">Taiwan Semiconductor Manufacturing Co Ltd</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$420.04</strong></td>
-            <td class="col-master-cap price-col">N/A</td>
-            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">54.5%</span></td>
+            <td class="col-master-cap price-col">$61,330,053M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">50.0%</span></td>
         </tr><tr class="master-row">
             <td class="col-master-ticker"><strong>$V</strong></td>
             <td class="col-master-name">Visa Inc</td>
@@ -1306,11 +1314,11 @@
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">89.8%</span></td>
         </tr><tr class="master-row">
             <td class="col-master-ticker"><strong>$REGN</strong></td>
-            <td class="col-master-name">Regeneron Pharmaceuticals Inc</td>
+            <td class="col-master-name">REGN</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
             <td class="col-master-price price-col"><strong>$784.36</strong></td>
-            <td class="col-master-cap price-col">$80,754M</td>
-            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">86.9%</span></td>
+            <td class="col-master-cap price-col">N/A</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">54.5%</span></td>
         </tr><tr class="master-row">
             <td class="col-master-ticker"><strong>$VRTX</strong></td>
             <td class="col-master-name">Vertex Pharmaceuticals Inc</td>
@@ -1453,11 +1461,11 @@
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">82.6%</span></td>
         </tr><tr class="master-row">
             <td class="col-master-ticker"><strong>$TSM</strong></td>
-            <td class="col-master-name">TSM</td>
+            <td class="col-master-name">Taiwan Semiconductor Manufacturing Co Ltd</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$420.04</strong></td>
-            <td class="col-master-cap price-col">N/A</td>
-            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">54.5%</span></td>
+            <td class="col-master-cap price-col">$61,330,053M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">50.0%</span></td>
         </tr><tr class="master-row">
             <td class="col-master-ticker"><strong>$CRWD</strong></td>
             <td class="col-master-name">CrowdStrike Holdings Inc</td>
