@@ -73,6 +73,10 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
 
 .vol-badge { background-color: rgba(250, 204, 21, 0.2); color: var(--accent-yellow); padding: 1px 4px; border-radius: 3px; font-weight: bold; font-size: 0.62rem; border: 1px solid rgba(250, 204, 21, 0.4); }
 
+/* Hover Chart Tooltip CSS */
+.chart-tooltip { display: none; position: absolute; background: var(--bg-card); border: 1px solid var(--accent-cyan); border-radius: 6px; padding: 10px; z-index: 2000; width: 220px; box-shadow: 0 4px 16px rgba(0,0,0,0.6); pointer-events: none; }
+.chart-tooltip-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 0.78rem; font-weight: bold; color: var(--accent-cyan); }
+
 /* Modal Popup CSS */
 .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
 .modal-content { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; width: 450px; max-width: 90%; padding: 20px; position: relative; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
@@ -116,7 +120,7 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
 <body><div class="container"><header>
     <div><h1>📊 Jacob's Technical Watchlist & Market Dashboard</h1></div>
     <div class="header-meta">
-        <div class="timestamp-banner">⏱️ Aug 09, 2026 at 22:20:54 EST</div>
+        <div class="timestamp-banner">⏱️ Aug 09, 2026 at 22:43:41 EST</div>
         <div class="speed-dial-card">
             <div class="speed-dial-container">
                 <div class="speed-dial-arc"></div>
@@ -995,6 +999,11 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
             <td class="col-news-source"><span class="badge-confirmed">SeekingAlpha</span></td>
             <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 07, 01:20</td>
         </tr><tr class="news-row">
+            <td class="col-news-ticker"><strong>$TSM</strong></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=3b927a14a18d57bb82a7fd5ecacd77c7fce9a6ee9183da869696a924d72adf22" target="_blank" class="news-link">Tracking Ken Fisher's Fisher Asset Management Portfolio - Q2 2026 Update</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">SeekingAlpha</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 07, 22:05</td>
+        </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$V</strong></td>
             <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=67a12f998d09e3a8032fc7543984727ae385b02a09472666c7971ce61d490975" target="_blank" class="news-link">Top 50 High-Quality Dividend Growth Stocks For August 2026</a></td>
             <td class="col-news-source"><span class="badge-confirmed">SeekingAlpha</span></td>
@@ -1015,240 +1024,240 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
 
 <div class="dual-grid-wrapper" style="margin-top:6px;">
     <div class="grid-column">
-        <div class="section-title">📋 Tracked Tickers (Click Ticker for Popup)</div>
+        <div class="section-title">📋 Tracked Tickers (Hover for Chart Preview / Click for Modal)</div>
         <table><thead><tr class="master-row"><th class="col-master-ticker">Ticker</th><th class="col-master-name">Company Name</th><th class="col-master-industry">Industry</th><th class="col-master-price" style="text-align:right;">Price</th><th class="col-master-cap" style="text-align:right;">Market Cap</th><th class="col-master-gauge" style="text-align:center;">52W Pos</th></tr></thead><tbody><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('AAPL', 'Apple Inc', 'Big Guys', '313.33', '$4,572,794M', '75.6', '0.6', '216.58', '344.57', '297.66', '275.73')" class="ticker-popup-link"><strong>$AAPL</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('AAPL', 'Apple Inc', 'Big Guys', '313.33', '$4,572,794M', '75.6', '0.6', '216.58', '344.57', '297.66', '275.73')" onmouseenter="showChartHover(event, 'AAPL', 'Apple Inc', '$313.33', '+0.29%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$AAPL</strong></a></td>
             <td class="col-master-name">Apple Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
             <td class="col-master-price price-col"><strong>$313.33</strong></td>
             <td class="col-master-cap price-col">$4,572,794M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">75.6%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('AMZN', 'Amazon.com Inc', 'Big Guys', '274.48', '$2,960,628M', '86.1', '0.7', '196.0', '287.2', '260.76', '241.54')" class="ticker-popup-link"><strong>$AMZN</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('AMZN', 'Amazon.com Inc', 'Big Guys', '274.48', '$2,960,628M', '86.1', '0.7', '196.0', '287.2', '260.76', '241.54')" onmouseenter="showChartHover(event, 'AMZN', 'Amazon.com Inc', '$274.48', '+0.82%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$AMZN</strong></a></td>
             <td class="col-master-name">Amazon.com Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
             <td class="col-master-price price-col"><strong>$274.48</strong></td>
             <td class="col-master-cap price-col">$2,960,628M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">86.1%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('ANET', 'Arista Networks Inc', 'Engineering And Chips', '188.67', '$237,955M', '73.9', '0.9', '114.52', '214.89', '179.24', '166.03')" class="ticker-popup-link"><strong>$ANET</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('ANET', 'Arista Networks Inc', 'Engineering And Chips', '188.67', '$237,955M', '73.9', '0.9', '114.52', '214.89', '179.24', '166.03')" onmouseenter="showChartHover(event, 'ANET', 'Arista Networks Inc', '$188.67', '-1.90%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$ANET</strong></a></td>
             <td class="col-master-name">Arista Networks Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$188.67</strong></td>
             <td class="col-master-cap price-col">$237,955M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">73.9%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('AVGO', 'Broadcom Inc', 'Semiconductors', '427.76', '$2,035,102M', '68.5', '0.8', '281.87', '495.0', '406.37', '376.43')" class="ticker-popup-link"><strong>$AVGO</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('AVGO', 'Broadcom Inc', 'Semiconductors', '427.76', '$2,035,102M', '68.5', '0.8', '281.87', '495.0', '406.37', '376.43')" onmouseenter="showChartHover(event, 'AVGO', 'Broadcom Inc', '$427.76', '+1.71%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$AVGO</strong></a></td>
             <td class="col-master-name">Broadcom Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$427.76</strong></td>
             <td class="col-master-cap price-col">$2,035,102M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">68.5%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('AXON', 'Axon Enterprise Inc', 'Aerospace & Defense', '571.01', '$46,025M', '42.5', '1.8', '339.01', '885.0', '542.46', '502.49')" class="ticker-popup-link"><strong>$AXON</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('AXON', 'Axon Enterprise Inc', 'Aerospace & Defense', '571.01', '$46,025M', '42.5', '1.8', '339.01', '885.0', '542.46', '502.49')" onmouseenter="showChartHover(event, 'AXON', 'Axon Enterprise Inc', '$571.01', '+9.29%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$AXON</strong></a></td>
             <td class="col-master-name">Axon Enterprise Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Aerospace & Defense</span></td>
             <td class="col-master-price price-col"><strong>$571.01</strong></td>
             <td class="col-master-cap price-col">$46,025M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">42.5%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('BA', 'Boeing Co', 'Aerospace & Defense', '234.42', '$185,279M', '74.3', '0.6', '176.77', '254.35', '222.7', '206.29')" class="ticker-popup-link"><strong>$BA</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('BA', 'Boeing Co', 'Aerospace & Defense', '234.42', '$185,279M', '74.3', '0.6', '176.77', '254.35', '222.7', '206.29')" onmouseenter="showChartHover(event, 'BA', 'Boeing Co', '$234.42', '+0.96%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$BA</strong></a></td>
             <td class="col-master-name">Boeing Co</td>
             <td class="col-master-industry"><span class="badge-confirmed">Aerospace & Defense</span></td>
             <td class="col-master-price price-col"><strong>$234.42</strong></td>
             <td class="col-master-cap price-col">$185,279M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">74.3%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('BE', 'Bloom Energy Corp', 'Engineering And Chips', '219.34', '$64,602M', '58.2', '0.9', '35.85', '351.28', '208.37', '193.02')" class="ticker-popup-link"><strong>$BE</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('BE', 'Bloom Energy Corp', 'Engineering And Chips', '219.34', '$64,602M', '58.2', '0.9', '35.85', '351.28', '208.37', '193.02')" onmouseenter="showChartHover(event, 'BE', 'Bloom Energy Corp', '$219.34', '-4.20%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$BE</strong></a></td>
             <td class="col-master-name">Bloom Energy Corp</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$219.34</strong></td>
             <td class="col-master-cap price-col">$64,602M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">58.2%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('BLK', 'BlackRock Inc', 'Financial Services', '1136.39', '$184,780M', '72.4', '0.7', '917.39', '1219.94', '1079.57', '1000.02')" class="ticker-popup-link"><strong>$BLK</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('BLK', 'BlackRock Inc', 'Financial Services', '1136.39', '$184,780M', '72.4', '0.7', '917.39', '1219.94', '1079.57', '1000.02')" onmouseenter="showChartHover(event, 'BLK', 'BlackRock Inc', '$1,136.39', '+0.63%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$BLK</strong></a></td>
             <td class="col-master-name">BlackRock Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
             <td class="col-master-price price-col"><strong>$1,136.39</strong></td>
             <td class="col-master-cap price-col">$184,780M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">72.4%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('CAT', 'Caterpillar Inc', 'Engineering And Chips', '842.19', '$387,134M', '65.4', '0.8', '405.46', '1073.46', '800.08', '741.13')" class="ticker-popup-link"><strong>$CAT</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('CAT', 'Caterpillar Inc', 'Engineering And Chips', '842.19', '$387,134M', '65.4', '0.8', '405.46', '1073.46', '800.08', '741.13')" onmouseenter="showChartHover(event, 'CAT', 'Caterpillar Inc', '$842.19', '-1.72%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$CAT</strong></a></td>
             <td class="col-master-name">Caterpillar Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$842.19</strong></td>
             <td class="col-master-cap price-col">$387,134M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">65.4%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('COIN', 'Coinbase Global Inc', 'Financial Services', '153.6', '$40,525M', '5.5', '1.1', '139.11', '402.16', '145.92', '135.17')" class="ticker-popup-link"><strong>$COIN</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('COIN', 'Coinbase Global Inc', 'Financial Services', '153.6', '$40,525M', '5.5', '1.1', '139.11', '402.16', '145.92', '135.17')" onmouseenter="showChartHover(event, 'COIN', 'Coinbase Global Inc', '$153.60', '+5.63%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$COIN</strong></a></td>
             <td class="col-master-name">Coinbase Global Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
             <td class="col-master-price price-col"><strong>$153.60</strong></td>
             <td class="col-master-cap price-col">$40,525M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">5.5%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('COST', 'Costco Wholesale Corp', 'Consumer', '947.82', '$420,338M', '41.1', '0.7', '844.06', '1096.5', '900.43', '834.08')" class="ticker-popup-link"><strong>$COST</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('COST', 'Costco Wholesale Corp', 'Consumer', '947.82', '$420,338M', '41.1', '0.7', '844.06', '1096.5', '900.43', '834.08')" onmouseenter="showChartHover(event, 'COST', 'Costco Wholesale Corp', '$947.82', '-0.14%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$COST</strong></a></td>
             <td class="col-master-name">Costco Wholesale Corp</td>
             <td class="col-master-industry"><span class="badge-confirmed">Consumer</span></td>
             <td class="col-master-price price-col"><strong>$947.82</strong></td>
             <td class="col-master-cap price-col">$420,338M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">41.1%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('CRWD', 'CrowdStrike Holdings Inc', 'Technology', '214.42', '$218,335M', '96.3', '0.7', '85.68', '219.35', '203.7', '188.69')" class="ticker-popup-link"><strong>$CRWD</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('CRWD', 'CrowdStrike Holdings Inc', 'Technology', '214.42', '$218,335M', '96.3', '0.7', '85.68', '219.35', '203.7', '188.69')" onmouseenter="showChartHover(event, 'CRWD', 'CrowdStrike Holdings Inc', '$214.42', '+3.39%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$CRWD</strong></a></td>
             <td class="col-master-name">CrowdStrike Holdings Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
             <td class="col-master-price price-col"><strong>$214.42</strong></td>
             <td class="col-master-cap price-col">$218,335M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">96.3%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('DDOG', 'Datadog Inc (Pre-Reincorporation)', 'Technology', '233.93', '$83,270M', '69.8', '1.7', '98.01', '292.72', '222.23', '205.86')" class="ticker-popup-link"><strong>$DDOG</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('DDOG', 'Datadog Inc (Pre-Reincorporation)', 'Technology', '233.93', '$83,270M', '69.8', '1.7', '98.01', '292.72', '222.23', '205.86')" onmouseenter="showChartHover(event, 'DDOG', 'Datadog Inc (Pre-Reincorporation)', '$233.93', '+2.02%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$DDOG</strong></a></td>
             <td class="col-master-name">Datadog Inc (Pre-Reincorporation)</td>
             <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
             <td class="col-master-price price-col"><strong>$233.93</strong></td>
             <td class="col-master-cap price-col">$83,270M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">69.8%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('ETN', 'Eaton Corporation PLC', 'Engineering And Chips', '448.68', '$174,267M', '93.8', '0.7', '311.92', '457.78', '426.25', '394.84')" class="ticker-popup-link"><strong>$ETN</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('ETN', 'Eaton Corporation PLC', 'Engineering And Chips', '448.68', '$174,267M', '93.8', '0.7', '311.92', '457.78', '426.25', '394.84')" onmouseenter="showChartHover(event, 'ETN', 'Eaton Corporation PLC', '$448.68', '+0.11%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$ETN</strong></a></td>
             <td class="col-master-name">Eaton Corporation PLC</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$448.68</strong></td>
             <td class="col-master-cap price-col">$174,267M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">93.8%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('GEV', 'GE Vernova Inc', 'Engineering And Chips', '990.32', '$263,755M', '69.1', '0.9', '530.16', '1195.94', '940.8', '871.48')" class="ticker-popup-link"><strong>$GEV</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('GEV', 'GE Vernova Inc', 'Engineering And Chips', '990.32', '$263,755M', '69.1', '0.9', '530.16', '1195.94', '940.8', '871.48')" onmouseenter="showChartHover(event, 'GEV', 'GE Vernova Inc', '$990.32', '-1.00%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$GEV</strong></a></td>
             <td class="col-master-name">GE Vernova Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$990.32</strong></td>
             <td class="col-master-cap price-col">$263,755M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">69.1%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('GLW', 'Corning Inc', 'Engineering And Chips', '165.68', '$142,715M', '49.1', '0.7', '63.37', '271.78', '157.4', '145.8')" class="ticker-popup-link"><strong>$GLW</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('GLW', 'Corning Inc', 'Engineering And Chips', '165.68', '$142,715M', '49.1', '0.7', '63.37', '271.78', '157.4', '145.8')" onmouseenter="showChartHover(event, 'GLW', 'Corning Inc', '$165.68', '+5.41%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$GLW</strong></a></td>
             <td class="col-master-name">Corning Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$165.68</strong></td>
             <td class="col-master-cap price-col">$142,715M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">49.1%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('GOOGL', 'Alphabet Inc', 'Big Guys', '354.3', '$4,333,089M', '74.7', '0.6', '194.33', '408.61', '336.58', '311.78')" class="ticker-popup-link"><strong>$GOOGL</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('GOOGL', 'Alphabet Inc', 'Big Guys', '354.3', '$4,333,089M', '74.7', '0.6', '194.33', '408.61', '336.58', '311.78')" onmouseenter="showChartHover(event, 'GOOGL', 'Alphabet Inc', '$354.30', '-0.96%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$GOOGL</strong></a></td>
             <td class="col-master-name">Alphabet Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
             <td class="col-master-price price-col"><strong>$354.30</strong></td>
             <td class="col-master-cap price-col">$4,333,089M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">74.7%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('GS', 'Goldman Sachs Group Inc', 'Financial Services', '1039.61', '$302,705M', '74.5', '0.7', '705.55', '1153.99', '987.63', '914.86')" class="ticker-popup-link"><strong>$GS</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('GS', 'Goldman Sachs Group Inc', 'Financial Services', '1039.61', '$302,705M', '74.5', '0.7', '705.55', '1153.99', '987.63', '914.86')" onmouseenter="showChartHover(event, 'GS', 'Goldman Sachs Group Inc', '$1,039.61', '+0.68%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$GS</strong></a></td>
             <td class="col-master-name">Goldman Sachs Group Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
             <td class="col-master-price price-col"><strong>$1,039.61</strong></td>
             <td class="col-master-cap price-col">$302,705M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">74.5%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('ISRG', 'Intuitive Surgical Inc', 'Biotech And Healthcare', '378.81', '$133,825M', '18.2', '0.6', '328.57', '603.88', '359.87', '333.35')" class="ticker-popup-link"><strong>$ISRG</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('ISRG', 'Intuitive Surgical Inc', 'Biotech And Healthcare', '378.81', '$133,825M', '18.2', '0.6', '328.57', '603.88', '359.87', '333.35')" onmouseenter="showChartHover(event, 'ISRG', 'Intuitive Surgical Inc', '$378.81', '+1.36%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$ISRG</strong></a></td>
             <td class="col-master-name">Intuitive Surgical Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
             <td class="col-master-price price-col"><strong>$378.81</strong></td>
             <td class="col-master-cap price-col">$133,825M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">18.2%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('JPM', 'JPMorgan Chase & Co', 'Financial Services', '357.52', '$957,979M', '93.5', '0.6', '279.1', '363.0', '339.64', '314.62')" class="ticker-popup-link"><strong>$JPM</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('JPM', 'JPMorgan Chase & Co', 'Financial Services', '357.52', '$957,979M', '93.5', '0.6', '279.1', '363.0', '339.64', '314.62')" onmouseenter="showChartHover(event, 'JPM', 'JPMorgan Chase & Co', '$357.52', '+0.34%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$JPM</strong></a></td>
             <td class="col-master-name">JPMorgan Chase & Co</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
             <td class="col-master-price price-col"><strong>$357.52</strong></td>
             <td class="col-master-cap price-col">$957,979M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">93.5%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('LLY', 'Eli Lilly and Co', 'Biotech And Healthcare', '1185.71', '$1,116,176M', '89.8', '1.1', '623.78', '1249.45', '1126.42', '1043.42')" class="ticker-popup-link"><strong>$LLY</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('LLY', 'Eli Lilly and Co', 'Biotech And Healthcare', '1185.71', '$1,116,176M', '89.8', '1.1', '623.78', '1249.45', '1126.42', '1043.42')" onmouseenter="showChartHover(event, 'LLY', 'Eli Lilly and Co', '$1,185.71', '-0.52%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$LLY</strong></a></td>
             <td class="col-master-name">Eli Lilly and Co</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
             <td class="col-master-price price-col"><strong>$1,185.71</strong></td>
             <td class="col-master-cap price-col">$1,116,176M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">89.8%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('MRVL', 'Marvell Technology Inc', 'Semiconductors', '218.72', '$191,548M', '58.6', '0.8', '61.44', '329.88', '207.78', '192.47')" class="ticker-popup-link"><strong>$MRVL</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('MRVL', 'Marvell Technology Inc', 'Semiconductors', '218.72', '$191,548M', '58.6', '0.8', '61.44', '329.88', '207.78', '192.47')" onmouseenter="showChartHover(event, 'MRVL', 'Marvell Technology Inc', '$218.72', '+3.89%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$MRVL</strong></a></td>
             <td class="col-master-name">Marvell Technology Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$218.72</strong></td>
             <td class="col-master-cap price-col">$191,548M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">58.6%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('MSFT', 'Microsoft Corp', 'Big Guys', '499.99', '$3,712,698M', '73.7', '0.7', '349.2', '553.72', '474.99', '439.99')" class="ticker-popup-link"><strong>$MSFT</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('MSFT', 'Microsoft Corp', 'Big Guys', '499.99', '$3,712,698M', '73.7', '0.7', '349.2', '553.72', '474.99', '439.99')" onmouseenter="showChartHover(event, 'MSFT', 'Microsoft Corp', '$499.99', '+0.03%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$MSFT</strong></a></td>
             <td class="col-master-name">Microsoft Corp</td>
             <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
             <td class="col-master-price price-col"><strong>$499.99</strong></td>
             <td class="col-master-cap price-col">$3,712,698M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">73.7%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('MU', 'Micron Technology Inc', 'Semiconductors', '877.57', '$991,121M', '67.0', '0.8', '110.79', '1255.0', '833.69', '772.26')" class="ticker-popup-link"><strong>$MU</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('MU', 'Micron Technology Inc', 'Semiconductors', '877.57', '$991,121M', '67.0', '0.8', '110.79', '1255.0', '833.69', '772.26')" onmouseenter="showChartHover(event, 'MU', 'Micron Technology Inc', '$877.57', '-0.44%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$MU</strong></a></td>
             <td class="col-master-name">Micron Technology Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$877.57</strong></td>
             <td class="col-master-cap price-col">$991,121M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">67.0%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('NFLX', 'Netflix Inc', 'Consumer', '74.14', '$308,715M', '14.7', '0.5', '65.08', '126.71', '70.43', '65.24')" class="ticker-popup-link"><strong>$NFLX</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('NFLX', 'Netflix Inc', 'Consumer', '74.14', '$308,715M', '14.7', '0.5', '65.08', '126.71', '70.43', '65.24')" onmouseenter="showChartHover(event, 'NFLX', 'Netflix Inc', '$74.14', '+0.61%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$NFLX</strong></a></td>
             <td class="col-master-name">Netflix Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Consumer</span></td>
             <td class="col-master-price price-col"><strong>$74.14</strong></td>
             <td class="col-master-cap price-col">$308,715M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">14.7%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('NVDA', 'NVIDIA Corp', 'Semiconductors', '223.96', '$5,419,832M', '82.6', '0.8', '164.07', '236.54', '212.76', '197.08')" class="ticker-popup-link"><strong>$NVDA</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('NVDA', 'NVIDIA Corp', 'Semiconductors', '223.96', '$5,419,832M', '82.6', '0.8', '164.07', '236.54', '212.76', '197.08')" onmouseenter="showChartHover(event, 'NVDA', 'NVIDIA Corp', '$223.96', '+2.27%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$NVDA</strong></a></td>
             <td class="col-master-name">NVIDIA Corp</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$223.96</strong></td>
             <td class="col-master-cap price-col">$5,419,832M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">82.6%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('PLTR', 'Palantir Technologies Inc', 'Technology', '172.01', '$413,356M', '64.9', '1.7', '106.37', '207.52', '163.41', '151.37')" class="ticker-popup-link"><strong>$PLTR</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('PLTR', 'Palantir Technologies Inc', 'Technology', '172.01', '$413,356M', '64.9', '1.7', '106.37', '207.52', '163.41', '151.37')" onmouseenter="showChartHover(event, 'PLTR', 'Palantir Technologies Inc', '$172.01', '+10.32%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$PLTR</strong></a></td>
             <td class="col-master-name">Palantir Technologies Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
             <td class="col-master-price price-col"><strong>$172.01</strong></td>
             <td class="col-master-cap price-col">$413,356M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">64.9%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('REGN', 'Regeneron Pharmaceuticals Inc', 'Biotech And Healthcare', '784.36', '$80,754M', '86.9', '1.1', '541.0', '821.11', '745.14', '690.24')" class="ticker-popup-link"><strong>$REGN</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('REGN', 'Regeneron Pharmaceuticals Inc', 'Biotech And Healthcare', '784.36', '$80,754M', '86.9', '1.1', '541.0', '821.11', '745.14', '690.24')" onmouseenter="showChartHover(event, 'REGN', 'Regeneron Pharmaceuticals Inc', '$784.36', '+1.59%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$REGN</strong></a></td>
             <td class="col-master-name">Regeneron Pharmaceuticals Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
             <td class="col-master-price price-col"><strong>$784.36</strong></td>
             <td class="col-master-cap price-col">$80,754M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">86.9%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('SNOW', 'Snowflake Inc', 'Technology', '330.49', '$114,548M', '99.6', '1.2', '118.3', '331.4', '313.97', '290.83')" class="ticker-popup-link"><strong>$SNOW</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('SNOW', 'Snowflake Inc', 'Technology', '330.49', '$114,548M', '99.6', '1.2', '118.3', '331.4', '313.97', '290.83')" onmouseenter="showChartHover(event, 'SNOW', 'Snowflake Inc', '$330.49', '+3.93%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$SNOW</strong></a></td>
             <td class="col-master-name">Snowflake Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
             <td class="col-master-price price-col"><strong>$330.49</strong></td>
             <td class="col-master-cap price-col">$114,548M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">99.6%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('SPOT', 'Spotify Technology SA', 'Consumer', '488.14', '$100,499M', '24.2', '0.9', '405.0', '748.3', '463.73', '429.56')" class="ticker-popup-link"><strong>$SPOT</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('SPOT', 'Spotify Technology SA', 'Consumer', '488.14', '$100,499M', '24.2', '0.9', '405.0', '748.3', '463.73', '429.56')" onmouseenter="showChartHover(event, 'SPOT', 'Spotify Technology SA', '$488.14', '+2.75%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$SPOT</strong></a></td>
             <td class="col-master-name">Spotify Technology SA</td>
             <td class="col-master-industry"><span class="badge-confirmed">Consumer</span></td>
             <td class="col-master-price price-col"><strong>$488.14</strong></td>
             <td class="col-master-cap price-col">$100,499M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">24.2%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('TSM', 'TSM', 'Semiconductors', '420.04', 'N/A', '54.5', '0.6', '294.03', '525.05', '399.04', '369.64')" class="ticker-popup-link"><strong>$TSM</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('TSM', 'TSM', 'Semiconductors', '420.04', 'N/A', '54.5', '0.6', '294.03', '525.05', '399.04', '369.64')" onmouseenter="showChartHover(event, 'TSM', 'TSM', '$420.04', '+0.44%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$TSM</strong></a></td>
             <td class="col-master-name">TSM</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$420.04</strong></td>
             <td class="col-master-cap price-col">N/A</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">54.5%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('V', 'Visa Inc', 'Financial Services', '362.5', '$691,685M', '85.7', '0.7', '293.89', '373.97', '344.38', '319.0')" class="ticker-popup-link"><strong>$V</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('V', 'Visa Inc', 'Financial Services', '362.5', '$691,685M', '85.7', '0.7', '293.89', '373.97', '344.38', '319.0')" onmouseenter="showChartHover(event, 'V', 'Visa Inc', '$362.50', '-2.15%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$V</strong></a></td>
             <td class="col-master-name">Visa Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
             <td class="col-master-price price-col"><strong>$362.50</strong></td>
             <td class="col-master-cap price-col">$691,685M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">85.7%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('VRT', 'Vertiv Holdings Co', 'Engineering And Chips', '272.4', '$93,002M', '58.8', '0.6', '118.7', '379.94', '258.78', '239.71')" class="ticker-popup-link"><strong>$VRT</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('VRT', 'Vertiv Holdings Co', 'Engineering And Chips', '272.4', '$93,002M', '58.8', '0.6', '118.7', '379.94', '258.78', '239.71')" onmouseenter="showChartHover(event, 'VRT', 'Vertiv Holdings Co', '$272.40', '-1.01%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$VRT</strong></a></td>
             <td class="col-master-name">Vertiv Holdings Co</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$272.40</strong></td>
             <td class="col-master-cap price-col">$93,002M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">58.8%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('VRTX', 'Vertex Pharmaceuticals Inc', 'Biotech And Healthcare', '496.07', '$121,091M', '78.0', '0.8', '362.5', '533.67', '471.27', '436.54')" class="ticker-popup-link"><strong>$VRTX</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('VRTX', 'Vertex Pharmaceuticals Inc', 'Biotech And Healthcare', '496.07', '$121,091M', '78.0', '0.8', '362.5', '533.67', '471.27', '436.54')" onmouseenter="showChartHover(event, 'VRTX', 'Vertex Pharmaceuticals Inc', '$496.07', '+2.49%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$VRTX</strong></a></td>
             <td class="col-master-name">Vertex Pharmaceuticals Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
             <td class="col-master-price price-col"><strong>$496.07</strong></td>
@@ -1259,238 +1268,238 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
     <div class="grid-column">
         <div class="section-title">🏭 Tracked Tickers (Sorted by Industry)</div>
         <table><thead><tr class="master-row"><th class="col-master-ticker">Ticker</th><th class="col-master-name">Company Name</th><th class="col-master-industry">Industry</th><th class="col-master-price" style="text-align:right;">Price</th><th class="col-master-cap" style="text-align:right;">Market Cap</th><th class="col-master-gauge" style="text-align:center;">52W Pos</th></tr></thead><tbody><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('AXON', 'Axon Enterprise Inc', 'Aerospace & Defense', '571.01', '$46,025M', '42.5', '1.8', '339.01', '885.0', '542.46', '502.49')" class="ticker-popup-link"><strong>$AXON</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('AXON', 'Axon Enterprise Inc', 'Aerospace & Defense', '571.01', '$46,025M', '42.5', '1.8', '339.01', '885.0', '542.46', '502.49')" onmouseenter="showChartHover(event, 'AXON', 'Axon Enterprise Inc', '$571.01', '+9.29%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$AXON</strong></a></td>
             <td class="col-master-name">Axon Enterprise Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Aerospace & Defense</span></td>
             <td class="col-master-price price-col"><strong>$571.01</strong></td>
             <td class="col-master-cap price-col">$46,025M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">42.5%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('BA', 'Boeing Co', 'Aerospace & Defense', '234.42', '$185,279M', '74.3', '0.6', '176.77', '254.35', '222.7', '206.29')" class="ticker-popup-link"><strong>$BA</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('BA', 'Boeing Co', 'Aerospace & Defense', '234.42', '$185,279M', '74.3', '0.6', '176.77', '254.35', '222.7', '206.29')" onmouseenter="showChartHover(event, 'BA', 'Boeing Co', '$234.42', '+0.96%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$BA</strong></a></td>
             <td class="col-master-name">Boeing Co</td>
             <td class="col-master-industry"><span class="badge-confirmed">Aerospace & Defense</span></td>
             <td class="col-master-price price-col"><strong>$234.42</strong></td>
             <td class="col-master-cap price-col">$185,279M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">74.3%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('AAPL', 'Apple Inc', 'Big Guys', '313.33', '$4,572,794M', '75.6', '0.6', '216.58', '344.57', '297.66', '275.73')" class="ticker-popup-link"><strong>$AAPL</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('AAPL', 'Apple Inc', 'Big Guys', '313.33', '$4,572,794M', '75.6', '0.6', '216.58', '344.57', '297.66', '275.73')" onmouseenter="showChartHover(event, 'AAPL', 'Apple Inc', '$313.33', '+0.29%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$AAPL</strong></a></td>
             <td class="col-master-name">Apple Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
             <td class="col-master-price price-col"><strong>$313.33</strong></td>
             <td class="col-master-cap price-col">$4,572,794M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">75.6%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('AMZN', 'Amazon.com Inc', 'Big Guys', '274.48', '$2,960,628M', '86.1', '0.7', '196.0', '287.2', '260.76', '241.54')" class="ticker-popup-link"><strong>$AMZN</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('AMZN', 'Amazon.com Inc', 'Big Guys', '274.48', '$2,960,628M', '86.1', '0.7', '196.0', '287.2', '260.76', '241.54')" onmouseenter="showChartHover(event, 'AMZN', 'Amazon.com Inc', '$274.48', '+0.82%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$AMZN</strong></a></td>
             <td class="col-master-name">Amazon.com Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
             <td class="col-master-price price-col"><strong>$274.48</strong></td>
             <td class="col-master-cap price-col">$2,960,628M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">86.1%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('GOOGL', 'Alphabet Inc', 'Big Guys', '354.3', '$4,333,089M', '74.7', '0.6', '194.33', '408.61', '336.58', '311.78')" class="ticker-popup-link"><strong>$GOOGL</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('GOOGL', 'Alphabet Inc', 'Big Guys', '354.3', '$4,333,089M', '74.7', '0.6', '194.33', '408.61', '336.58', '311.78')" onmouseenter="showChartHover(event, 'GOOGL', 'Alphabet Inc', '$354.30', '-0.96%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$GOOGL</strong></a></td>
             <td class="col-master-name">Alphabet Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
             <td class="col-master-price price-col"><strong>$354.30</strong></td>
             <td class="col-master-cap price-col">$4,333,089M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">74.7%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('MSFT', 'Microsoft Corp', 'Big Guys', '499.99', '$3,712,698M', '73.7', '0.7', '349.2', '553.72', '474.99', '439.99')" class="ticker-popup-link"><strong>$MSFT</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('MSFT', 'Microsoft Corp', 'Big Guys', '499.99', '$3,712,698M', '73.7', '0.7', '349.2', '553.72', '474.99', '439.99')" onmouseenter="showChartHover(event, 'MSFT', 'Microsoft Corp', '$499.99', '+0.03%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$MSFT</strong></a></td>
             <td class="col-master-name">Microsoft Corp</td>
             <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
             <td class="col-master-price price-col"><strong>$499.99</strong></td>
             <td class="col-master-cap price-col">$3,712,698M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">73.7%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('ISRG', 'Intuitive Surgical Inc', 'Biotech And Healthcare', '378.81', '$133,825M', '18.2', '0.6', '328.57', '603.88', '359.87', '333.35')" class="ticker-popup-link"><strong>$ISRG</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('ISRG', 'Intuitive Surgical Inc', 'Biotech And Healthcare', '378.81', '$133,825M', '18.2', '0.6', '328.57', '603.88', '359.87', '333.35')" onmouseenter="showChartHover(event, 'ISRG', 'Intuitive Surgical Inc', '$378.81', '+1.36%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$ISRG</strong></a></td>
             <td class="col-master-name">Intuitive Surgical Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
             <td class="col-master-price price-col"><strong>$378.81</strong></td>
             <td class="col-master-cap price-col">$133,825M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">18.2%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('LLY', 'Eli Lilly and Co', 'Biotech And Healthcare', '1185.71', '$1,116,176M', '89.8', '1.1', '623.78', '1249.45', '1126.42', '1043.42')" class="ticker-popup-link"><strong>$LLY</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('LLY', 'Eli Lilly and Co', 'Biotech And Healthcare', '1185.71', '$1,116,176M', '89.8', '1.1', '623.78', '1249.45', '1126.42', '1043.42')" onmouseenter="showChartHover(event, 'LLY', 'Eli Lilly and Co', '$1,185.71', '-0.52%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$LLY</strong></a></td>
             <td class="col-master-name">Eli Lilly and Co</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
             <td class="col-master-price price-col"><strong>$1,185.71</strong></td>
             <td class="col-master-cap price-col">$1,116,176M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">89.8%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('REGN', 'Regeneron Pharmaceuticals Inc', 'Biotech And Healthcare', '784.36', '$80,754M', '86.9', '1.1', '541.0', '821.11', '745.14', '690.24')" class="ticker-popup-link"><strong>$REGN</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('REGN', 'Regeneron Pharmaceuticals Inc', 'Biotech And Healthcare', '784.36', '$80,754M', '86.9', '1.1', '541.0', '821.11', '745.14', '690.24')" onmouseenter="showChartHover(event, 'REGN', 'Regeneron Pharmaceuticals Inc', '$784.36', '+1.59%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$REGN</strong></a></td>
             <td class="col-master-name">Regeneron Pharmaceuticals Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
             <td class="col-master-price price-col"><strong>$784.36</strong></td>
             <td class="col-master-cap price-col">$80,754M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">86.9%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('VRTX', 'Vertex Pharmaceuticals Inc', 'Biotech And Healthcare', '496.07', '$121,091M', '78.0', '0.8', '362.5', '533.67', '471.27', '436.54')" class="ticker-popup-link"><strong>$VRTX</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('VRTX', 'Vertex Pharmaceuticals Inc', 'Biotech And Healthcare', '496.07', '$121,091M', '78.0', '0.8', '362.5', '533.67', '471.27', '436.54')" onmouseenter="showChartHover(event, 'VRTX', 'Vertex Pharmaceuticals Inc', '$496.07', '+2.49%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$VRTX</strong></a></td>
             <td class="col-master-name">Vertex Pharmaceuticals Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
             <td class="col-master-price price-col"><strong>$496.07</strong></td>
             <td class="col-master-cap price-col">$121,091M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">78.0%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('COST', 'Costco Wholesale Corp', 'Consumer', '947.82', '$420,338M', '41.1', '0.7', '844.06', '1096.5', '900.43', '834.08')" class="ticker-popup-link"><strong>$COST</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('COST', 'Costco Wholesale Corp', 'Consumer', '947.82', '$420,338M', '41.1', '0.7', '844.06', '1096.5', '900.43', '834.08')" onmouseenter="showChartHover(event, 'COST', 'Costco Wholesale Corp', '$947.82', '-0.14%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$COST</strong></a></td>
             <td class="col-master-name">Costco Wholesale Corp</td>
             <td class="col-master-industry"><span class="badge-confirmed">Consumer</span></td>
             <td class="col-master-price price-col"><strong>$947.82</strong></td>
             <td class="col-master-cap price-col">$420,338M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">41.1%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('NFLX', 'Netflix Inc', 'Consumer', '74.14', '$308,715M', '14.7', '0.5', '65.08', '126.71', '70.43', '65.24')" class="ticker-popup-link"><strong>$NFLX</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('NFLX', 'Netflix Inc', 'Consumer', '74.14', '$308,715M', '14.7', '0.5', '65.08', '126.71', '70.43', '65.24')" onmouseenter="showChartHover(event, 'NFLX', 'Netflix Inc', '$74.14', '+0.61%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$NFLX</strong></a></td>
             <td class="col-master-name">Netflix Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Consumer</span></td>
             <td class="col-master-price price-col"><strong>$74.14</strong></td>
             <td class="col-master-cap price-col">$308,715M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">14.7%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('SPOT', 'Spotify Technology SA', 'Consumer', '488.14', '$100,499M', '24.2', '0.9', '405.0', '748.3', '463.73', '429.56')" class="ticker-popup-link"><strong>$SPOT</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('SPOT', 'Spotify Technology SA', 'Consumer', '488.14', '$100,499M', '24.2', '0.9', '405.0', '748.3', '463.73', '429.56')" onmouseenter="showChartHover(event, 'SPOT', 'Spotify Technology SA', '$488.14', '+2.75%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$SPOT</strong></a></td>
             <td class="col-master-name">Spotify Technology SA</td>
             <td class="col-master-industry"><span class="badge-confirmed">Consumer</span></td>
             <td class="col-master-price price-col"><strong>$488.14</strong></td>
             <td class="col-master-cap price-col">$100,499M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">24.2%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('ANET', 'Arista Networks Inc', 'Engineering And Chips', '188.67', '$237,955M', '73.9', '0.9', '114.52', '214.89', '179.24', '166.03')" class="ticker-popup-link"><strong>$ANET</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('ANET', 'Arista Networks Inc', 'Engineering And Chips', '188.67', '$237,955M', '73.9', '0.9', '114.52', '214.89', '179.24', '166.03')" onmouseenter="showChartHover(event, 'ANET', 'Arista Networks Inc', '$188.67', '-1.90%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$ANET</strong></a></td>
             <td class="col-master-name">Arista Networks Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$188.67</strong></td>
             <td class="col-master-cap price-col">$237,955M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">73.9%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('BE', 'Bloom Energy Corp', 'Engineering And Chips', '219.34', '$64,602M', '58.2', '0.9', '35.85', '351.28', '208.37', '193.02')" class="ticker-popup-link"><strong>$BE</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('BE', 'Bloom Energy Corp', 'Engineering And Chips', '219.34', '$64,602M', '58.2', '0.9', '35.85', '351.28', '208.37', '193.02')" onmouseenter="showChartHover(event, 'BE', 'Bloom Energy Corp', '$219.34', '-4.20%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$BE</strong></a></td>
             <td class="col-master-name">Bloom Energy Corp</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$219.34</strong></td>
             <td class="col-master-cap price-col">$64,602M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">58.2%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('CAT', 'Caterpillar Inc', 'Engineering And Chips', '842.19', '$387,134M', '65.4', '0.8', '405.46', '1073.46', '800.08', '741.13')" class="ticker-popup-link"><strong>$CAT</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('CAT', 'Caterpillar Inc', 'Engineering And Chips', '842.19', '$387,134M', '65.4', '0.8', '405.46', '1073.46', '800.08', '741.13')" onmouseenter="showChartHover(event, 'CAT', 'Caterpillar Inc', '$842.19', '-1.72%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$CAT</strong></a></td>
             <td class="col-master-name">Caterpillar Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$842.19</strong></td>
             <td class="col-master-cap price-col">$387,134M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">65.4%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('ETN', 'Eaton Corporation PLC', 'Engineering And Chips', '448.68', '$174,267M', '93.8', '0.7', '311.92', '457.78', '426.25', '394.84')" class="ticker-popup-link"><strong>$ETN</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('ETN', 'Eaton Corporation PLC', 'Engineering And Chips', '448.68', '$174,267M', '93.8', '0.7', '311.92', '457.78', '426.25', '394.84')" onmouseenter="showChartHover(event, 'ETN', 'Eaton Corporation PLC', '$448.68', '+0.11%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$ETN</strong></a></td>
             <td class="col-master-name">Eaton Corporation PLC</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$448.68</strong></td>
             <td class="col-master-cap price-col">$174,267M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">93.8%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('GEV', 'GE Vernova Inc', 'Engineering And Chips', '990.32', '$263,755M', '69.1', '0.9', '530.16', '1195.94', '940.8', '871.48')" class="ticker-popup-link"><strong>$GEV</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('GEV', 'GE Vernova Inc', 'Engineering And Chips', '990.32', '$263,755M', '69.1', '0.9', '530.16', '1195.94', '940.8', '871.48')" onmouseenter="showChartHover(event, 'GEV', 'GE Vernova Inc', '$990.32', '-1.00%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$GEV</strong></a></td>
             <td class="col-master-name">GE Vernova Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$990.32</strong></td>
             <td class="col-master-cap price-col">$263,755M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">69.1%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('GLW', 'Corning Inc', 'Engineering And Chips', '165.68', '$142,715M', '49.1', '0.7', '63.37', '271.78', '157.4', '145.8')" class="ticker-popup-link"><strong>$GLW</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('GLW', 'Corning Inc', 'Engineering And Chips', '165.68', '$142,715M', '49.1', '0.7', '63.37', '271.78', '157.4', '145.8')" onmouseenter="showChartHover(event, 'GLW', 'Corning Inc', '$165.68', '+5.41%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$GLW</strong></a></td>
             <td class="col-master-name">Corning Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$165.68</strong></td>
             <td class="col-master-cap price-col">$142,715M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">49.1%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('VRT', 'Vertiv Holdings Co', 'Engineering And Chips', '272.4', '$93,002M', '58.8', '0.6', '118.7', '379.94', '258.78', '239.71')" class="ticker-popup-link"><strong>$VRT</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('VRT', 'Vertiv Holdings Co', 'Engineering And Chips', '272.4', '$93,002M', '58.8', '0.6', '118.7', '379.94', '258.78', '239.71')" onmouseenter="showChartHover(event, 'VRT', 'Vertiv Holdings Co', '$272.40', '-1.01%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$VRT</strong></a></td>
             <td class="col-master-name">Vertiv Holdings Co</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$272.40</strong></td>
             <td class="col-master-cap price-col">$93,002M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">58.8%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('BLK', 'BlackRock Inc', 'Financial Services', '1136.39', '$184,780M', '72.4', '0.7', '917.39', '1219.94', '1079.57', '1000.02')" class="ticker-popup-link"><strong>$BLK</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('BLK', 'BlackRock Inc', 'Financial Services', '1136.39', '$184,780M', '72.4', '0.7', '917.39', '1219.94', '1079.57', '1000.02')" onmouseenter="showChartHover(event, 'BLK', 'BlackRock Inc', '$1,136.39', '+0.63%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$BLK</strong></a></td>
             <td class="col-master-name">BlackRock Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
             <td class="col-master-price price-col"><strong>$1,136.39</strong></td>
             <td class="col-master-cap price-col">$184,780M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">72.4%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('COIN', 'Coinbase Global Inc', 'Financial Services', '153.6', '$40,525M', '5.5', '1.1', '139.11', '402.16', '145.92', '135.17')" class="ticker-popup-link"><strong>$COIN</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('COIN', 'Coinbase Global Inc', 'Financial Services', '153.6', '$40,525M', '5.5', '1.1', '139.11', '402.16', '145.92', '135.17')" onmouseenter="showChartHover(event, 'COIN', 'Coinbase Global Inc', '$153.60', '+5.63%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$COIN</strong></a></td>
             <td class="col-master-name">Coinbase Global Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
             <td class="col-master-price price-col"><strong>$153.60</strong></td>
             <td class="col-master-cap price-col">$40,525M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">5.5%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('GS', 'Goldman Sachs Group Inc', 'Financial Services', '1039.61', '$302,705M', '74.5', '0.7', '705.55', '1153.99', '987.63', '914.86')" class="ticker-popup-link"><strong>$GS</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('GS', 'Goldman Sachs Group Inc', 'Financial Services', '1039.61', '$302,705M', '74.5', '0.7', '705.55', '1153.99', '987.63', '914.86')" onmouseenter="showChartHover(event, 'GS', 'Goldman Sachs Group Inc', '$1,039.61', '+0.68%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$GS</strong></a></td>
             <td class="col-master-name">Goldman Sachs Group Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
             <td class="col-master-price price-col"><strong>$1,039.61</strong></td>
             <td class="col-master-cap price-col">$302,705M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">74.5%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('JPM', 'JPMorgan Chase & Co', 'Financial Services', '357.52', '$957,979M', '93.5', '0.6', '279.1', '363.0', '339.64', '314.62')" class="ticker-popup-link"><strong>$JPM</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('JPM', 'JPMorgan Chase & Co', 'Financial Services', '357.52', '$957,979M', '93.5', '0.6', '279.1', '363.0', '339.64', '314.62')" onmouseenter="showChartHover(event, 'JPM', 'JPMorgan Chase & Co', '$357.52', '+0.34%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$JPM</strong></a></td>
             <td class="col-master-name">JPMorgan Chase & Co</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
             <td class="col-master-price price-col"><strong>$357.52</strong></td>
             <td class="col-master-cap price-col">$957,979M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">93.5%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('V', 'Visa Inc', 'Financial Services', '362.5', '$691,685M', '85.7', '0.7', '293.89', '373.97', '344.38', '319.0')" class="ticker-popup-link"><strong>$V</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('V', 'Visa Inc', 'Financial Services', '362.5', '$691,685M', '85.7', '0.7', '293.89', '373.97', '344.38', '319.0')" onmouseenter="showChartHover(event, 'V', 'Visa Inc', '$362.50', '-2.15%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$V</strong></a></td>
             <td class="col-master-name">Visa Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
             <td class="col-master-price price-col"><strong>$362.50</strong></td>
             <td class="col-master-cap price-col">$691,685M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">85.7%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('AVGO', 'Broadcom Inc', 'Semiconductors', '427.76', '$2,035,102M', '68.5', '0.8', '281.87', '495.0', '406.37', '376.43')" class="ticker-popup-link"><strong>$AVGO</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('AVGO', 'Broadcom Inc', 'Semiconductors', '427.76', '$2,035,102M', '68.5', '0.8', '281.87', '495.0', '406.37', '376.43')" onmouseenter="showChartHover(event, 'AVGO', 'Broadcom Inc', '$427.76', '+1.71%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$AVGO</strong></a></td>
             <td class="col-master-name">Broadcom Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$427.76</strong></td>
             <td class="col-master-cap price-col">$2,035,102M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">68.5%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('MRVL', 'Marvell Technology Inc', 'Semiconductors', '218.72', '$191,548M', '58.6', '0.8', '61.44', '329.88', '207.78', '192.47')" class="ticker-popup-link"><strong>$MRVL</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('MRVL', 'Marvell Technology Inc', 'Semiconductors', '218.72', '$191,548M', '58.6', '0.8', '61.44', '329.88', '207.78', '192.47')" onmouseenter="showChartHover(event, 'MRVL', 'Marvell Technology Inc', '$218.72', '+3.89%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$MRVL</strong></a></td>
             <td class="col-master-name">Marvell Technology Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$218.72</strong></td>
             <td class="col-master-cap price-col">$191,548M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">58.6%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('MU', 'Micron Technology Inc', 'Semiconductors', '877.57', '$991,121M', '67.0', '0.8', '110.79', '1255.0', '833.69', '772.26')" class="ticker-popup-link"><strong>$MU</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('MU', 'Micron Technology Inc', 'Semiconductors', '877.57', '$991,121M', '67.0', '0.8', '110.79', '1255.0', '833.69', '772.26')" onmouseenter="showChartHover(event, 'MU', 'Micron Technology Inc', '$877.57', '-0.44%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$MU</strong></a></td>
             <td class="col-master-name">Micron Technology Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$877.57</strong></td>
             <td class="col-master-cap price-col">$991,121M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">67.0%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('NVDA', 'NVIDIA Corp', 'Semiconductors', '223.96', '$5,419,832M', '82.6', '0.8', '164.07', '236.54', '212.76', '197.08')" class="ticker-popup-link"><strong>$NVDA</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('NVDA', 'NVIDIA Corp', 'Semiconductors', '223.96', '$5,419,832M', '82.6', '0.8', '164.07', '236.54', '212.76', '197.08')" onmouseenter="showChartHover(event, 'NVDA', 'NVIDIA Corp', '$223.96', '+2.27%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$NVDA</strong></a></td>
             <td class="col-master-name">NVIDIA Corp</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$223.96</strong></td>
             <td class="col-master-cap price-col">$5,419,832M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">82.6%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('TSM', 'TSM', 'Semiconductors', '420.04', 'N/A', '54.5', '0.6', '294.03', '525.05', '399.04', '369.64')" class="ticker-popup-link"><strong>$TSM</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('TSM', 'TSM', 'Semiconductors', '420.04', 'N/A', '54.5', '0.6', '294.03', '525.05', '399.04', '369.64')" onmouseenter="showChartHover(event, 'TSM', 'TSM', '$420.04', '+0.44%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$TSM</strong></a></td>
             <td class="col-master-name">TSM</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$420.04</strong></td>
             <td class="col-master-cap price-col">N/A</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">54.5%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('CRWD', 'CrowdStrike Holdings Inc', 'Technology', '214.42', '$218,335M', '96.3', '0.7', '85.68', '219.35', '203.7', '188.69')" class="ticker-popup-link"><strong>$CRWD</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('CRWD', 'CrowdStrike Holdings Inc', 'Technology', '214.42', '$218,335M', '96.3', '0.7', '85.68', '219.35', '203.7', '188.69')" onmouseenter="showChartHover(event, 'CRWD', 'CrowdStrike Holdings Inc', '$214.42', '+3.39%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$CRWD</strong></a></td>
             <td class="col-master-name">CrowdStrike Holdings Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
             <td class="col-master-price price-col"><strong>$214.42</strong></td>
             <td class="col-master-cap price-col">$218,335M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">96.3%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('DDOG', 'Datadog Inc (Pre-Reincorporation)', 'Technology', '233.93', '$83,270M', '69.8', '1.7', '98.01', '292.72', '222.23', '205.86')" class="ticker-popup-link"><strong>$DDOG</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('DDOG', 'Datadog Inc (Pre-Reincorporation)', 'Technology', '233.93', '$83,270M', '69.8', '1.7', '98.01', '292.72', '222.23', '205.86')" onmouseenter="showChartHover(event, 'DDOG', 'Datadog Inc (Pre-Reincorporation)', '$233.93', '+2.02%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$DDOG</strong></a></td>
             <td class="col-master-name">Datadog Inc (Pre-Reincorporation)</td>
             <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
             <td class="col-master-price price-col"><strong>$233.93</strong></td>
             <td class="col-master-cap price-col">$83,270M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">69.8%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('PLTR', 'Palantir Technologies Inc', 'Technology', '172.01', '$413,356M', '64.9', '1.7', '106.37', '207.52', '163.41', '151.37')" class="ticker-popup-link"><strong>$PLTR</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('PLTR', 'Palantir Technologies Inc', 'Technology', '172.01', '$413,356M', '64.9', '1.7', '106.37', '207.52', '163.41', '151.37')" onmouseenter="showChartHover(event, 'PLTR', 'Palantir Technologies Inc', '$172.01', '+10.32%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$PLTR</strong></a></td>
             <td class="col-master-name">Palantir Technologies Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
             <td class="col-master-price price-col"><strong>$172.01</strong></td>
             <td class="col-master-cap price-col">$413,356M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">64.9%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('SNOW', 'Snowflake Inc', 'Technology', '330.49', '$114,548M', '99.6', '1.2', '118.3', '331.4', '313.97', '290.83')" class="ticker-popup-link"><strong>$SNOW</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('SNOW', 'Snowflake Inc', 'Technology', '330.49', '$114,548M', '99.6', '1.2', '118.3', '331.4', '313.97', '290.83')" onmouseenter="showChartHover(event, 'SNOW', 'Snowflake Inc', '$330.49', '+3.93%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$SNOW</strong></a></td>
             <td class="col-master-name">Snowflake Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
             <td class="col-master-price price-col"><strong>$330.49</strong></td>
@@ -1500,6 +1509,17 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
     </div>
 </div>
 
+</div>
+
+<div id="chartTooltip" class="chart-tooltip">
+    <div class="chart-tooltip-header">
+        <span id="tooltipTicker" style="font-weight:bold;"></span>
+        <span id="tooltipReturn" style="font-weight:bold;"></span>
+    </div>
+    <div style="font-size:0.7rem; color:var(--text-muted); margin-bottom:4px;" id="tooltipName"></div>
+    <div style="font-size:0.68rem; color:var(--accent-cyan); text-align:center; background:var(--bg-dark); padding:4px; border-radius:3px; border:1px solid var(--border-color);">
+        📈 Yahoo Finance Live Preview ↗
+    </div>
 </div>
 
 <div id="tickerModal" class="modal-overlay" onclick="closeModal(event)">
@@ -1529,7 +1549,25 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
 </div>
 
 <script>
+function showChartHover(event, ticker, name, price, retTxt, retColor) {
+    const tooltip = document.getElementById('chartTooltip');
+    document.getElementById('tooltipTicker').innerText = '$' + ticker + ' (' + price + ')';
+    const retSpan = document.getElementById('tooltipReturn');
+    retSpan.innerText = retTxt;
+    retSpan.style.color = retColor;
+    document.getElementById('tooltipName').innerText = name;
+    
+    tooltip.style.display = 'block';
+    tooltip.style.left = (event.pageX + 15) + 'px';
+    tooltip.style.top = (event.pageY + 15) + 'px';
+}
+
+function hideChartHover() {
+    document.getElementById('chartTooltip').style.display = 'none';
+}
+
 function openModal(ticker, name, industry, price, cap, pct, vol, low, high, ma50, ma200) {
+    hideChartHover();
     document.getElementById('modalTicker').innerText = '$' + ticker;
     document.getElementById('modalName').innerText = name;
     document.getElementById('modalIndustry').innerText = industry;
