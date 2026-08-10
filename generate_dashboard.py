@@ -21,7 +21,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - 3-Zone Custom Gradients)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Fixed 30D Returns & Aligned Widths)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -47,22 +47,34 @@ def safe_api_get(url, retries=3, delay=2, extra_headers=None):
 def get_historical_data_yahoo(symbol, current_price):
     ret_10d, ret_30d = 0.0, 0.0
     p_10d, p_30d = 0.0, 0.0
+    vol_ratio = 1.0
+    closes = []
     try:
+        # Changed range to 3mo to guarantee 30+ trading days for reliable return calculations
         yf_url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?range=3mo&interval=1d"
         res = safe_api_get(yf_url, retries=2, delay=1, extra_headers=headers)
         result = res.get('chart', {}).get('result', [])
         if result:
-            quote = result[0].get('indicators', {}).get('quote', [{}])[0]
+            indicators = result[0].get('indicators', {})
+            quote = indicators.get('quote', [{}])[0]
             closes = [c for c in quote.get('close', []) if c is not None]
+            volumes = [v for v in quote.get('volume', []) if v is not None]
+            
             if len(closes) >= 10:
                 p_10d = closes[-11] if len(closes) >= 11 else closes[0]
                 ret_10d = ((current_price - p_10d) / p_10d) * 100
             if len(closes) >= 30:
                 p_30d = closes[-31] if len(closes) >= 31 else closes[0]
                 ret_30d = ((current_price - p_30d) / p_30d) * 100
+            
+            if len(volumes) >= 5:
+                today_vol = volumes[-1]
+                avg_vol = statistics.mean(volumes[-20:]) if len(volumes) >= 20 else statistics.mean(volumes)
+                if avg_vol > 0:
+                    vol_ratio = round(today_vol / avg_vol, 1)
     except Exception:
         pass
-    return ret_10d, p_10d, ret_30d, p_30d
+    return ret_10d, p_10d, ret_30d, p_30d, vol_ratio, closes
 
 def get_earnings_move_yahoo(symbol, earn_date_str, hour_timing):
     if not earn_date_str or earn_date_str == 'N/A':
@@ -147,9 +159,32 @@ for idx, symbol in enumerate(tickers, 1):
             "high52": round(high52, 2), "pct": round(pct_range, 1)
         })
 
+        return_10d_pct, price_10d, return_30d_pct, price_30d, vol_ratio, closes = get_historical_data_yahoo(symbol, last_price)
+
+        svg_points = ""
+        p_max, p_mid, p_min = last_price, last_price, last_price
+        if closes and len(closes) > 1:
+            # Slice to last 30 trading points for the 1-month sparkline window
+            recent_closes = closes[-30:] if len(closes) >= 30 else closes
+            min_c = min(recent_closes)
+            max_c = max(recent_closes)
+            c_range = (max_c - min_c) if max_c != min_c else 1.0
+            width, height = 145, 110
+            pts = []
+            for i, val in enumerate(recent_closes):
+                x = (i / (len(recent_closes) - 1)) * width
+                y = height - ((val - min_c) / c_range) * (height - 16) - 8
+                pts.append(f"{x:.1f},{y:.1f}")
+            svg_points = " ".join(pts)
+            p_max = round(max_c, 2)
+            p_mid = round((max_c + min_c) / 2, 2)
+            p_min = round(min_c, 2)
+
         master_list.append({
             "ticker": symbol, "name": comp_name, "industry": comp_industry,
-            "price": round(last_price, 2), "mkt_cap": mkt_cap_str, "pct": round(pct_range, 1)
+            "price": round(last_price, 2), "mkt_cap": mkt_cap_str, "pct": round(pct_range, 1),
+            "vol_ratio": vol_ratio, "svg_points": svg_points,
+            "p_max": p_max, "p_mid": p_mid, "p_min": p_min
         })
         time.sleep(0.2)
 
@@ -219,15 +254,15 @@ for idx, symbol in enumerate(tickers, 1):
             })
         time.sleep(0.2)
 
-        return_10d_pct, price_10d, return_30d_pct, price_30d = get_historical_data_yahoo(symbol, last_price)
-        if abs(daily_return_pct) >= 3.0 or abs(return_10d_pct) >= 5.0 or abs(return_30d_pct) >= 8.0:
+        if abs(daily_return_pct) >= 3.0 or abs(return_10d_pct) >= 5.0 or abs(return_30d_pct) >= 8.0 or vol_ratio >= 1.5:
             movers_list.append({
                 "ticker": symbol, "price": round(last_price, 2), "daily_return": round(daily_return_pct, 2),
                 "return_10d": round(return_10d_pct, 2), "price_10d": round(price_10d, 2),
-                "return_30d": round(return_30d_pct, 2), "price_30d": round(price_30d, 2)
+                "return_30d": round(return_30d_pct, 2), "price_30d": round(price_30d, 2),
+                "vol_ratio": vol_ratio
             })
 
-        print(f"[{idx}/{len(tickers)}] ✅ Loaded {symbol}: ${last_price:.2f} [{comp_industry}]")
+        print(f"[{idx}/{len(tickers)}] ✅ Loaded {symbol}: ${last_price:.2f} [{comp_industry}] (30D Ret: {return_30d_pct:+.2f}%)")
     except Exception as e:
         print(f"Error processing {symbol}: {e}")
 
@@ -281,24 +316,17 @@ def build_watchlist_rows(items):
         
         pct_val = max(0.0, min(100.0, item['pct']))
         
-        # 3-Zone Custom Gradients:
-        # 0% to 40%: Green gradient (Darker green to Bright Green)
-        # 40% to 60%: Yellow gradient / zone
-        # 60% to 100%: Red gradient (Yellow-Red to Bright Red)
         if pct_val <= 40.0:
-            # 0% to 40%: Darker green [22, 160, 90] to Bright Green [34, 197, 94]
             factor = pct_val / 40.0
             r_col = int(22 + (34 - 22) * factor)
             g_col = int(160 + (197 - 160) * factor)
             b_col = int(90 + (94 - 90) * factor)
         elif pct_val <= 60.0:
-            # 40% to 60%: Gradient of Yellow
             factor = (pct_val - 40.0) / 20.0
             r_col = int(230 + (250 - 230) * factor)
             g_col = int(180 + (204 - 180) * factor)
             b_col = int(20 + (21 - 20) * factor)
         else:
-            # 60% to 100%: Gradient of Red (Yellow [250, 204, 21] to Bright Red [239, 68, 68])
             factor = (pct_val - 60.0) / 40.0
             r_col = int(250 + (239 - 250) * factor)
             g_col = int(204 + (68 - 204) * factor)
@@ -353,8 +381,9 @@ def build_movers_rows(items):
         return """<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:10px;">No significant movers detected.</td></tr>"""
     rows = ""
     for item in items:
+        vol_badge = f'<span class="vol-badge" title="Volume is {item["vol_ratio"]}x normal volume">⚡{item["vol_ratio"]}x Vol</span>' if item['vol_ratio'] >= 1.5 else f'<span style="color:var(--text-muted); font-size:0.65rem;">{item["vol_ratio"]}x Vol</span>'
         rows += f"""<tr class="movers-row">
-            <td class="col-movers-ticker"><strong>${item['ticker']}</strong></td>
+            <td class="col-movers-ticker"><strong>${item['ticker']}</strong> {vol_badge}</td>
             <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">{item['composite_score']:+.2f}</span></td>
             <td class="col-movers-combined"><div class="combined-cell">{get_return_badge_html(item['daily_return'], 2.0)}<span class="price-col">${item['price']:,.2f}</span></div></td>
             <td class="col-movers-combined"><div class="combined-cell">{get_return_badge_html(item['return_10d'], 5.0)}<span class="price-col">${item['price_10d']:,.2f}</span></div></td>
@@ -378,8 +407,9 @@ def build_news_rows(items):
 def build_master_rows(items):
     rows = ""
     for item in items:
-        rows += f"""<tr class="master-row">
-            <td class="col-master-ticker"><strong>${item['ticker']}</strong></td>
+        rows += f"""
+        <tr class="master-row" onclick="showSidePopup(event, '{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}')" style="cursor: pointer;">
+            <td class="col-master-ticker"><span class="ticker-popup-link"><strong>${item['ticker']}</strong></span></td>
             <td class="col-master-name">{item['name']}</td>
             <td class="col-master-industry"><span class="badge-confirmed">{item['industry']}</span></td>
             <td class="col-master-price price-col"><strong>${item['price']:,.2f}</strong></td>
@@ -390,7 +420,7 @@ def build_master_rows(items):
 
 table_header_html = """<thead><tr class="watchlist-row"><th class="col-ticker">Ticker</th><th class="col-bar" style="text-align:center;">Range Bar (33% & 66% Grids)<div class="axis-labels"><span>0%</span><span style="color:#a78bfa;">33%</span><span style="color:#a78bfa;">66%</span><span>100%</span></div></th><th class="col-low52" style="text-align:right;">52W Low</th><th class="col-price" style="text-align:right;">Price</th><th class="col-high52" style="text-align:right;">52W High</th><th class="col-mini-gauge" style="text-align:center;">52W Pos</th></tr></thead>"""
 earnings_header_html = """<thead><tr class="earnings-row"><th class="col-earn-ticker">Ticker</th><th class="col-earn-price" style="text-align:right;">Price</th><th class="col-earn-date">Date</th><th class="col-earn-status">Status</th><th class="col-earn-eps">EPS</th><th class="col-earn-move">Earnings Move ⚡</th></tr></thead>"""
-movers_header_html = """<thead><tr class="movers-row"><th class="col-movers-ticker">Ticker</th><th class="col-movers-score">Score ↓</th><th class="col-movers-combined">1D Return / Price</th><th class="col-movers-combined">10D Return / Price</th><th class="col-movers-combined">30D Return / Price</th></tr></thead>"""
+movers_header_html = """<thead><tr class="movers-row"><th class="col-movers-ticker">Ticker & Vol</th><th class="col-movers-score">Score ↓</th><th class="col-movers-combined">1D Return / Price</th><th class="col-movers-combined">10D Return / Price</th><th class="col-movers-combined">30D Return / Price</th></tr></thead>"""
 news_header_html = """<thead><tr class="news-row"><th class="col-news-ticker">Ticker</th><th class="col-news-headline">Latest Article Headline</th><th class="col-news-source">Source</th><th class="col-news-date">Published</th></tr></thead>"""
 master_header_html = """<thead><tr class="master-row"><th class="col-master-ticker">Ticker</th><th class="col-master-name">Company Name</th><th class="col-master-industry">Industry</th><th class="col-master-price" style="text-align:right;">Price</th><th class="col-master-cap" style="text-align:right;">Market Cap</th><th class="col-master-gauge" style="text-align:center;">52W Pos</th></tr></thead>"""
 
@@ -420,8 +450,8 @@ h1{{font-size:1.2rem;color:var(--accent-cyan);}}
 .line-grid{{width:1px;height:10px;border-right:1px dashed var(--text-muted);display:inline-block;margin:0 1px;}}
 .dual-grid-wrapper{{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;}}
 .grid-column{{flex:1;background-color:var(--bg-card);border-radius:6px;border:1px solid var(--border-color);padding:3px;overflow-x:auto;}}
-table{{width:100%;border-collapse:collapse;text-align:left;}}
-th{{background-color:#281545;padding:4px 6px;color:var(--text-muted);font-weight:600;border-bottom:1px solid var(--border-color);font-size:0.72rem;}}
+table{{width:100%;border-collapse:collapse;text-align:left;table-layout:fixed;}}
+th{{background-color:#281545;padding:4px 6px;color:var(--text-muted);font-weight:600;border-bottom:1px solid var(--border-color);font-size:0.72rem;overflow:hidden;text-overflow:ellipsis;}}
 td{{padding:4px 6px;border-bottom:1px solid var(--border-color);vertical-align:middle;white-space:nowrap;font-size:0.72rem;overflow:hidden;text-overflow:ellipsis;}}
 tr:nth-child(even){{background-color:var(--bg-row-alt);}}
 tr:hover{{background-color:rgba(167,139,250,0.12);}}
@@ -435,15 +465,15 @@ tr:hover{{background-color:rgba(167,139,250,0.12);}}
 .col-mini-gauge{{width:75px;text-align:center;}}
 
 .movers-row{{display:table;width:100%;table-layout:fixed;}}
-.col-movers-ticker{{width:65px;}}
-.col-movers-score{{width:65px;}}
+.col-movers-ticker{{width:85px;}}
+.col-movers-score{{width:55px;}}
 .col-movers-combined{{width:135px;}}
 .combined-cell{{display:flex;justify-content:space-between;align-items:center;width:100%;}}
 
 .earnings-row{{display:table;width:100%;table-layout:fixed;}}
-.col-earn-ticker{{width:60px;}}
-.col-earn-price{{width:70px;text-align:right;}}
-.col-earn-date{{width:130px;}}
+.col-earn-ticker{{width:65px;}}
+.col-earn-price{{width:75px;text-align:right;}}
+.col-earn-date{{width:125px;}}
 .col-earn-status{{width:100px;}}
 .col-earn-eps{{width:55px;}}
 .col-earn-move{{width:auto;}}
@@ -458,11 +488,29 @@ tr:hover{{background-color:rgba(167,139,250,0.12);}}
 
 .master-row{{display:table;width:100%;table-layout:fixed;}}
 .col-master-ticker{{width:65px;}}
-.col-master-name{{width:160px;overflow:hidden;text-overflow:ellipsis;}}
+.col-master-name{{width:150px;overflow:hidden;text-overflow:ellipsis;}}
 .col-master-industry{{width:150px;overflow:hidden;text-overflow:ellipsis;}}
 .col-master-price{{width:85px;text-align:right;}}
 .col-master-cap{{width:95px;text-align:right;}}
 .col-master-gauge{{width:75px;text-align:center;}}
+
+.ticker-popup-link {{ color: var(--accent-cyan); text-decoration: none; font-weight: bold; cursor: pointer; }}
+.ticker-popup-link:hover {{ text-decoration: underline; }}
+
+.vol-badge {{ background-color: rgba(250, 204, 21, 0.2); color: var(--accent-yellow); padding: 1px 4px; border-radius: 3px; font-weight: bold; font-size: 0.62rem; border: 1px solid rgba(250, 204, 21, 0.4); }}
+
+/* Floating Side Popup Card CSS */
+#sideSparklinePopup {{
+    display: none;
+    position: absolute;
+    width: 330px;
+    background: var(--bg-card);
+    border: 1px solid var(--accent-cyan);
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+    z-index: 9999;
+}}
 
 .range-bar-container{{position:relative;width:100%;height:5px;background-color:var(--channel-bar);border-radius:3px;margin:2px 0;overflow:visible;}}
 .grid-line-33{{position:absolute;top:-3px;bottom:-3px;left:33.33%;border-left:1px dashed rgba(255,255,255,0.35);z-index:1;pointer-events:none;}}
@@ -527,7 +575,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
 
 <div class="dual-grid-wrapper">
     <div class="grid-column">
-        <div class="section-title">🚀 Significant Movers (Ranked by Multi-Timeframe Score)</div>
+        <div class="section-title">🚀 Significant Movers & Volume Spikes</div>
         <table>{movers_header_html}<tbody>{build_movers_rows(movers_list)}</tbody></table>
     </div>
     <div class="grid-column">
@@ -549,7 +597,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
 
 <div class="dual-grid-wrapper" style="margin-top:6px;">
     <div class="grid-column">
-        <div class="section-title">📋 Tracked Tickers (Sorted by Ticker)</div>
+        <div class="section-title">📋 Tracked Tickers (Click Row for Aligned Popup)</div>
         <table>{master_header_html}<tbody>{build_master_rows(master_by_ticker)}</tbody></table>
     </div>
     <div class="grid-column">
@@ -558,7 +606,66 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
     </div>
 </div>
 
-</div></body></html>"""
+</div>
+
+<div id="sideSparklinePopup" onclick="event.stopPropagation()">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+        <span id="popTicker" style="color: var(--accent-cyan); font-weight: bold; font-size: 0.9rem;"></span>
+        <span style="cursor: pointer; font-size: 1rem; color: var(--text-muted);" onclick="closeSidePopup()">&times;</span>
+    </div>
+    <div id="popInfo" style="font-size: 0.7rem; margin-bottom: 8px; line-height: 1.3;"></div>
+    <div style="display: flex; align-items: center; gap: 6px;">
+        <svg id="popSvg" viewBox="0 0 145 110" width="145" height="110" style="background:var(--bg-dark); border-radius:6px; border:1px solid var(--border-color);">
+            <line x1="0" y1="27.5" x2="145" y2="27.5" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
+            <line x1="0" y1="55" x2="145" y2="55" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
+            <line x1="0" y1="82.5" x2="145" y2="82.5" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
+            <line x1="48.3" y1="0" x2="48.3" y2="110" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
+            <line x1="96.6" y1="0" x2="96.6" y2="110" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
+            <polyline id="popPolyline" fill="none" stroke="var(--accent-cyan)" stroke-width="2" points=""/>
+        </svg>
+        <div style="display: flex; flex-direction: column; justify-content: space-between; height: 110px; font-size: 0.65rem; font-family: monospace; color: var(--text-muted); font-weight: bold;">
+            <span id="labelMax"></span>
+            <span id="labelMid"></span>
+            <span id="labelMin"></span>
+        </div>
+    </div>
+    <div style="margin-top: 8px; text-align: center;">
+        <a id="popYahooLink" href="#" target="_blank" style="color:var(--accent-cyan); text-decoration:underline; font-size:0.68rem; font-weight:bold;">Yahoo Finance ↗</a>
+    </div>
+</div>
+
+<script>
+function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints, pMax, pMid, pMin) {{
+    event.stopPropagation();
+    const popup = document.getElementById('sideSparklinePopup');
+    
+    document.getElementById('popTicker').innerText = '$' + ticker + ' (' + name + ')';
+    document.getElementById('popInfo').innerHTML = 'Ind: <b>' + industry + '</b><br>Price: <b>$' + price + '</b> | 52W: <b>' + pct + '%</b><br>Volume: <b>' + vol + 'x Normal</b>';
+    document.getElementById('popPolyline').setAttribute('points', svgPoints);
+    document.getElementById('labelMax').innerText = '$' + pMax;
+    document.getElementById('labelMid').innerText = '$' + pMid;
+    document.getElementById('labelMin').innerText = '$' + pMin;
+    document.getElementById('popYahooLink').href = 'https://finance.yahoo.com/quote/' + ticker;
+    
+    const rect = event.currentTarget.getBoundingClientRect();
+    popup.style.top = (window.scrollY + rect.top) + 'px';
+    popup.style.left = (window.scrollX + rect.right + 10) + 'px';
+    popup.style.display = 'block';
+}}
+
+function closeSidePopup() {{
+    document.getElementById('sideSparklinePopup').style.display = 'none';
+}}
+
+window.addEventListener('click', function(e) {{
+    const popup = document.getElementById('sideSparklinePopup');
+    if (!popup.contains(e.target)) {{
+        popup.style.display = 'none';
+    }}
+}});
+</script>
+
+</body></html>"""
 
 date_filename_str = today.strftime("%Y.%m.%d")
 output_filename = f"JacobsStockDashboard.{date_filename_str}.html"
@@ -571,5 +678,4 @@ print(f"\n🌐 Dashboard successfully generated and saved to: {output_filename}"
 print(f"⏱️ Timestamp included: {generation_timestamp_str}")
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
 
-# 🔔 Completion Message
 print("\n🎉 ALL TASKS COMPLETE: Jacob's Stock Dashboard generated, saved, and browser launched successfully!")
