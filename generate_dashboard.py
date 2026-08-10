@@ -26,7 +26,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - EST Timestamp & Interactive Modals)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Hover Tooltips & Interactive Modals)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -167,7 +167,7 @@ for idx, symbol in enumerate(tickers, 1):
             "ticker": symbol, "name": comp_name, "industry": comp_industry,
             "price": round(last_price, 2), "mkt_cap": mkt_cap_str, "pct": round(pct_range, 1),
             "vol_ratio": vol_ratio, "ma50": round(ma50, 2), "ma200": round(ma200, 2),
-            "low52": round(low52, 2), "high52": round(high52, 2)
+            "low52": round(low52, 2), "high52": round(high52, 2), "daily_return": round(daily_return_pct, 2)
         })
         time.sleep(0.2)
 
@@ -390,8 +390,10 @@ def build_news_rows(items):
 def build_master_rows(items):
     rows = ""
     for item in items:
+        ret_color = "var(--accent-green)" if item['daily_return'] >= 0 else "var(--accent-red)"
+        ret_txt = f"+{item['daily_return']:.2f}%" if item['daily_return'] >= 0 else f"{item['daily_return']:.2f}%"
         rows += f"""<tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['mkt_cap']}', '{item['pct']}', '{item['vol_ratio']}', '{item['low52']}', '{item['high52']}', '{item['ma50']}', '{item['ma200']}')" class="ticker-popup-link"><strong>${item['ticker']}</strong></a></td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['mkt_cap']}', '{item['pct']}', '{item['vol_ratio']}', '{item['low52']}', '{item['high52']}', '{item['ma50']}', '{item['ma200']}')" onmouseenter="showChartHover(event, '{item['ticker']}', '{item['name']}', '${item['price']:,.2f}', '{ret_txt}', '{ret_color}')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>${item['ticker']}</strong></a></td>
             <td class="col-master-name">{item['name']}</td>
             <td class="col-master-industry"><span class="badge-confirmed">{item['industry']}</span></td>
             <td class="col-master-price price-col"><strong>${item['price']:,.2f}</strong></td>
@@ -480,6 +482,10 @@ tr:hover{{background-color:rgba(167,139,250,0.12);}}
 .ticker-popup-link:hover {{ text-decoration: underline; }}
 
 .vol-badge {{ background-color: rgba(250, 204, 21, 0.2); color: var(--accent-yellow); padding: 1px 4px; border-radius: 3px; font-weight: bold; font-size: 0.62rem; border: 1px solid rgba(250, 204, 21, 0.4); }}
+
+/* Hover Chart Tooltip CSS */
+.chart-tooltip {{ display: none; position: absolute; background: var(--bg-card); border: 1px solid var(--accent-cyan); border-radius: 6px; padding: 10px; z-index: 2000; width: 220px; box-shadow: 0 4px 16px rgba(0,0,0,0.6); pointer-events: none; }}
+.chart-tooltip-header {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 0.78rem; font-weight: bold; color: var(--accent-cyan); }}
 
 /* Modal Popup CSS */
 .modal-overlay {{ display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }}
@@ -575,7 +581,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
 
 <div class="dual-grid-wrapper" style="margin-top:6px;">
     <div class="grid-column">
-        <div class="section-title">📋 Tracked Tickers (Click Ticker for Popup)</div>
+        <div class="section-title">📋 Tracked Tickers (Hover for Chart Preview / Click for Modal)</div>
         <table>{master_header_html}<tbody>{build_master_rows(master_by_ticker)}</tbody></table>
     </div>
     <div class="grid-column">
@@ -584,6 +590,17 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
     </div>
 </div>
 
+</div>
+
+<div id="chartTooltip" class="chart-tooltip">
+    <div class="chart-tooltip-header">
+        <span id="tooltipTicker" style="font-weight:bold;"></span>
+        <span id="tooltipReturn" style="font-weight:bold;"></span>
+    </div>
+    <div style="font-size:0.7rem; color:var(--text-muted); margin-bottom:4px;" id="tooltipName"></div>
+    <div style="font-size:0.68rem; color:var(--accent-cyan); text-align:center; background:var(--bg-dark); padding:4px; border-radius:3px; border:1px solid var(--border-color);">
+        📈 Yahoo Finance Live Preview ↗
+    </div>
 </div>
 
 <div id="tickerModal" class="modal-overlay" onclick="closeModal(event)">
@@ -613,7 +630,25 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
 </div>
 
 <script>
+function showChartHover(event, ticker, name, price, retTxt, retColor) {{
+    const tooltip = document.getElementById('chartTooltip');
+    document.getElementById('tooltipTicker').innerText = '$' + ticker + ' (' + price + ')';
+    const retSpan = document.getElementById('tooltipReturn');
+    retSpan.innerText = retTxt;
+    retSpan.style.color = retColor;
+    document.getElementById('tooltipName').innerText = name;
+    
+    tooltip.style.display = 'block';
+    tooltip.style.left = (event.pageX + 15) + 'px';
+    tooltip.style.top = (event.pageY + 15) + 'px';
+}}
+
+function hideChartHover() {{
+    document.getElementById('chartTooltip').style.display = 'none';
+}}
+
 function openModal(ticker, name, industry, price, cap, pct, vol, low, high, ma50, ma200) {{
+    hideChartHover();
     document.getElementById('modalTicker').innerText = '$' + ticker;
     document.getElementById('modalName').innerText = name;
     document.getElementById('modalIndustry').innerText = industry;
@@ -647,7 +682,7 @@ output_path = os.path.join(os.getcwd(), output_filename)
 with open(output_path, "w", encoding="utf-8") as f:
     f.write(html_content)
 
-print(f"\n🌐 Dashboard successfully generated and saved to: {output_filename}")
+print(f"\n🌐 Dashboard successfully generated with Hover Previews & saved to: {output_filename}")
 print(f"⏱️ EST Timestamp included: {generation_timestamp_str}")
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
 
