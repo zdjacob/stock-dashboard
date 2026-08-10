@@ -1,4 +1,3 @@
-
 import os, time, datetime, webbrowser, requests, statistics
 try:
     from zoneinfo import ZoneInfo
@@ -27,7 +26,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Accordion Sparkline Drawers)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Global Single-Drawer Accordion)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -408,7 +407,7 @@ def build_master_rows(items):
             svg_points = " ".join(pts)
         
         ret_color = "#22c55e" if item['daily_return'] >= 0 else "#ef4444"
-        row_id = f"drawer_{item['ticker']}"
+        row_id = f"drawer_{item['ticker']}_{id(item)}"
 
         rows += f"""<tr class="master-row click-row" onclick="toggleDrawer(this, '{row_id}')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/{item['ticker']}" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>${item['ticker']}</strong> ↗</a></td>
@@ -577,7 +576,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
         </div>
     </div>
 </header>
-<div class="legend-bar"><span style="color:var(--text-muted);font-weight:600;">Indicator Key:</span><div class="legend-item"><span class="dot-cyan"></span> Live Price</div><div class="legend-item"><span class="bar-orange"></span> Support Level</div><div class="legend-item"><span class="diamond-yellow"></span> 50-Day Moving Avg</div><div class="legend-item"><span class="square-red"></span> 200-Day Moving Avg</div><div class="legend-item"><span class="line-grid"></span> 33% / 66% Range Dividers</div></div>
+<div class="legend-bar"><span style="color:var(--text-muted);font-weight:600;>Indicator Key:</span><div class="legend-item"><span class="dot-cyan"></span> Live Price</div><div class="legend-item"><span class="bar-orange"></span> Support Level</div><div class="legend-item"><span class="diamond-yellow"></span> 50-Day Moving Avg</div><div class="legend-item"><span class="square-red"></span> 200-Day Moving Avg</div><div class="legend-item"><span class="line-grid"></span> 33% / 66% Range Dividers</div></div>
 
 <div class="dual-grid-wrapper">
     <div class="grid-column"><table>{table_header_html}<tbody>{build_watchlist_rows(data_left)}</tbody></table></div>
@@ -622,19 +621,17 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
 <script>
 function toggleDrawer(rowElement, rowId) {{
     const targetDrawer = document.getElementById(rowId);
-    const tableContainer = rowElement.closest('table');
+    const isCurrentlyOpen = (targetDrawer.style.display === 'table-row');
     
-    // Close all other drawers in the same table first (Accordion behavior)
-    const allDrawers = tableContainer.querySelectorAll('.sparkline-drawer');
+    // Close ALL drawers across the entire page first
+    const allDrawers = document.querySelectorAll('.sparkline-drawer');
     allDrawers.forEach(drawer => {{
-        if (drawer.id !== rowId) {{
-            drawer.style.display = 'none';
-        }}
+        drawer.style.display = 'none';
     }});
     
-    // Toggle the selected drawer
-    if (targetDrawer) {{
-        targetDrawer.style.display = targetDrawer.style.display === 'none' ? 'table-row' : 'none';
+    // If it wasn't open before, open it now (Accordion single-open behavior)
+    if (!isCurrentlyOpen && targetDrawer) {{
+        targetDrawer.style.display = 'table-row';
     }}
 }}
 </script>
@@ -648,7 +645,7 @@ output_path = os.path.join(os.getcwd(), output_filename)
 with open(output_path, "w", encoding="utf-8") as f:
     f.write(html_content)
 
-print(f"\n🌐 Dashboard successfully generated with Accordion Sparklines & saved to: {output_filename}")
+print(f"\n🌐 Dashboard successfully generated with Global Single-Drawer Accordion & saved to: {output_filename}")
 print(f"⏱️ EST Timestamp included: {generation_timestamp_str}")
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
 
