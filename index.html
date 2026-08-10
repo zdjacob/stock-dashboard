@@ -11,7 +11,7 @@ h1{font-size:1.2rem;color:var(--accent-cyan);}
 .speed-dial-card{background-color:var(--bg-card);border:1px solid var(--border-color);border-radius:6px;padding:6px 12px;display:flex;align-items:center;gap:12px;}
 .speed-dial-container{position:relative;width:60px;height:30px;overflow:hidden;}
 .speed-dial-arc{position:absolute;top:0;left:0;width:60px;height:60px;border-radius:50%;background:conic-gradient(from 270deg at 50% 50%, #22c55e 0deg, #facc15 90deg, #ef4444 180deg);clip-path:polygon(0 0, 100% 0, 100% 50%, 0 50%);}
-.speed-dial-needle{position:absolute;bottom:0;left:29px;width:2px;height:26px;background-color:#fff;transform-origin:bottom center;transform:rotate(52.94117647058823deg);transition:transform 0.5s ease;z-index:3;}
+.speed-dial-needle{position:absolute;bottom:0;left:29px;width:2px;height:26px;background-color:#fff;transform-origin:bottom center;transform:rotate(47.64705882352939deg);transition:transform 0.5s ease;z-index:3;}
 .speed-dial-pin{position:absolute;bottom:-2px;left:26px;width:8px;height:8px;background-color:var(--accent-cyan);border-radius:50%;border:1px solid #fff;z-index:4;}
 .speed-dial-info{display:flex;flex-direction:column;font-size:0.68rem;font-weight:bold;}
 
@@ -120,16 +120,16 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
 <body><div class="container"><header>
     <div><h1>📊 Jacob's Technical Watchlist & Market Dashboard</h1></div>
     <div class="header-meta">
-        <div class="timestamp-banner">⏱️ Aug 09, 2026 at 22:43:41 EST</div>
+        <div class="timestamp-banner">⏱️ Aug 09, 2026 at 23:55:29 EST</div>
         <div class="speed-dial-card">
             <div class="speed-dial-container">
                 <div class="speed-dial-arc"></div>
-                <div class="speed-dial-needle" style="transform: rotate(52.94117647058823deg);"></div>
+                <div class="speed-dial-needle" style="transform: rotate(47.64705882352939deg);"></div>
                 <div class="speed-dial-pin"></div>
             </div>
             <div class="speed-dial-info">
                 <span>🌡️ Market Hotness</span>
-                <span style="color:var(--accent-cyan);">79.4% (27/34)</span>
+                <span style="color:var(--accent-cyan);">76.5% (26/34)</span>
                 <span style="font-size:0.62rem;color:var(--text-muted);">🔥 Overheated / Bullish</span>
             </div>
         </div>
@@ -376,12 +376,12 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
         </tr><tr class="watchlist-row">
             <td class="col-ticker"><strong>$TSM</strong></td>
             <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
-            <div class="marker-orange" style="left:42.00069258072896%;" title="TSM Support: $391.06"></div>
-            <div class="marker-yellow" style="left:45.45493896632329%;" title="TSM 50d MA: $399.04"></div>
-            <div class="marker-red" style="left:32.7287680720284%;" title="TSM 200d MA: $369.64"></div>
-            <div class="marker-cyan" style="left:54.54506103367677%;" title="TSM Price: $420.04"></div></div></td>
-            <td class="col-low52">$294.03</td><td class="col-price">$420.04</td><td class="col-high52">$525.05</td>
-            <td class="col-mini-gauge" style="background-color: rgba(244, 197, 20, 0.85); color: #fff; font-weight: bold;"><span class="gauge-number">54.5%</span></td>
+            <div class="marker-orange" style="left:41.04560622914349%;" title="TSM Support: $391.06"></div>
+            <div class="marker-yellow" style="left:43.51130886169818%;" title="TSM 50d MA: $399.04"></div>
+            <div class="marker-red" style="left:34.42714126807563%;" title="TSM 200d MA: $369.64"></div>
+            <div class="marker-cyan" style="left:50.0%;" title="TSM Price: $420.04"></div></div></td>
+            <td class="col-low52">$258.22</td><td class="col-price">$420.04</td><td class="col-high52">$581.86</td>
+            <td class="col-mini-gauge" style="background-color: rgba(240, 192, 20, 0.85); color: #fff; font-weight: bold;"><span class="gauge-number">50.0%</span></td>
         </tr><tr class="watchlist-row">
             <td class="col-ticker"><strong>$GLW</strong></td>
             <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
@@ -726,6 +726,13 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
             <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$5.89</strong></td>
             <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
         </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$TSM</strong></td>
+            <td class="col-earn-price price-col"><strong>$420.04</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-14</td>
+            <td class="col-earn-status"><span class="badge-month-after">Month After</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$28.88</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
             <td class="col-earn-ticker"><strong>$ISRG</strong></td>
             <td class="col-earn-price price-col"><strong>$378.81</strong></td>
             <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-19</td>
@@ -829,13 +836,6 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
             <td class="col-earn-date"><span class="month-pill m-shade-4">NOV</span> 2026-11-02</td>
             <td class="col-earn-status"><span class="badge-unconfirmed">Unconfirmed Est.</span></td>
             <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$3.54</strong></td>
-            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
-        </tr><tr class="earnings-row">
-            <td class="col-earn-ticker"><strong>$TSM</strong></td>
-            <td class="col-earn-price price-col"><strong>$420.04</strong></td>
-            <td class="col-earn-date"><span class="month-pill m-shade-tbd">TBD</span> TBD / Next Qtr</td>
-            <td class="col-earn-status"><span class="badge-unconfirmed">Unconfirmed Est.</span></td>
-            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">N/A</strong></td>
             <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
         </tr></tbody></table>
     </div>
@@ -1236,12 +1236,12 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
             <td class="col-master-cap price-col">$100,499M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">24.2%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('TSM', 'TSM', 'Semiconductors', '420.04', 'N/A', '54.5', '0.6', '294.03', '525.05', '399.04', '369.64')" onmouseenter="showChartHover(event, 'TSM', 'TSM', '$420.04', '+0.44%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$TSM</strong></a></td>
-            <td class="col-master-name">TSM</td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('TSM', 'Taiwan Semiconductor Manufacturing Co Ltd', 'Semiconductors', '420.04', '$61,330,053M', '50.0', '0.6', '258.22', '581.86', '399.04', '369.64')" onmouseenter="showChartHover(event, 'TSM', 'Taiwan Semiconductor Manufacturing Co Ltd', '$420.04', '+0.44%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$TSM</strong></a></td>
+            <td class="col-master-name">Taiwan Semiconductor Manufacturing Co Ltd</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$420.04</strong></td>
-            <td class="col-master-cap price-col">N/A</td>
-            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">54.5%</span></td>
+            <td class="col-master-cap price-col">$61,330,053M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">50.0%</span></td>
         </tr><tr class="master-row">
             <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('V', 'Visa Inc', 'Financial Services', '362.5', '$691,685M', '85.7', '0.7', '293.89', '373.97', '344.38', '319.0')" onmouseenter="showChartHover(event, 'V', 'Visa Inc', '$362.50', '-2.15%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$V</strong></a></td>
             <td class="col-master-name">Visa Inc</td>
@@ -1471,12 +1471,12 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
             <td class="col-master-cap price-col">$5,419,832M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">82.6%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('TSM', 'TSM', 'Semiconductors', '420.04', 'N/A', '54.5', '0.6', '294.03', '525.05', '399.04', '369.64')" onmouseenter="showChartHover(event, 'TSM', 'TSM', '$420.04', '+0.44%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$TSM</strong></a></td>
-            <td class="col-master-name">TSM</td>
+            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('TSM', 'Taiwan Semiconductor Manufacturing Co Ltd', 'Semiconductors', '420.04', '$61,330,053M', '50.0', '0.6', '258.22', '581.86', '399.04', '369.64')" onmouseenter="showChartHover(event, 'TSM', 'Taiwan Semiconductor Manufacturing Co Ltd', '$420.04', '+0.44%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$TSM</strong></a></td>
+            <td class="col-master-name">Taiwan Semiconductor Manufacturing Co Ltd</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$420.04</strong></td>
-            <td class="col-master-cap price-col">N/A</td>
-            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">54.5%</span></td>
+            <td class="col-master-cap price-col">$61,330,053M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">50.0%</span></td>
         </tr><tr class="master-row">
             <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('CRWD', 'CrowdStrike Holdings Inc', 'Technology', '214.42', '$218,335M', '96.3', '0.7', '85.68', '219.35', '203.7', '188.69')" onmouseenter="showChartHover(event, 'CRWD', 'CrowdStrike Holdings Inc', '$214.42', '+3.39%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$CRWD</strong></a></td>
             <td class="col-master-name">CrowdStrike Holdings Inc</td>
