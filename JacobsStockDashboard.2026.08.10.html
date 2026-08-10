@@ -11,7 +11,7 @@ h1{font-size:1.2rem;color:var(--accent-cyan);}
 .speed-dial-card{background-color:var(--bg-card);border:1px solid var(--border-color);border-radius:6px;padding:6px 12px;display:flex;align-items:center;gap:12px;}
 .speed-dial-container{position:relative;width:60px;height:30px;overflow:hidden;}
 .speed-dial-arc{position:absolute;top:0;left:0;width:60px;height:60px;border-radius:50%;background:conic-gradient(from 270deg at 50% 50%, #22c55e 0deg, #facc15 90deg, #ef4444 180deg);clip-path:polygon(0 0, 100% 0, 100% 50%, 0 50%);}
-.speed-dial-needle{position:absolute;bottom:0;left:29px;width:2px;height:26px;background-color:#fff;transform-origin:bottom center;transform:rotate(47.64705882352939deg);transition:transform 0.5s ease;z-index:3;}
+.speed-dial-needle{position:absolute;bottom:0;left:29px;width:2px;height:26px;background-color:#fff;transform-origin:bottom center;transform:rotate(52.94117647058823deg);transition:transform 0.5s ease;z-index:3;}
 .speed-dial-pin{position:absolute;bottom:-2px;left:26px;width:8px;height:8px;background-color:var(--accent-cyan);border-radius:50%;border:1px solid #fff;z-index:4;}
 .speed-dial-info{display:flex;flex-direction:column;font-size:0.68rem;font-weight:bold;}
 
@@ -73,18 +73,9 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
 
 .vol-badge { background-color: rgba(250, 204, 21, 0.2); color: var(--accent-yellow); padding: 1px 4px; border-radius: 3px; font-weight: bold; font-size: 0.62rem; border: 1px solid rgba(250, 204, 21, 0.4); }
 
-/* Hover Chart Tooltip CSS */
-.chart-tooltip { display: none; position: absolute; background: var(--bg-card); border: 1px solid var(--accent-cyan); border-radius: 6px; padding: 10px; z-index: 2000; width: 220px; box-shadow: 0 4px 16px rgba(0,0,0,0.6); pointer-events: none; }
-.chart-tooltip-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 0.78rem; font-weight: bold; color: var(--accent-cyan); }
-
-/* Modal Popup CSS */
-.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
-.modal-content { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; width: 450px; max-width: 90%; padding: 20px; position: relative; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
-.modal-close { position: absolute; top: 12px; right: 15px; font-size: 1.2rem; color: var(--text-muted); cursor: pointer; font-weight: bold; }
-.modal-close:hover { color: var(--text-main); }
-.modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 12px; }
-.modal-body-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.78rem; }
-.modal-metric-box { background: var(--bg-dark); padding: 8px; border-radius: 4px; border: 1px solid var(--border-color); }
+/* Sparkline Hover Tooltip CSS */
+.sparkline-tooltip { display: none; position: absolute; background: var(--bg-card); border: 1px solid var(--accent-cyan); border-radius: 6px; padding: 8px; z-index: 2000; width: 200px; box-shadow: 0 4px 16px rgba(0,0,0,0.6); pointer-events: none; }
+.sparkline-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; font-size: 0.78rem; font-weight: bold; color: var(--accent-cyan); }
 
 .range-bar-container{position:relative;width:100%;height:5px;background-color:var(--channel-bar);border-radius:3px;margin:2px 0;overflow:visible;}
 .grid-line-33{position:absolute;top:-3px;bottom:-3px;left:33.33%;border-left:1px dashed rgba(255,255,255,0.35);z-index:1;pointer-events:none;}
@@ -120,16 +111,16 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
 <body><div class="container"><header>
     <div><h1>📊 Jacob's Technical Watchlist & Market Dashboard</h1></div>
     <div class="header-meta">
-        <div class="timestamp-banner">⏱️ Aug 09, 2026 at 23:55:29 EST</div>
+        <div class="timestamp-banner">⏱️ Aug 10, 2026 at 01:17:50 EST</div>
         <div class="speed-dial-card">
             <div class="speed-dial-container">
                 <div class="speed-dial-arc"></div>
-                <div class="speed-dial-needle" style="transform: rotate(47.64705882352939deg);"></div>
+                <div class="speed-dial-needle" style="transform: rotate(52.94117647058823deg);"></div>
                 <div class="speed-dial-pin"></div>
             </div>
             <div class="speed-dial-info">
                 <span>🌡️ Market Hotness</span>
-                <span style="color:var(--accent-cyan);">76.5% (26/34)</span>
+                <span style="color:var(--accent-cyan);">79.4% (27/34)</span>
                 <span style="font-size:0.62rem;color:var(--text-muted);">🔥 Overheated / Bullish</span>
             </div>
         </div>
@@ -376,12 +367,12 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
         </tr><tr class="watchlist-row">
             <td class="col-ticker"><strong>$TSM</strong></td>
             <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
-            <div class="marker-orange" style="left:41.04560622914349%;" title="TSM Support: $391.06"></div>
-            <div class="marker-yellow" style="left:43.51130886169818%;" title="TSM 50d MA: $399.04"></div>
-            <div class="marker-red" style="left:34.42714126807563%;" title="TSM 200d MA: $369.64"></div>
-            <div class="marker-cyan" style="left:50.0%;" title="TSM Price: $420.04"></div></div></td>
-            <td class="col-low52">$258.22</td><td class="col-price">$420.04</td><td class="col-high52">$581.86</td>
-            <td class="col-mini-gauge" style="background-color: rgba(240, 192, 20, 0.85); color: #fff; font-weight: bold;"><span class="gauge-number">50.0%</span></td>
+            <div class="marker-orange" style="left:42.00069258072896%;" title="TSM Support: $391.06"></div>
+            <div class="marker-yellow" style="left:45.45493896632329%;" title="TSM 50d MA: $399.04"></div>
+            <div class="marker-red" style="left:32.7287680720284%;" title="TSM 200d MA: $369.64"></div>
+            <div class="marker-cyan" style="left:54.54506103367677%;" title="TSM Price: $420.04"></div></div></td>
+            <td class="col-low52">$294.03</td><td class="col-price">$420.04</td><td class="col-high52">$525.05</td>
+            <td class="col-mini-gauge" style="background-color: rgba(244, 197, 20, 0.85); color: #fff; font-weight: bold;"><span class="gauge-number">54.5%</span></td>
         </tr><tr class="watchlist-row">
             <td class="col-ticker"><strong>$GLW</strong></td>
             <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
@@ -659,21 +650,21 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
             <td class="col-earn-ticker"><strong>$CRWD</strong></td>
             <td class="col-earn-price price-col"><strong>$214.42</strong></td>
             <td class="col-earn-date"><span class="month-pill m-shade-1">AUG</span> 2026-08-26</td>
-            <td class="col-earn-status"><span class="badge-upcoming">Upcoming (17d)</span></td>
+            <td class="col-earn-status"><span class="badge-upcoming">Upcoming (16d)</span></td>
             <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$0.30</strong></td>
             <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
         </tr><tr class="earnings-row">
             <td class="col-earn-ticker"><strong>$NVDA</strong></td>
             <td class="col-earn-price price-col"><strong>$223.96</strong></td>
             <td class="col-earn-date"><span class="month-pill m-shade-1">AUG</span> 2026-08-26</td>
-            <td class="col-earn-status"><span class="badge-upcoming">Upcoming (17d)</span></td>
+            <td class="col-earn-status"><span class="badge-upcoming">Upcoming (16d)</span></td>
             <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$2.13</strong></td>
             <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
         </tr><tr class="earnings-row">
             <td class="col-earn-ticker"><strong>$MRVL</strong></td>
             <td class="col-earn-price price-col"><strong>$218.72</strong></td>
             <td class="col-earn-date"><span class="month-pill m-shade-1">AUG</span> 2026-08-27</td>
-            <td class="col-earn-status"><span class="badge-upcoming">Upcoming (18d)</span></td>
+            <td class="col-earn-status"><span class="badge-upcoming">Upcoming (17d)</span></td>
             <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$0.94</strong></td>
             <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
         </tr><tr class="earnings-row">
@@ -724,13 +715,6 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
             <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-13</td>
             <td class="col-earn-status"><span class="badge-month-after">Month After</span></td>
             <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$5.89</strong></td>
-            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
-        </tr><tr class="earnings-row">
-            <td class="col-earn-ticker"><strong>$TSM</strong></td>
-            <td class="col-earn-price price-col"><strong>$420.04</strong></td>
-            <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-14</td>
-            <td class="col-earn-status"><span class="badge-month-after">Month After</span></td>
-            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$28.88</strong></td>
             <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
         </tr><tr class="earnings-row">
             <td class="col-earn-ticker"><strong>$ISRG</strong></td>
@@ -837,6 +821,13 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
             <td class="col-earn-status"><span class="badge-unconfirmed">Unconfirmed Est.</span></td>
             <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$3.54</strong></td>
             <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$TSM</strong></td>
+            <td class="col-earn-price price-col"><strong>$420.04</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-tbd">TBD</span> TBD / Next Qtr</td>
+            <td class="col-earn-status"><span class="badge-unconfirmed">Unconfirmed Est.</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">N/A</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
         </tr></tbody></table>
     </div>
 </div>
@@ -851,9 +842,9 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
             <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 22:20</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$AMZN</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=45d749dddc8ea4df97b0be977c700033af7cea0dd9cd8ade85278eb7c85de74c" target="_blank" class="news-link">UPS Completed Its Amazon Volume Pullback. Is the Turnaround Finally Working?</a></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=94d82dbdbb2621fa343f905b14fe0424c0b1ea9ae83a9c6b0f3d10e720e2dcad" target="_blank" class="news-link">Ozempic For $50 a Month? Amazon Pharmacy Rolls Out Cheap Weight-Loss Drugs for Medicare Patients</a></td>
             <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 20:59</td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 01:31</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$ANET</strong></td>
             <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=7218e0bec11be8fba5fbad953a310ba66c9b842b54b4bfd0e6574fe723d40bdb" target="_blank" class="news-link">Adobe vs. Arista Networks: Which Technology Stock Is a Better Buy in 2026?</a></td>
@@ -906,9 +897,9 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
             <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 21:49</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$DDOG</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=1c091081275b773c72149dd5f2850308c5c6feadcaf7c527f7464fe3e4a50c75" target="_blank" class="news-link">Datadog coverage update: BofA stays bullish on weakness</a></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=f8249efabca55c6856d5f668fc1f44958a80198998fb0fd92dccd4b17f43bb9b" target="_blank" class="news-link">DDOG Q2 Deep Dive: Market Reacts Negatively Despite Accelerating Core Growth and AI Momentum</a></td>
             <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 16:47</td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 01:09</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$ETN</strong></td>
             <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=40fda781bbd4712cbd387775dc256c219f210b3d33f75154ed64687b49beb317" target="_blank" class="news-link">Eaton (ETN) Q2 2026 Earnings Call Transcript</a></td>
@@ -950,9 +941,9 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
             <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 16:04</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$LLY</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=04feb778c0bf43bc03b43f2a84b0a57a91dec9c1b9b10d9afc4fa15db7c8c132" target="_blank" class="news-link">Eli Lilly (LLY) Posts Blowout Growth And Raises Its Outlook</a></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=94d82dbdbb2621fa343f905b14fe0424c0b1ea9ae83a9c6b0f3d10e720e2dcad" target="_blank" class="news-link">Ozempic For $50 a Month? Amazon Pharmacy Rolls Out Cheap Weight-Loss Drugs for Medicare Patients</a></td>
             <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 08:51</td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 01:31</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$MRVL</strong></td>
             <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=839ed02a784a723b4186e221b98b5f93319084ad494b5505b6f3cd8ac366d6fc" target="_blank" class="news-link">Marvell (MRVL) vs. AVGO and NVDA: Can AI Interconnect Growth Deliver the Earnings Its Premium Valuation Demands?</a></td>
@@ -960,14 +951,14 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
             <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 18:19</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$MSFT</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=b563b817c44cab4548174be171266ac2b10497054b72f67873e6f2e57e20a0ff" target="_blank" class="news-link">Amazon's $86 2-in-1 laptop and tablet has fully-integrated AI features</a></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=f35751192ac9ff5de0fe1ad8b86e96f8dff627bca8ed6b2c5e4a01d872cb07d9" target="_blank" class="news-link">How to Build $13,000 a Month in Dividend Income From Three Income Buckets</a></td>
             <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 19:15</td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 03:34</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$MU</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=d29b776e04105275fd12381ac14d663ecdb04988ac3d5d8e52a78db5d7e4d6ae" target="_blank" class="news-link">SK Hynix and Samsung Just Sent a Major Warning to Micron Investors</a></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=8ed89cdcd076f6fa0b7579fdac0b5977f0fa94451f8279861be41ee4c0397ca0" target="_blank" class="news-link">MU Outpaced SNDK, WDC This Week: Now, Retail Traders Bet On Outlook Raise At Key Analyst Event</a></td>
             <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 23:50</td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 02:09</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$NFLX</strong></td>
             <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=edaa79ad3146ceb7385fbf0aaa7f93857fb187bf5b4d5ee8228f84ce33f7e979" target="_blank" class="news-link">Alger Dynamic Opportunities Fund Q2 2026 Portfolio Update</a></td>
@@ -975,9 +966,9 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
             <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 15:05</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$NVDA</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=d07f539f863aae63e4ea985f4d3f429c7359be8cae6e4688105987cce16db8df" target="_blank" class="news-link">Dow Jones Futures Fall As Market Bulls Rule; Cisco, Lumentum Earnings Ahead</a></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=df495a5732a22f749098bf07f9ea0f5e3b66f6eb791d7b770e6c8d5b0732c1ef" target="_blank" class="news-link">Solana Could Boost Its Token Burns by 14X. Would That Make It a Better Buy?</a></td>
             <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 23:56</td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 03:20</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$PLTR</strong></td>
             <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=031a2815a3a9cee38e8e064c7400c6fe54cc1bad5cad4660a8dd73efc719d12b" target="_blank" class="news-link">BofA, JPMorgan, Oppenheimer Name Their 3 Favorite AI Stocks, One Has a $255 Target</a></td>
@@ -1024,240 +1015,240 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
 
 <div class="dual-grid-wrapper" style="margin-top:6px;">
     <div class="grid-column">
-        <div class="section-title">📋 Tracked Tickers (Hover for Chart Preview / Click for Modal)</div>
+        <div class="section-title">📋 Tracked Tickers (Hover for Sparkline / Click for Yahoo Chart)</div>
         <table><thead><tr class="master-row"><th class="col-master-ticker">Ticker</th><th class="col-master-name">Company Name</th><th class="col-master-industry">Industry</th><th class="col-master-price" style="text-align:right;">Price</th><th class="col-master-cap" style="text-align:right;">Market Cap</th><th class="col-master-gauge" style="text-align:center;">52W Pos</th></tr></thead><tbody><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('AAPL', 'Apple Inc', 'Big Guys', '313.33', '$4,572,794M', '75.6', '0.6', '216.58', '344.57', '297.66', '275.73')" onmouseenter="showChartHover(event, 'AAPL', 'Apple Inc', '$313.33', '+0.29%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$AAPL</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/AAPL" target="_blank" onmouseenter="showSparklineHover(event, 'AAPL', 'Apple Inc', '$313.33', '+0.29%', 'var(--accent-green)', [313.3900146484375, 316.2200012207031, 315.32000732421875, 317.30999755859375, 314.8599853515625, 327.5, 333.260009765625, 333.739990234375, 326.5899963378906, 327.739990234375, 325.8900146484375, 321.6600036621094, 333.0199890136719, 336.9100036621094, 340.0799865722656, 338.19000244140625, 333.42999267578125, 308.9100036621094, 303.4200134277344, 309.3800048828125, 311.0, 312.4100036621094, 313.3299865722656])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$AAPL</strong></a></td>
             <td class="col-master-name">Apple Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
             <td class="col-master-price price-col"><strong>$313.33</strong></td>
             <td class="col-master-cap price-col">$4,572,794M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">75.6%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('AMZN', 'Amazon.com Inc', 'Big Guys', '274.48', '$2,960,628M', '86.1', '0.7', '196.0', '287.2', '260.76', '241.54')" onmouseenter="showChartHover(event, 'AMZN', 'Amazon.com Inc', '$274.48', '+0.82%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$AMZN</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/AMZN" target="_blank" onmouseenter="showSparklineHover(event, 'AMZN', 'Amazon.com Inc', '$274.48', '+0.82%', 'var(--accent-green)', [243.6199951171875, 247.0399932861328, 245.33999633789062, 247.30999755859375, 247.49000549316406, 254.9600067138672, 249.88999938964844, 247.22999572753906, 249.99000549316406, 247.5500030517578, 244.85000610351562, 233.66000366210938, 232.11000061035156, 231.38999938964844, 230.86000061035156, 226.64999389648438, 235.5, 271.5799865722656, 284.0199890136719, 277.4200134277344, 272.6499938964844, 272.260009765625, 274.4800109863281])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$AMZN</strong></a></td>
             <td class="col-master-name">Amazon.com Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
             <td class="col-master-price price-col"><strong>$274.48</strong></td>
             <td class="col-master-cap price-col">$2,960,628M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">86.1%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('ANET', 'Arista Networks Inc', 'Engineering And Chips', '188.67', '$237,955M', '73.9', '0.9', '114.52', '214.89', '179.24', '166.03')" onmouseenter="showChartHover(event, 'ANET', 'Arista Networks Inc', '$188.67', '-1.90%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$ANET</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/ANET" target="_blank" onmouseenter="showSparklineHover(event, 'ANET', 'Arista Networks Inc', '$188.67', '-1.90%', 'var(--accent-red)', [181.0500030517578, 184.69000244140625, 186.9600067138672, 181.14999389648438, 182.57000732421875, 171.9199981689453, 168.55999755859375, 168.61000061035156, 169.35000610351562, 174.5800018310547, 174.8699951171875, 176.61000061035156, 173.99000549316406, 170.75999450683594, 169.7100067138672, 157.97000122070312, 171.02000427246094, 180.35000610351562, 184.88999938964844, 190.50999450683594, 197.30999755859375, 192.32000732421875, 188.6699981689453])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$ANET</strong></a></td>
             <td class="col-master-name">Arista Networks Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$188.67</strong></td>
             <td class="col-master-cap price-col">$237,955M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">73.9%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('AVGO', 'Broadcom Inc', 'Semiconductors', '427.76', '$2,035,102M', '68.5', '0.8', '281.87', '495.0', '406.37', '376.43')" onmouseenter="showChartHover(event, 'AVGO', 'Broadcom Inc', '$427.76', '+1.71%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$AVGO</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/AVGO" target="_blank" onmouseenter="showSparklineHover(event, 'AVGO', 'Broadcom Inc', '$427.76', '+1.71%', 'var(--accent-green)', [388.69000244140625, 401.1099853515625, 399.9700012207031, 384.04998779296875, 389.1099853515625, 394.2799987792969, 374.45001220703125, 370.8299865722656, 378.1600036621094, 386.5, 396.80999755859375, 392.4700012207031, 381.9200134277344, 383.2200012207031, 380.9100036621094, 370.32000732421875, 387.8399963378906, 389.2799987792969, 392.2300109863281, 418.1600036621094, 418.2799987792969, 420.57000732421875, 427.760009765625])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$AVGO</strong></a></td>
             <td class="col-master-name">Broadcom Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$427.76</strong></td>
             <td class="col-master-cap price-col">$2,035,102M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">68.5%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('AXON', 'Axon Enterprise Inc', 'Aerospace & Defense', '571.01', '$46,025M', '42.5', '1.8', '339.01', '885.0', '542.46', '502.49')" onmouseenter="showChartHover(event, 'AXON', 'Axon Enterprise Inc', '$571.01', '+9.29%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$AXON</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/AXON" target="_blank" onmouseenter="showSparklineHover(event, 'AXON', 'Axon Enterprise Inc', '$571.01', '+9.29%', 'var(--accent-green)', [599.7999877929688, 582.0, 565.7999877929688, 547.030029296875, 547.260009765625, 541.1199951171875, 541.75, 510.2799987792969, 527.47998046875, 511.1700134277344, 491.489990234375, 491.8999938964844, 502.3399963378906, 525.47998046875, 547.6500244140625, 531.2000122070312, 525.2999877929688, 527.760009765625, 575.8800048828125, 607.2000122070312, 609.489990234375, 522.4600219726562, 571.010009765625])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$AXON</strong></a></td>
             <td class="col-master-name">Axon Enterprise Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Aerospace & Defense</span></td>
             <td class="col-master-price price-col"><strong>$571.01</strong></td>
             <td class="col-master-cap price-col">$46,025M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">42.5%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('BA', 'Boeing Co', 'Aerospace & Defense', '234.42', '$185,279M', '74.3', '0.6', '176.77', '254.35', '222.7', '206.29')" onmouseenter="showChartHover(event, 'BA', 'Boeing Co', '$234.42', '+0.96%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$BA</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/BA" target="_blank" onmouseenter="showSparklineHover(event, 'BA', 'Boeing Co', '$234.42', '+0.96%', 'var(--accent-green)', [224.9499969482422, 223.11000061035156, 222.27999877929688, 215.50999450683594, 217.11000061035156, 218.1199951171875, 214.33999633789062, 214.02999877929688, 209.47999572753906, 204.8000030517578, 208.64999389648438, 209.22999572753906, 209.52000427246094, 211.5, 221.55999755859375, 214.00999450683594, 220.89999389648438, 216.13999938964844, 233.49000549316406, 237.16000366210938, 240.19000244140625, 232.19000244140625, 234.4199981689453])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$BA</strong></a></td>
             <td class="col-master-name">Boeing Co</td>
             <td class="col-master-industry"><span class="badge-confirmed">Aerospace & Defense</span></td>
             <td class="col-master-price price-col"><strong>$234.42</strong></td>
             <td class="col-master-cap price-col">$185,279M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">74.3%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('BE', 'Bloom Energy Corp', 'Engineering And Chips', '219.34', '$64,602M', '58.2', '0.9', '35.85', '351.28', '208.37', '193.02')" onmouseenter="showChartHover(event, 'BE', 'Bloom Energy Corp', '$219.34', '-4.20%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$BE</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/BE" target="_blank" onmouseenter="showSparklineHover(event, 'BE', 'Bloom Energy Corp', '$219.34', '-4.20%', 'var(--accent-red)', [254.2899932861328, 257.0199890136719, 244.61000061035156, 233.49000549316406, 243.39999389648438, 239.3800048828125, 206.72999572753906, 214.9600067138672, 197.05999755859375, 226.25999450683594, 218.22000122070312, 217.3000030517578, 184.88999938964844, 188.17999267578125, 166.83999633789062, 163.75, 207.1199951171875, 205.80999755859375, 218.32000732421875, 228.11000061035156, 234.3300018310547, 228.9600067138672, 219.33999633789062])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$BE</strong></a></td>
             <td class="col-master-name">Bloom Energy Corp</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$219.34</strong></td>
             <td class="col-master-cap price-col">$64,602M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">58.2%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('BLK', 'BlackRock Inc', 'Financial Services', '1136.39', '$184,780M', '72.4', '0.7', '917.39', '1219.94', '1079.57', '1000.02')" onmouseenter="showChartHover(event, 'BLK', 'BlackRock Inc', '$1,136.39', '+0.63%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$BLK</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/BLK" target="_blank" onmouseenter="showSparklineHover(event, 'BLK', 'BlackRock Inc', '$1,136.39', '+0.63%', 'var(--accent-green)', [990.3400268554688, 1019.6799926757812, 1036.1099853515625, 1031.56005859375, 1025.43994140625, 1093.4000244140625, 1087.050048828125, 1072.199951171875, 1054.1099853515625, 1038.239990234375, 1056.6300048828125, 1037.1600341796875, 1055.6700439453125, 1062.1400146484375, 1097.550048828125, 1079.18994140625, 1098.3699951171875, 1090.3900146484375, 1126.6300048828125, 1131.1300048828125, 1133.5799560546875, 1129.300048828125, 1136.3900146484375])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$BLK</strong></a></td>
             <td class="col-master-name">BlackRock Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
             <td class="col-master-price price-col"><strong>$1,136.39</strong></td>
             <td class="col-master-cap price-col">$184,780M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">72.4%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('CAT', 'Caterpillar Inc', 'Engineering And Chips', '842.19', '$387,134M', '65.4', '0.8', '405.46', '1073.46', '800.08', '741.13')" onmouseenter="showChartHover(event, 'CAT', 'Caterpillar Inc', '$842.19', '-1.72%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$CAT</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/CAT" target="_blank" onmouseenter="showSparklineHover(event, 'CAT', 'Caterpillar Inc', '$842.19', '-1.72%', 'var(--accent-red)', [948.0800170898438, 938.3900146484375, 952.4099731445312, 931.469970703125, 933.3400268554688, 914.2999877929688, 877.1699829101562, 880.280029296875, 864.2999877929688, 889.969970703125, 889.3099975585938, 894.5399780273438, 888.72998046875, 873.280029296875, 840.8499755859375, 782.7100219726562, 809.1400146484375, 814.8099975585938, 830.030029296875, 876.5399780273438, 871.0800170898438, 856.9600219726562, 842.1900024414062])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$CAT</strong></a></td>
             <td class="col-master-name">Caterpillar Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$842.19</strong></td>
             <td class="col-master-cap price-col">$387,134M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">65.4%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('COIN', 'Coinbase Global Inc', 'Financial Services', '153.6', '$40,525M', '5.5', '1.1', '139.11', '402.16', '145.92', '135.17')" onmouseenter="showChartHover(event, 'COIN', 'Coinbase Global Inc', '$153.60', '+5.63%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$COIN</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/COIN" target="_blank" onmouseenter="showSparklineHover(event, 'COIN', 'Coinbase Global Inc', '$153.60', '+5.63%', 'var(--accent-green)', [159.36000061035156, 158.44000244140625, 159.07000732421875, 157.3699951171875, 161.5, 167.2100067138672, 160.49000549316406, 157.1199951171875, 160.42999267578125, 175.85000610351562, 166.1199951171875, 161.16000366210938, 158.2899932861328, 167.49000549316406, 167.89999389648438, 160.08999633789062, 163.5800018310547, 146.25999450683594, 146.5, 150.72999572753906, 149.88999938964844, 145.41000366210938, 153.60000610351562])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$COIN</strong></a></td>
             <td class="col-master-name">Coinbase Global Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
             <td class="col-master-price price-col"><strong>$153.60</strong></td>
             <td class="col-master-cap price-col">$40,525M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">5.5%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('COST', 'Costco Wholesale Corp', 'Consumer', '947.82', '$420,338M', '41.1', '0.7', '844.06', '1096.5', '900.43', '834.08')" onmouseenter="showChartHover(event, 'COST', 'Costco Wholesale Corp', '$947.82', '-0.14%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$COST</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/COST" target="_blank" onmouseenter="showSparklineHover(event, 'COST', 'Costco Wholesale Corp', '$947.82', '-0.14%', 'var(--accent-red)', [953.1300048828125, 912.969970703125, 916.25, 926.4299926757812, 921.75, 916.5399780273438, 945.5700073242188, 940.8699951171875, 935.7999877929688, 929.219970703125, 927.3099975585938, 926.0599975585938, 935.030029296875, 951.5800170898438, 966.5800170898438, 974.030029296875, 954.1699829101562, 951.8900146484375, 954.0800170898438, 947.8499755859375, 941.989990234375, 949.1500244140625, 947.8200073242188])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$COST</strong></a></td>
             <td class="col-master-name">Costco Wholesale Corp</td>
             <td class="col-master-industry"><span class="badge-confirmed">Consumer</span></td>
             <td class="col-master-price price-col"><strong>$947.82</strong></td>
             <td class="col-master-cap price-col">$420,338M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">41.1%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('CRWD', 'CrowdStrike Holdings Inc', 'Technology', '214.42', '$218,335M', '96.3', '0.7', '85.68', '219.35', '203.7', '188.69')" onmouseenter="showChartHover(event, 'CRWD', 'CrowdStrike Holdings Inc', '$214.42', '+3.39%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$CRWD</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/CRWD" target="_blank" onmouseenter="showSparklineHover(event, 'CRWD', 'CrowdStrike Holdings Inc', '$214.42', '+3.39%', 'var(--accent-green)', [191.1199951171875, 198.39999389648438, 187.17999267578125, 187.91000366210938, 210.72999572753906, 206.77000427246094, 203.75999450683594, 203.0800018310547, 198.49000549316406, 191.14999389648438, 188.4199981689453, 183.4199981689453, 183.27999877929688, 180.11000061035156, 181.8000030517578, 179.3800048828125, 185.22000122070312, 190.86000061035156, 202.5399932861328, 211.22000122070312, 209.86000061035156, 207.38999938964844, 214.4199981689453])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$CRWD</strong></a></td>
             <td class="col-master-name">CrowdStrike Holdings Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
             <td class="col-master-price price-col"><strong>$214.42</strong></td>
             <td class="col-master-cap price-col">$218,335M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">96.3%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('DDOG', 'Datadog Inc (Pre-Reincorporation)', 'Technology', '233.93', '$83,270M', '69.8', '1.7', '98.01', '292.72', '222.23', '205.86')" onmouseenter="showChartHover(event, 'DDOG', 'Datadog Inc (Pre-Reincorporation)', '$233.93', '+2.02%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$DDOG</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/DDOG" target="_blank" onmouseenter="showSparklineHover(event, 'DDOG', 'Datadog Inc (Pre-Reincorporation)', '$233.93', '+2.02%', 'var(--accent-green)', [261.0899963378906, 269.0, 257.5400085449219, 260.239990234375, 270.7300109863281, 264.4599914550781, 262.32000732421875, 258.69000244140625, 263.20001220703125, 254.7899932861328, 245.77000427246094, 244.38999938964844, 246.86000061035156, 251.86000061035156, 250.8800048828125, 264.20001220703125, 268.55999755859375, 267.9700012207031, 273.6000061035156, 288.1499938964844, 283.1700134277344, 229.2899932861328, 233.92999267578125])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$DDOG</strong></a></td>
             <td class="col-master-name">Datadog Inc (Pre-Reincorporation)</td>
             <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
             <td class="col-master-price price-col"><strong>$233.93</strong></td>
             <td class="col-master-cap price-col">$83,270M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">69.8%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('ETN', 'Eaton Corporation PLC', 'Engineering And Chips', '448.68', '$174,267M', '93.8', '0.7', '311.92', '457.78', '426.25', '394.84')" onmouseenter="showChartHover(event, 'ETN', 'Eaton Corporation PLC', '$448.68', '+0.11%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$ETN</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/ETN" target="_blank" onmouseenter="showSparklineHover(event, 'ETN', 'Eaton Corporation PLC', '$448.68', '+0.11%', 'var(--accent-green)', [399.55999755859375, 405.8299865722656, 407.2799987792969, 402.8500061035156, 415.5199890136719, 412.8599853515625, 396.2699890136719, 399.989990234375, 401.4100036621094, 402.95001220703125, 406.9100036621094, 415.1300048828125, 404.07000732421875, 398.6400146484375, 386.260009765625, 361.8800048828125, 386.8900146484375, 415.20001220703125, 438.2300109863281, 444.7699890136719, 447.2799987792969, 448.19000244140625, 448.67999267578125])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$ETN</strong></a></td>
             <td class="col-master-name">Eaton Corporation PLC</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$448.68</strong></td>
             <td class="col-master-cap price-col">$174,267M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">93.8%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('GEV', 'GE Vernova Inc', 'Engineering And Chips', '990.32', '$263,755M', '69.1', '0.9', '530.16', '1195.94', '940.8', '871.48')" onmouseenter="showChartHover(event, 'GEV', 'GE Vernova Inc', '$990.32', '-1.00%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$GEV</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/GEV" target="_blank" onmouseenter="showSparklineHover(event, 'GEV', 'GE Vernova Inc', '$990.32', '-1.00%', 'var(--accent-red)', [1070.989990234375, 1075.260009765625, 1091.5699462890625, 1042.5999755859375, 1066.010009765625, 1055.280029296875, 1036.219970703125, 1057.8399658203125, 1079.1800537109375, 1078.81005859375, 985.030029296875, 1031.18994140625, 1014.75, 996.5700073242188, 943.3800048828125, 900.280029296875, 981.97998046875, 990.2899780273438, 1006.760009765625, 1018.530029296875, 1017.9600219726562, 1000.2999877929688, 990.3200073242188])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$GEV</strong></a></td>
             <td class="col-master-name">GE Vernova Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$990.32</strong></td>
             <td class="col-master-cap price-col">$263,755M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">69.1%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('GLW', 'Corning Inc', 'Engineering And Chips', '165.68', '$142,715M', '49.1', '0.7', '63.37', '271.78', '157.4', '145.8')" onmouseenter="showChartHover(event, 'GLW', 'Corning Inc', '$165.68', '+5.41%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$GLW</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/GLW" target="_blank" onmouseenter="showSparklineHover(event, 'GLW', 'Corning Inc', '$165.68', '+5.41%', 'var(--accent-green)', [184.02999877929688, 192.3800048828125, 190.88999938964844, 183.11000061035156, 187.63999938964844, 174.41000366210938, 158.38999938964844, 154.61000061035156, 153.10000610351562, 162.41000366210938, 154.05999755859375, 156.05999755859375, 146.64999389648438, 143.36000061035156, 126.01000213623047, 124.05000305175781, 135.22000122070312, 138.25, 146.63999938964844, 159.88999938964844, 156.6999969482422, 157.17999267578125, 165.67999267578125])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$GLW</strong></a></td>
             <td class="col-master-name">Corning Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$165.68</strong></td>
             <td class="col-master-cap price-col">$142,715M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">49.1%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('GOOGL', 'Alphabet Inc', 'Big Guys', '354.3', '$4,333,089M', '74.7', '0.6', '194.33', '408.61', '336.58', '311.78')" onmouseenter="showChartHover(event, 'GOOGL', 'Alphabet Inc', '$354.30', '-0.96%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$GOOGL</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/GOOGL" target="_blank" onmouseenter="showSparklineHover(event, 'GOOGL', 'Alphabet Inc', '$354.30', '-0.96%', 'var(--accent-red)', [361.9200134277344, 358.8900146484375, 357.17999267578125, 352.510009765625, 359.510009765625, 370.9200134277344, 354.4599914550781, 346.7699890136719, 351.989990234375, 347.1499938964844, 342.0899963378906, 317.69000244140625, 319.739990234375, 326.55999755859375, 333.7099914550781, 336.7099914550781, 333.6600036621094, 356.1300048828125, 373.510009765625, 377.6499938964844, 362.42999267578125, 357.75, 354.29998779296875])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$GOOGL</strong></a></td>
             <td class="col-master-name">Alphabet Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
             <td class="col-master-price price-col"><strong>$354.30</strong></td>
             <td class="col-master-cap price-col">$4,333,089M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">74.7%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('GS', 'Goldman Sachs Group Inc', 'Financial Services', '1039.61', '$302,705M', '74.5', '0.7', '705.55', '1153.99', '987.63', '914.86')" onmouseenter="showChartHover(event, 'GS', 'Goldman Sachs Group Inc', '$1,039.61', '+0.68%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$GS</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/GS" target="_blank" onmouseenter="showSparklineHover(event, 'GS', 'Goldman Sachs Group Inc', '$1,039.61', '+0.68%', 'var(--accent-green)', [1029.6400146484375, 1055.969970703125, 1055.1800537109375, 1045.9100341796875, 1140.0, 1152.0699462890625, 1095.4599609375, 1065.219970703125, 1055.030029296875, 1085.56005859375, 1098.199951171875, 1074.719970703125, 1061.22998046875, 1048.22998046875, 1033.3399658203125, 980.75, 1024.8599853515625, 1018.3800048828125, 1027.06005859375, 1052.97998046875, 1060.3800048828125, 1032.5799560546875, 1039.6099853515625])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$GS</strong></a></td>
             <td class="col-master-name">Goldman Sachs Group Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
             <td class="col-master-price price-col"><strong>$1,039.61</strong></td>
             <td class="col-master-cap price-col">$302,705M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">74.5%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('ISRG', 'Intuitive Surgical Inc', 'Biotech And Healthcare', '378.81', '$133,825M', '18.2', '0.6', '328.57', '603.88', '359.87', '333.35')" onmouseenter="showChartHover(event, 'ISRG', 'Intuitive Surgical Inc', '$378.81', '+1.36%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$ISRG</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/ISRG" target="_blank" onmouseenter="showSparklineHover(event, 'ISRG', 'Intuitive Surgical Inc', '$378.81', '+1.36%', 'var(--accent-green)', [415.1000061035156, 411.54998779296875, 406.7799987792969, 407.1199951171875, 379.5, 388.9700012207031, 402.3299865722656, 345.4200134277344, 353.1700134277344, 350.05999755859375, 340.69000244140625, 332.0199890136719, 337.5, 356.8299865722656, 361.79998779296875, 353.1000061035156, 352.9700012207031, 353.3299865722656, 375.4100036621094, 368.2699890136719, 375.20001220703125, 373.7099914550781, 378.80999755859375])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$ISRG</strong></a></td>
             <td class="col-master-name">Intuitive Surgical Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
             <td class="col-master-price price-col"><strong>$378.81</strong></td>
             <td class="col-master-cap price-col">$133,825M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">18.2%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('JPM', 'JPMorgan Chase & Co', 'Financial Services', '357.52', '$957,979M', '93.5', '0.6', '279.1', '363.0', '339.64', '314.62')" onmouseenter="showChartHover(event, 'JPM', 'JPMorgan Chase & Co', '$357.52', '+0.34%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$JPM</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/JPM" target="_blank" onmouseenter="showSparklineHover(event, 'JPM', 'JPMorgan Chase & Co', '$357.52', '+0.34%', 'var(--accent-green)', [330.6199951171875, 335.4700012207031, 336.4700012207031, 334.5299987792969, 342.8900146484375, 346.9100036621094, 343.1499938964844, 341.1000061035156, 338.8699951171875, 345.2300109863281, 348.2099914550781, 349.8999938964844, 353.2099914550781, 356.20001220703125, 357.30999755859375, 344.7099914550781, 350.8500061035156, 351.7900085449219, 352.6400146484375, 357.5199890136719, 359.239990234375, 356.29998779296875, 357.5199890136719])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$JPM</strong></a></td>
             <td class="col-master-name">JPMorgan Chase & Co</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
             <td class="col-master-price price-col"><strong>$357.52</strong></td>
             <td class="col-master-cap price-col">$957,979M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">93.5%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('LLY', 'Eli Lilly and Co', 'Biotech And Healthcare', '1185.71', '$1,116,176M', '89.8', '1.1', '623.78', '1249.45', '1126.42', '1043.42')" onmouseenter="showChartHover(event, 'LLY', 'Eli Lilly and Co', '$1,185.71', '-0.52%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$LLY</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/LLY" target="_blank" onmouseenter="showSparklineHover(event, 'LLY', 'Eli Lilly and Co', '$1,185.71', '-0.52%', 'var(--accent-red)', [1215.8299560546875, 1216.949951171875, 1188.5799560546875, 1181.8699951171875, 1152.5400390625, 1156.6300048828125, 1169.1700439453125, 1179.1099853515625, 1146.9000244140625, 1175.4100341796875, 1163.010009765625, 1185.8699951171875, 1196.030029296875, 1197.530029296875, 1220.6600341796875, 1210.02001953125, 1154.969970703125, 1148.8399658203125, 1121.3599853515625, 1115.6800537109375, 1169.8599853515625, 1191.93994140625, 1185.7099609375])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$LLY</strong></a></td>
             <td class="col-master-name">Eli Lilly and Co</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
             <td class="col-master-price price-col"><strong>$1,185.71</strong></td>
             <td class="col-master-cap price-col">$1,116,176M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">89.8%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('MRVL', 'Marvell Technology Inc', 'Semiconductors', '218.72', '$191,548M', '58.6', '0.8', '61.44', '329.88', '207.78', '192.47')" onmouseenter="showChartHover(event, 'MRVL', 'Marvell Technology Inc', '$218.72', '+3.89%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$MRVL</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/MRVL" target="_blank" onmouseenter="showSparklineHover(event, 'MRVL', 'Marvell Technology Inc', '$218.72', '+3.89%', 'var(--accent-green)', [231.7100067138672, 243.27000427246094, 235.80999755859375, 217.52999877929688, 222.44000244140625, 206.25999450683594, 188.3000030517578, 188.67999267578125, 194.94000244140625, 207.9600067138672, 210.99000549316406, 209.32000732421875, 194.22999572753906, 189.1699981689453, 174.47000122070312, 163.39999389648438, 183.3000030517578, 187.55999755859375, 193.77999877929688, 218.58999633789062, 211.02000427246094, 210.5399932861328, 218.72000122070312])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$MRVL</strong></a></td>
             <td class="col-master-name">Marvell Technology Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$218.72</strong></td>
             <td class="col-master-cap price-col">$191,548M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">58.6%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('MSFT', 'Microsoft Corp', 'Big Guys', '499.99', '$3,712,698M', '73.7', '0.7', '349.2', '553.72', '474.99', '439.99')" onmouseenter="showChartHover(event, 'MSFT', 'Microsoft Corp', '$499.99', '+0.03%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$MSFT</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/MSFT" target="_blank" onmouseenter="showSparklineHover(event, 'MSFT', 'Microsoft Corp', '$499.99', '+0.03%', 'var(--accent-green)', [383.3399963378906, 384.3599853515625, 385.1000061035156, 390.989990234375, 384.92999267578125, 395.6300048828125, 401.1000061035156, 393.82000732421875, 402.2900085449219, 397.75, 390.3399963378906, 381.5799865722656, 381.70001220703125, 389.1000061035156, 393.3500061035156, 390.5400085449219, 451.1000061035156, 464.7200012207031, 487.6499938964844, 492.80999755859375, 487.4599914550781, 499.8599853515625, 499.989990234375])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$MSFT</strong></a></td>
             <td class="col-master-name">Microsoft Corp</td>
             <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
             <td class="col-master-price price-col"><strong>$499.99</strong></td>
             <td class="col-master-cap price-col">$3,712,698M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">73.7%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('MU', 'Micron Technology Inc', 'Semiconductors', '877.57', '$991,121M', '67.0', '0.8', '110.79', '1255.0', '833.69', '772.26')" onmouseenter="showChartHover(event, 'MU', 'Micron Technology Inc', '$877.57', '-0.44%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$MU</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/MU" target="_blank" onmouseenter="showSparklineHover(event, 'MU', 'Micron Technology Inc', '$877.57', '-0.44%', 'var(--accent-red)', [948.7999877929688, 991.6400146484375, 979.2999877929688, 937.0, 983.1199951171875, 904.280029296875, 853.2000122070312, 848.9500122070312, 865.4600219726562, 970.8200073242188, 959.47998046875, 990.2100219726562, 920.9500122070312, 900.2000122070312, 820.530029296875, 739.0, 874.6599731445312, 823.030029296875, 829.5, 892.6699829101562, 893.1900024414062, 881.469970703125, 877.5700073242188])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$MU</strong></a></td>
             <td class="col-master-name">Micron Technology Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$877.57</strong></td>
             <td class="col-master-cap price-col">$991,121M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">67.0%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('NFLX', 'Netflix Inc', 'Consumer', '74.14', '$308,715M', '14.7', '0.5', '65.08', '126.71', '70.43', '65.24')" onmouseenter="showChartHover(event, 'NFLX', 'Netflix Inc', '$74.14', '+0.61%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$NFLX</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/NFLX" target="_blank" onmouseenter="showSparklineHover(event, 'NFLX', 'Netflix Inc', '$74.14', '+0.61%', 'var(--accent-green)', [75.58999633789062, 75.47000122070312, 73.37000274658203, 73.83000183105469, 73.52999877929688, 73.68000030517578, 74.3499984741211, 68.94999694824219, 67.5999984741211, 68.66999816894531, 68.52999877929688, 68.88999938964844, 70.08999633789062, 70.4000015258789, 72.38999938964844, 73.62999725341797, 73.16999816894531, 71.70999908447266, 73.33000183105469, 73.56999969482422, 74.19999694824219, 73.69000244140625, 74.13999938964844])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$NFLX</strong></a></td>
             <td class="col-master-name">Netflix Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Consumer</span></td>
             <td class="col-master-price price-col"><strong>$74.14</strong></td>
             <td class="col-master-cap price-col">$308,715M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">14.7%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('NVDA', 'NVIDIA Corp', 'Semiconductors', '223.96', '$5,419,832M', '82.6', '0.8', '164.07', '236.54', '212.76', '197.08')" onmouseenter="showChartHover(event, 'NVDA', 'NVIDIA Corp', '$223.96', '+2.27%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$NVDA</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/NVDA" target="_blank" onmouseenter="showSparklineHover(event, 'NVDA', 'NVIDIA Corp', '$223.96', '+2.27%', 'var(--accent-green)', [204.1199951171875, 202.77999877929688, 210.9600067138672, 203.52999877929688, 211.8000030517578, 212.5, 207.39999389648438, 202.80999755859375, 203.27999877929688, 207.2899932861328, 212.05999755859375, 208.75999450683594, 206.83999633789062, 196.50999450683594, 197.00999450683594, 190.00999450683594, 195.0399932861328, 200.75, 206.63999938964844, 211.94000244140625, 219.22000122070312, 218.99000549316406, 223.9600067138672])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$NVDA</strong></a></td>
             <td class="col-master-name">NVIDIA Corp</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$223.96</strong></td>
             <td class="col-master-cap price-col">$5,419,832M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">82.6%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('PLTR', 'Palantir Technologies Inc', 'Technology', '172.01', '$413,356M', '64.9', '1.7', '106.37', '207.52', '163.41', '151.37')" onmouseenter="showChartHover(event, 'PLTR', 'Palantir Technologies Inc', '$172.01', '+10.32%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$PLTR</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/PLTR" target="_blank" onmouseenter="showSparklineHover(event, 'PLTR', 'Palantir Technologies Inc', '$172.01', '+10.32%', 'var(--accent-green)', [132.22000122070312, 129.0399932861328, 126.79000091552734, 130.0399932861328, 133.72000122070312, 133.75999450683594, 134.44000244140625, 132.3800048828125, 134.85000610351562, 132.66000366210938, 124.56999969482422, 123.37000274658203, 122.91999816894531, 131.52999877929688, 123.52999877929688, 123.0, 122.26000213623047, 123.05999755859375, 125.6500015258789, 162.66000366210938, 158.42999267578125, 155.9199981689453, 172.00999450683594])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$PLTR</strong></a></td>
             <td class="col-master-name">Palantir Technologies Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
             <td class="col-master-price price-col"><strong>$172.01</strong></td>
             <td class="col-master-cap price-col">$413,356M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">64.9%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('REGN', 'Regeneron Pharmaceuticals Inc', 'Biotech And Healthcare', '784.36', '$80,754M', '86.9', '1.1', '541.0', '821.11', '745.14', '690.24')" onmouseenter="showChartHover(event, 'REGN', 'Regeneron Pharmaceuticals Inc', '$784.36', '+1.59%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$REGN</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/REGN" target="_blank" onmouseenter="showSparklineHover(event, 'REGN', 'Regeneron Pharmaceuticals Inc', '$784.36', '+1.59%', 'var(--accent-green)', [662.8800048828125, 667.9500122070312, 664.52001953125, 663.0900268554688, 656.1199951171875, 664.4500122070312, 678.9400024414062, 676.6900024414062, 672.1500244140625, 675.1900024414062, 651.1799926757812, 651.9099731445312, 656.010009765625, 667.1699829101562, 695.1799926757812, 695.4199829101562, 738.3400268554688, 762.6300048828125, 759.239990234375, 760.6599731445312, 768.5800170898438, 772.1099853515625, 784.3599853515625])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$REGN</strong></a></td>
             <td class="col-master-name">Regeneron Pharmaceuticals Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
             <td class="col-master-price price-col"><strong>$784.36</strong></td>
             <td class="col-master-cap price-col">$80,754M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">86.9%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('SNOW', 'Snowflake Inc', 'Technology', '330.49', '$114,548M', '99.6', '1.2', '118.3', '331.4', '313.97', '290.83')" onmouseenter="showChartHover(event, 'SNOW', 'Snowflake Inc', '$330.49', '+3.93%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$SNOW</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/SNOW" target="_blank" onmouseenter="showSparklineHover(event, 'SNOW', 'Snowflake Inc', '$330.49', '+3.93%', 'var(--accent-green)', [261.30999755859375, 267.489990234375, 261.45001220703125, 268.6499938964844, 275.94000244140625, 271.8699951171875, 270.0199890136719, 268.8999938964844, 274.3399963378906, 271.7300109863281, 267.79998779296875, 265.1300048828125, 268.05999755859375, 272.9200134277344, 270.3599853515625, 282.8999938964844, 298.1000061035156, 293.2799987792969, 307.5299987792969, 316.7699890136719, 316.8399963378906, 318.0, 330.489990234375])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$SNOW</strong></a></td>
             <td class="col-master-name">Snowflake Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
             <td class="col-master-price price-col"><strong>$330.49</strong></td>
             <td class="col-master-cap price-col">$114,548M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">99.6%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('SPOT', 'Spotify Technology SA', 'Consumer', '488.14', '$100,499M', '24.2', '0.9', '405.0', '748.3', '463.73', '429.56')" onmouseenter="showChartHover(event, 'SPOT', 'Spotify Technology SA', '$488.14', '+2.75%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$SPOT</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/SPOT" target="_blank" onmouseenter="showSparklineHover(event, 'SPOT', 'Spotify Technology SA', '$488.14', '+2.75%', 'var(--accent-green)', [485.2200012207031, 485.8800048828125, 479.7699890136719, 479.8399963378906, 481.05999755859375, 485.3800048828125, 476.0799865722656, 478.1400146484375, 492.32000732421875, 493.2300109863281, 474.1600036621094, 468.989990234375, 482.6600036621094, 494.7200012207031, 511.55999755859375, 524.010009765625, 522.6099853515625, 499.94000244140625, 486.3299865722656, 478.1700134277344, 482.2300109863281, 475.07000732421875, 488.1400146484375])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$SPOT</strong></a></td>
             <td class="col-master-name">Spotify Technology SA</td>
             <td class="col-master-industry"><span class="badge-confirmed">Consumer</span></td>
             <td class="col-master-price price-col"><strong>$488.14</strong></td>
             <td class="col-master-cap price-col">$100,499M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">24.2%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('TSM', 'Taiwan Semiconductor Manufacturing Co Ltd', 'Semiconductors', '420.04', '$61,330,053M', '50.0', '0.6', '258.22', '581.86', '399.04', '369.64')" onmouseenter="showChartHover(event, 'TSM', 'Taiwan Semiconductor Manufacturing Co Ltd', '$420.04', '+0.44%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$TSM</strong></a></td>
-            <td class="col-master-name">Taiwan Semiconductor Manufacturing Co Ltd</td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/TSM" target="_blank" onmouseenter="showSparklineHover(event, 'TSM', 'TSM', '$420.04', '+0.44%', 'var(--accent-green)', [436.9800109863281, 436.9599914550781, 434.1099853515625, 421.5799865722656, 420.3900146484375, 419.4800109863281, 409.739990234375, 398.3699951171875, 402.29998779296875, 424.6099853515625, 421.2099914550781, 415.5799865722656, 403.4100036621094, 399.0899963378906, 392.30999755859375, 374.6700134277344, 403.30999755859375, 404.25, 406.1099853515625, 417.1700134277344, 414.0, 418.20001220703125, 420.0400085449219])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$TSM</strong></a></td>
+            <td class="col-master-name">TSM</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$420.04</strong></td>
-            <td class="col-master-cap price-col">$61,330,053M</td>
-            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">50.0%</span></td>
+            <td class="col-master-cap price-col">N/A</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">54.5%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('V', 'Visa Inc', 'Financial Services', '362.5', '$691,685M', '85.7', '0.7', '293.89', '373.97', '344.38', '319.0')" onmouseenter="showChartHover(event, 'V', 'Visa Inc', '$362.50', '-2.15%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$V</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/V" target="_blank" onmouseenter="showSparklineHover(event, 'V', 'Visa Inc', '$362.50', '-2.15%', 'var(--accent-red)', [347.5299987792969, 348.20001220703125, 348.9700012207031, 357.75, 356.0199890136719, 355.1400146484375, 365.1400146484375, 358.55999755859375, 360.57000732421875, 355.82000732421875, 353.4200134277344, 351.6000061035156, 355.739990234375, 362.5299987792969, 366.5899963378906, 368.7300109863281, 366.2699890136719, 366.1300048828125, 365.6700134277344, 369.5899963378906, 368.5400085449219, 370.4700012207031, 362.5])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$V</strong></a></td>
             <td class="col-master-name">Visa Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
             <td class="col-master-price price-col"><strong>$362.50</strong></td>
             <td class="col-master-cap price-col">$691,685M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">85.7%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('VRT', 'Vertiv Holdings Co', 'Engineering And Chips', '272.4', '$93,002M', '58.8', '0.6', '118.7', '379.94', '258.78', '239.71')" onmouseenter="showChartHover(event, 'VRT', 'Vertiv Holdings Co', '$272.40', '-1.01%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$VRT</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/VRT" target="_blank" onmouseenter="showSparklineHover(event, 'VRT', 'Vertiv Holdings Co', '$272.40', '-1.01%', 'var(--accent-red)', [317.80999755859375, 323.9200134277344, 318.8599853515625, 305.8699951171875, 303.5799865722656, 304.57000732421875, 294.1099853515625, 289.55999755859375, 291.6700134277344, 304.5, 301.1600036621094, 304.0400085449219, 290.3599853515625, 287.6000061035156, 269.55999755859375, 223.0399932861328, 227.5, 241.57000732421875, 263.04998779296875, 269.92999267578125, 277.94000244140625, 275.1700134277344, 272.3999938964844])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$VRT</strong></a></td>
             <td class="col-master-name">Vertiv Holdings Co</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$272.40</strong></td>
             <td class="col-master-cap price-col">$93,002M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">58.8%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('VRTX', 'Vertex Pharmaceuticals Inc', 'Biotech And Healthcare', '496.07', '$121,091M', '78.0', '0.8', '362.5', '533.67', '471.27', '436.54')" onmouseenter="showChartHover(event, 'VRTX', 'Vertex Pharmaceuticals Inc', '$496.07', '+2.49%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$VRTX</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/VRTX" target="_blank" onmouseenter="showSparklineHover(event, 'VRTX', 'Vertex Pharmaceuticals Inc', '$496.07', '+2.49%', 'var(--accent-green)', [498.42999267578125, 496.5, 485.3900146484375, 480.25, 476.30999755859375, 477.0799865722656, 486.0299987792969, 485.6499938964844, 480.5, 482.0, 472.57000732421875, 473.0899963378906, 477.3599853515625, 479.0, 490.3900146484375, 483.3299865722656, 481.70001220703125, 477.1000061035156, 470.7200012207031, 478.7099914550781, 484.8299865722656, 484.0299987792969, 496.07000732421875])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$VRTX</strong></a></td>
             <td class="col-master-name">Vertex Pharmaceuticals Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
             <td class="col-master-price price-col"><strong>$496.07</strong></td>
@@ -1268,238 +1259,238 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
     <div class="grid-column">
         <div class="section-title">🏭 Tracked Tickers (Sorted by Industry)</div>
         <table><thead><tr class="master-row"><th class="col-master-ticker">Ticker</th><th class="col-master-name">Company Name</th><th class="col-master-industry">Industry</th><th class="col-master-price" style="text-align:right;">Price</th><th class="col-master-cap" style="text-align:right;">Market Cap</th><th class="col-master-gauge" style="text-align:center;">52W Pos</th></tr></thead><tbody><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('AXON', 'Axon Enterprise Inc', 'Aerospace & Defense', '571.01', '$46,025M', '42.5', '1.8', '339.01', '885.0', '542.46', '502.49')" onmouseenter="showChartHover(event, 'AXON', 'Axon Enterprise Inc', '$571.01', '+9.29%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$AXON</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/AXON" target="_blank" onmouseenter="showSparklineHover(event, 'AXON', 'Axon Enterprise Inc', '$571.01', '+9.29%', 'var(--accent-green)', [599.7999877929688, 582.0, 565.7999877929688, 547.030029296875, 547.260009765625, 541.1199951171875, 541.75, 510.2799987792969, 527.47998046875, 511.1700134277344, 491.489990234375, 491.8999938964844, 502.3399963378906, 525.47998046875, 547.6500244140625, 531.2000122070312, 525.2999877929688, 527.760009765625, 575.8800048828125, 607.2000122070312, 609.489990234375, 522.4600219726562, 571.010009765625])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$AXON</strong></a></td>
             <td class="col-master-name">Axon Enterprise Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Aerospace & Defense</span></td>
             <td class="col-master-price price-col"><strong>$571.01</strong></td>
             <td class="col-master-cap price-col">$46,025M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">42.5%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('BA', 'Boeing Co', 'Aerospace & Defense', '234.42', '$185,279M', '74.3', '0.6', '176.77', '254.35', '222.7', '206.29')" onmouseenter="showChartHover(event, 'BA', 'Boeing Co', '$234.42', '+0.96%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$BA</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/BA" target="_blank" onmouseenter="showSparklineHover(event, 'BA', 'Boeing Co', '$234.42', '+0.96%', 'var(--accent-green)', [224.9499969482422, 223.11000061035156, 222.27999877929688, 215.50999450683594, 217.11000061035156, 218.1199951171875, 214.33999633789062, 214.02999877929688, 209.47999572753906, 204.8000030517578, 208.64999389648438, 209.22999572753906, 209.52000427246094, 211.5, 221.55999755859375, 214.00999450683594, 220.89999389648438, 216.13999938964844, 233.49000549316406, 237.16000366210938, 240.19000244140625, 232.19000244140625, 234.4199981689453])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$BA</strong></a></td>
             <td class="col-master-name">Boeing Co</td>
             <td class="col-master-industry"><span class="badge-confirmed">Aerospace & Defense</span></td>
             <td class="col-master-price price-col"><strong>$234.42</strong></td>
             <td class="col-master-cap price-col">$185,279M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">74.3%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('AAPL', 'Apple Inc', 'Big Guys', '313.33', '$4,572,794M', '75.6', '0.6', '216.58', '344.57', '297.66', '275.73')" onmouseenter="showChartHover(event, 'AAPL', 'Apple Inc', '$313.33', '+0.29%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$AAPL</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/AAPL" target="_blank" onmouseenter="showSparklineHover(event, 'AAPL', 'Apple Inc', '$313.33', '+0.29%', 'var(--accent-green)', [313.3900146484375, 316.2200012207031, 315.32000732421875, 317.30999755859375, 314.8599853515625, 327.5, 333.260009765625, 333.739990234375, 326.5899963378906, 327.739990234375, 325.8900146484375, 321.6600036621094, 333.0199890136719, 336.9100036621094, 340.0799865722656, 338.19000244140625, 333.42999267578125, 308.9100036621094, 303.4200134277344, 309.3800048828125, 311.0, 312.4100036621094, 313.3299865722656])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$AAPL</strong></a></td>
             <td class="col-master-name">Apple Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
             <td class="col-master-price price-col"><strong>$313.33</strong></td>
             <td class="col-master-cap price-col">$4,572,794M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">75.6%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('AMZN', 'Amazon.com Inc', 'Big Guys', '274.48', '$2,960,628M', '86.1', '0.7', '196.0', '287.2', '260.76', '241.54')" onmouseenter="showChartHover(event, 'AMZN', 'Amazon.com Inc', '$274.48', '+0.82%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$AMZN</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/AMZN" target="_blank" onmouseenter="showSparklineHover(event, 'AMZN', 'Amazon.com Inc', '$274.48', '+0.82%', 'var(--accent-green)', [243.6199951171875, 247.0399932861328, 245.33999633789062, 247.30999755859375, 247.49000549316406, 254.9600067138672, 249.88999938964844, 247.22999572753906, 249.99000549316406, 247.5500030517578, 244.85000610351562, 233.66000366210938, 232.11000061035156, 231.38999938964844, 230.86000061035156, 226.64999389648438, 235.5, 271.5799865722656, 284.0199890136719, 277.4200134277344, 272.6499938964844, 272.260009765625, 274.4800109863281])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$AMZN</strong></a></td>
             <td class="col-master-name">Amazon.com Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
             <td class="col-master-price price-col"><strong>$274.48</strong></td>
             <td class="col-master-cap price-col">$2,960,628M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">86.1%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('GOOGL', 'Alphabet Inc', 'Big Guys', '354.3', '$4,333,089M', '74.7', '0.6', '194.33', '408.61', '336.58', '311.78')" onmouseenter="showChartHover(event, 'GOOGL', 'Alphabet Inc', '$354.30', '-0.96%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$GOOGL</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/GOOGL" target="_blank" onmouseenter="showSparklineHover(event, 'GOOGL', 'Alphabet Inc', '$354.30', '-0.96%', 'var(--accent-red)', [361.9200134277344, 358.8900146484375, 357.17999267578125, 352.510009765625, 359.510009765625, 370.9200134277344, 354.4599914550781, 346.7699890136719, 351.989990234375, 347.1499938964844, 342.0899963378906, 317.69000244140625, 319.739990234375, 326.55999755859375, 333.7099914550781, 336.7099914550781, 333.6600036621094, 356.1300048828125, 373.510009765625, 377.6499938964844, 362.42999267578125, 357.75, 354.29998779296875])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$GOOGL</strong></a></td>
             <td class="col-master-name">Alphabet Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
             <td class="col-master-price price-col"><strong>$354.30</strong></td>
             <td class="col-master-cap price-col">$4,333,089M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">74.7%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('MSFT', 'Microsoft Corp', 'Big Guys', '499.99', '$3,712,698M', '73.7', '0.7', '349.2', '553.72', '474.99', '439.99')" onmouseenter="showChartHover(event, 'MSFT', 'Microsoft Corp', '$499.99', '+0.03%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$MSFT</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/MSFT" target="_blank" onmouseenter="showSparklineHover(event, 'MSFT', 'Microsoft Corp', '$499.99', '+0.03%', 'var(--accent-green)', [383.3399963378906, 384.3599853515625, 385.1000061035156, 390.989990234375, 384.92999267578125, 395.6300048828125, 401.1000061035156, 393.82000732421875, 402.2900085449219, 397.75, 390.3399963378906, 381.5799865722656, 381.70001220703125, 389.1000061035156, 393.3500061035156, 390.5400085449219, 451.1000061035156, 464.7200012207031, 487.6499938964844, 492.80999755859375, 487.4599914550781, 499.8599853515625, 499.989990234375])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$MSFT</strong></a></td>
             <td class="col-master-name">Microsoft Corp</td>
             <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
             <td class="col-master-price price-col"><strong>$499.99</strong></td>
             <td class="col-master-cap price-col">$3,712,698M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">73.7%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('ISRG', 'Intuitive Surgical Inc', 'Biotech And Healthcare', '378.81', '$133,825M', '18.2', '0.6', '328.57', '603.88', '359.87', '333.35')" onmouseenter="showChartHover(event, 'ISRG', 'Intuitive Surgical Inc', '$378.81', '+1.36%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$ISRG</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/ISRG" target="_blank" onmouseenter="showSparklineHover(event, 'ISRG', 'Intuitive Surgical Inc', '$378.81', '+1.36%', 'var(--accent-green)', [415.1000061035156, 411.54998779296875, 406.7799987792969, 407.1199951171875, 379.5, 388.9700012207031, 402.3299865722656, 345.4200134277344, 353.1700134277344, 350.05999755859375, 340.69000244140625, 332.0199890136719, 337.5, 356.8299865722656, 361.79998779296875, 353.1000061035156, 352.9700012207031, 353.3299865722656, 375.4100036621094, 368.2699890136719, 375.20001220703125, 373.7099914550781, 378.80999755859375])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$ISRG</strong></a></td>
             <td class="col-master-name">Intuitive Surgical Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
             <td class="col-master-price price-col"><strong>$378.81</strong></td>
             <td class="col-master-cap price-col">$133,825M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">18.2%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('LLY', 'Eli Lilly and Co', 'Biotech And Healthcare', '1185.71', '$1,116,176M', '89.8', '1.1', '623.78', '1249.45', '1126.42', '1043.42')" onmouseenter="showChartHover(event, 'LLY', 'Eli Lilly and Co', '$1,185.71', '-0.52%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$LLY</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/LLY" target="_blank" onmouseenter="showSparklineHover(event, 'LLY', 'Eli Lilly and Co', '$1,185.71', '-0.52%', 'var(--accent-red)', [1215.8299560546875, 1216.949951171875, 1188.5799560546875, 1181.8699951171875, 1152.5400390625, 1156.6300048828125, 1169.1700439453125, 1179.1099853515625, 1146.9000244140625, 1175.4100341796875, 1163.010009765625, 1185.8699951171875, 1196.030029296875, 1197.530029296875, 1220.6600341796875, 1210.02001953125, 1154.969970703125, 1148.8399658203125, 1121.3599853515625, 1115.6800537109375, 1169.8599853515625, 1191.93994140625, 1185.7099609375])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$LLY</strong></a></td>
             <td class="col-master-name">Eli Lilly and Co</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
             <td class="col-master-price price-col"><strong>$1,185.71</strong></td>
             <td class="col-master-cap price-col">$1,116,176M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">89.8%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('REGN', 'Regeneron Pharmaceuticals Inc', 'Biotech And Healthcare', '784.36', '$80,754M', '86.9', '1.1', '541.0', '821.11', '745.14', '690.24')" onmouseenter="showChartHover(event, 'REGN', 'Regeneron Pharmaceuticals Inc', '$784.36', '+1.59%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$REGN</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/REGN" target="_blank" onmouseenter="showSparklineHover(event, 'REGN', 'Regeneron Pharmaceuticals Inc', '$784.36', '+1.59%', 'var(--accent-green)', [662.8800048828125, 667.9500122070312, 664.52001953125, 663.0900268554688, 656.1199951171875, 664.4500122070312, 678.9400024414062, 676.6900024414062, 672.1500244140625, 675.1900024414062, 651.1799926757812, 651.9099731445312, 656.010009765625, 667.1699829101562, 695.1799926757812, 695.4199829101562, 738.3400268554688, 762.6300048828125, 759.239990234375, 760.6599731445312, 768.5800170898438, 772.1099853515625, 784.3599853515625])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$REGN</strong></a></td>
             <td class="col-master-name">Regeneron Pharmaceuticals Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
             <td class="col-master-price price-col"><strong>$784.36</strong></td>
             <td class="col-master-cap price-col">$80,754M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">86.9%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('VRTX', 'Vertex Pharmaceuticals Inc', 'Biotech And Healthcare', '496.07', '$121,091M', '78.0', '0.8', '362.5', '533.67', '471.27', '436.54')" onmouseenter="showChartHover(event, 'VRTX', 'Vertex Pharmaceuticals Inc', '$496.07', '+2.49%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$VRTX</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/VRTX" target="_blank" onmouseenter="showSparklineHover(event, 'VRTX', 'Vertex Pharmaceuticals Inc', '$496.07', '+2.49%', 'var(--accent-green)', [498.42999267578125, 496.5, 485.3900146484375, 480.25, 476.30999755859375, 477.0799865722656, 486.0299987792969, 485.6499938964844, 480.5, 482.0, 472.57000732421875, 473.0899963378906, 477.3599853515625, 479.0, 490.3900146484375, 483.3299865722656, 481.70001220703125, 477.1000061035156, 470.7200012207031, 478.7099914550781, 484.8299865722656, 484.0299987792969, 496.07000732421875])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$VRTX</strong></a></td>
             <td class="col-master-name">Vertex Pharmaceuticals Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
             <td class="col-master-price price-col"><strong>$496.07</strong></td>
             <td class="col-master-cap price-col">$121,091M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">78.0%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('COST', 'Costco Wholesale Corp', 'Consumer', '947.82', '$420,338M', '41.1', '0.7', '844.06', '1096.5', '900.43', '834.08')" onmouseenter="showChartHover(event, 'COST', 'Costco Wholesale Corp', '$947.82', '-0.14%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$COST</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/COST" target="_blank" onmouseenter="showSparklineHover(event, 'COST', 'Costco Wholesale Corp', '$947.82', '-0.14%', 'var(--accent-red)', [953.1300048828125, 912.969970703125, 916.25, 926.4299926757812, 921.75, 916.5399780273438, 945.5700073242188, 940.8699951171875, 935.7999877929688, 929.219970703125, 927.3099975585938, 926.0599975585938, 935.030029296875, 951.5800170898438, 966.5800170898438, 974.030029296875, 954.1699829101562, 951.8900146484375, 954.0800170898438, 947.8499755859375, 941.989990234375, 949.1500244140625, 947.8200073242188])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$COST</strong></a></td>
             <td class="col-master-name">Costco Wholesale Corp</td>
             <td class="col-master-industry"><span class="badge-confirmed">Consumer</span></td>
             <td class="col-master-price price-col"><strong>$947.82</strong></td>
             <td class="col-master-cap price-col">$420,338M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">41.1%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('NFLX', 'Netflix Inc', 'Consumer', '74.14', '$308,715M', '14.7', '0.5', '65.08', '126.71', '70.43', '65.24')" onmouseenter="showChartHover(event, 'NFLX', 'Netflix Inc', '$74.14', '+0.61%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$NFLX</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/NFLX" target="_blank" onmouseenter="showSparklineHover(event, 'NFLX', 'Netflix Inc', '$74.14', '+0.61%', 'var(--accent-green)', [75.58999633789062, 75.47000122070312, 73.37000274658203, 73.83000183105469, 73.52999877929688, 73.68000030517578, 74.3499984741211, 68.94999694824219, 67.5999984741211, 68.66999816894531, 68.52999877929688, 68.88999938964844, 70.08999633789062, 70.4000015258789, 72.38999938964844, 73.62999725341797, 73.16999816894531, 71.70999908447266, 73.33000183105469, 73.56999969482422, 74.19999694824219, 73.69000244140625, 74.13999938964844])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$NFLX</strong></a></td>
             <td class="col-master-name">Netflix Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Consumer</span></td>
             <td class="col-master-price price-col"><strong>$74.14</strong></td>
             <td class="col-master-cap price-col">$308,715M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">14.7%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('SPOT', 'Spotify Technology SA', 'Consumer', '488.14', '$100,499M', '24.2', '0.9', '405.0', '748.3', '463.73', '429.56')" onmouseenter="showChartHover(event, 'SPOT', 'Spotify Technology SA', '$488.14', '+2.75%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$SPOT</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/SPOT" target="_blank" onmouseenter="showSparklineHover(event, 'SPOT', 'Spotify Technology SA', '$488.14', '+2.75%', 'var(--accent-green)', [485.2200012207031, 485.8800048828125, 479.7699890136719, 479.8399963378906, 481.05999755859375, 485.3800048828125, 476.0799865722656, 478.1400146484375, 492.32000732421875, 493.2300109863281, 474.1600036621094, 468.989990234375, 482.6600036621094, 494.7200012207031, 511.55999755859375, 524.010009765625, 522.6099853515625, 499.94000244140625, 486.3299865722656, 478.1700134277344, 482.2300109863281, 475.07000732421875, 488.1400146484375])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$SPOT</strong></a></td>
             <td class="col-master-name">Spotify Technology SA</td>
             <td class="col-master-industry"><span class="badge-confirmed">Consumer</span></td>
             <td class="col-master-price price-col"><strong>$488.14</strong></td>
             <td class="col-master-cap price-col">$100,499M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">24.2%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('ANET', 'Arista Networks Inc', 'Engineering And Chips', '188.67', '$237,955M', '73.9', '0.9', '114.52', '214.89', '179.24', '166.03')" onmouseenter="showChartHover(event, 'ANET', 'Arista Networks Inc', '$188.67', '-1.90%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$ANET</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/ANET" target="_blank" onmouseenter="showSparklineHover(event, 'ANET', 'Arista Networks Inc', '$188.67', '-1.90%', 'var(--accent-red)', [181.0500030517578, 184.69000244140625, 186.9600067138672, 181.14999389648438, 182.57000732421875, 171.9199981689453, 168.55999755859375, 168.61000061035156, 169.35000610351562, 174.5800018310547, 174.8699951171875, 176.61000061035156, 173.99000549316406, 170.75999450683594, 169.7100067138672, 157.97000122070312, 171.02000427246094, 180.35000610351562, 184.88999938964844, 190.50999450683594, 197.30999755859375, 192.32000732421875, 188.6699981689453])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$ANET</strong></a></td>
             <td class="col-master-name">Arista Networks Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$188.67</strong></td>
             <td class="col-master-cap price-col">$237,955M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">73.9%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('BE', 'Bloom Energy Corp', 'Engineering And Chips', '219.34', '$64,602M', '58.2', '0.9', '35.85', '351.28', '208.37', '193.02')" onmouseenter="showChartHover(event, 'BE', 'Bloom Energy Corp', '$219.34', '-4.20%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$BE</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/BE" target="_blank" onmouseenter="showSparklineHover(event, 'BE', 'Bloom Energy Corp', '$219.34', '-4.20%', 'var(--accent-red)', [254.2899932861328, 257.0199890136719, 244.61000061035156, 233.49000549316406, 243.39999389648438, 239.3800048828125, 206.72999572753906, 214.9600067138672, 197.05999755859375, 226.25999450683594, 218.22000122070312, 217.3000030517578, 184.88999938964844, 188.17999267578125, 166.83999633789062, 163.75, 207.1199951171875, 205.80999755859375, 218.32000732421875, 228.11000061035156, 234.3300018310547, 228.9600067138672, 219.33999633789062])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$BE</strong></a></td>
             <td class="col-master-name">Bloom Energy Corp</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$219.34</strong></td>
             <td class="col-master-cap price-col">$64,602M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">58.2%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('CAT', 'Caterpillar Inc', 'Engineering And Chips', '842.19', '$387,134M', '65.4', '0.8', '405.46', '1073.46', '800.08', '741.13')" onmouseenter="showChartHover(event, 'CAT', 'Caterpillar Inc', '$842.19', '-1.72%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$CAT</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/CAT" target="_blank" onmouseenter="showSparklineHover(event, 'CAT', 'Caterpillar Inc', '$842.19', '-1.72%', 'var(--accent-red)', [948.0800170898438, 938.3900146484375, 952.4099731445312, 931.469970703125, 933.3400268554688, 914.2999877929688, 877.1699829101562, 880.280029296875, 864.2999877929688, 889.969970703125, 889.3099975585938, 894.5399780273438, 888.72998046875, 873.280029296875, 840.8499755859375, 782.7100219726562, 809.1400146484375, 814.8099975585938, 830.030029296875, 876.5399780273438, 871.0800170898438, 856.9600219726562, 842.1900024414062])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$CAT</strong></a></td>
             <td class="col-master-name">Caterpillar Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$842.19</strong></td>
             <td class="col-master-cap price-col">$387,134M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">65.4%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('ETN', 'Eaton Corporation PLC', 'Engineering And Chips', '448.68', '$174,267M', '93.8', '0.7', '311.92', '457.78', '426.25', '394.84')" onmouseenter="showChartHover(event, 'ETN', 'Eaton Corporation PLC', '$448.68', '+0.11%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$ETN</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/ETN" target="_blank" onmouseenter="showSparklineHover(event, 'ETN', 'Eaton Corporation PLC', '$448.68', '+0.11%', 'var(--accent-green)', [399.55999755859375, 405.8299865722656, 407.2799987792969, 402.8500061035156, 415.5199890136719, 412.8599853515625, 396.2699890136719, 399.989990234375, 401.4100036621094, 402.95001220703125, 406.9100036621094, 415.1300048828125, 404.07000732421875, 398.6400146484375, 386.260009765625, 361.8800048828125, 386.8900146484375, 415.20001220703125, 438.2300109863281, 444.7699890136719, 447.2799987792969, 448.19000244140625, 448.67999267578125])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$ETN</strong></a></td>
             <td class="col-master-name">Eaton Corporation PLC</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$448.68</strong></td>
             <td class="col-master-cap price-col">$174,267M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">93.8%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('GEV', 'GE Vernova Inc', 'Engineering And Chips', '990.32', '$263,755M', '69.1', '0.9', '530.16', '1195.94', '940.8', '871.48')" onmouseenter="showChartHover(event, 'GEV', 'GE Vernova Inc', '$990.32', '-1.00%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$GEV</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/GEV" target="_blank" onmouseenter="showSparklineHover(event, 'GEV', 'GE Vernova Inc', '$990.32', '-1.00%', 'var(--accent-red)', [1070.989990234375, 1075.260009765625, 1091.5699462890625, 1042.5999755859375, 1066.010009765625, 1055.280029296875, 1036.219970703125, 1057.8399658203125, 1079.1800537109375, 1078.81005859375, 985.030029296875, 1031.18994140625, 1014.75, 996.5700073242188, 943.3800048828125, 900.280029296875, 981.97998046875, 990.2899780273438, 1006.760009765625, 1018.530029296875, 1017.9600219726562, 1000.2999877929688, 990.3200073242188])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$GEV</strong></a></td>
             <td class="col-master-name">GE Vernova Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$990.32</strong></td>
             <td class="col-master-cap price-col">$263,755M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">69.1%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('GLW', 'Corning Inc', 'Engineering And Chips', '165.68', '$142,715M', '49.1', '0.7', '63.37', '271.78', '157.4', '145.8')" onmouseenter="showChartHover(event, 'GLW', 'Corning Inc', '$165.68', '+5.41%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$GLW</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/GLW" target="_blank" onmouseenter="showSparklineHover(event, 'GLW', 'Corning Inc', '$165.68', '+5.41%', 'var(--accent-green)', [184.02999877929688, 192.3800048828125, 190.88999938964844, 183.11000061035156, 187.63999938964844, 174.41000366210938, 158.38999938964844, 154.61000061035156, 153.10000610351562, 162.41000366210938, 154.05999755859375, 156.05999755859375, 146.64999389648438, 143.36000061035156, 126.01000213623047, 124.05000305175781, 135.22000122070312, 138.25, 146.63999938964844, 159.88999938964844, 156.6999969482422, 157.17999267578125, 165.67999267578125])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$GLW</strong></a></td>
             <td class="col-master-name">Corning Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$165.68</strong></td>
             <td class="col-master-cap price-col">$142,715M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">49.1%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('VRT', 'Vertiv Holdings Co', 'Engineering And Chips', '272.4', '$93,002M', '58.8', '0.6', '118.7', '379.94', '258.78', '239.71')" onmouseenter="showChartHover(event, 'VRT', 'Vertiv Holdings Co', '$272.40', '-1.01%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$VRT</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/VRT" target="_blank" onmouseenter="showSparklineHover(event, 'VRT', 'Vertiv Holdings Co', '$272.40', '-1.01%', 'var(--accent-red)', [317.80999755859375, 323.9200134277344, 318.8599853515625, 305.8699951171875, 303.5799865722656, 304.57000732421875, 294.1099853515625, 289.55999755859375, 291.6700134277344, 304.5, 301.1600036621094, 304.0400085449219, 290.3599853515625, 287.6000061035156, 269.55999755859375, 223.0399932861328, 227.5, 241.57000732421875, 263.04998779296875, 269.92999267578125, 277.94000244140625, 275.1700134277344, 272.3999938964844])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$VRT</strong></a></td>
             <td class="col-master-name">Vertiv Holdings Co</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
             <td class="col-master-price price-col"><strong>$272.40</strong></td>
             <td class="col-master-cap price-col">$93,002M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">58.8%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('BLK', 'BlackRock Inc', 'Financial Services', '1136.39', '$184,780M', '72.4', '0.7', '917.39', '1219.94', '1079.57', '1000.02')" onmouseenter="showChartHover(event, 'BLK', 'BlackRock Inc', '$1,136.39', '+0.63%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$BLK</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/BLK" target="_blank" onmouseenter="showSparklineHover(event, 'BLK', 'BlackRock Inc', '$1,136.39', '+0.63%', 'var(--accent-green)', [990.3400268554688, 1019.6799926757812, 1036.1099853515625, 1031.56005859375, 1025.43994140625, 1093.4000244140625, 1087.050048828125, 1072.199951171875, 1054.1099853515625, 1038.239990234375, 1056.6300048828125, 1037.1600341796875, 1055.6700439453125, 1062.1400146484375, 1097.550048828125, 1079.18994140625, 1098.3699951171875, 1090.3900146484375, 1126.6300048828125, 1131.1300048828125, 1133.5799560546875, 1129.300048828125, 1136.3900146484375])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$BLK</strong></a></td>
             <td class="col-master-name">BlackRock Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
             <td class="col-master-price price-col"><strong>$1,136.39</strong></td>
             <td class="col-master-cap price-col">$184,780M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">72.4%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('COIN', 'Coinbase Global Inc', 'Financial Services', '153.6', '$40,525M', '5.5', '1.1', '139.11', '402.16', '145.92', '135.17')" onmouseenter="showChartHover(event, 'COIN', 'Coinbase Global Inc', '$153.60', '+5.63%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$COIN</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/COIN" target="_blank" onmouseenter="showSparklineHover(event, 'COIN', 'Coinbase Global Inc', '$153.60', '+5.63%', 'var(--accent-green)', [159.36000061035156, 158.44000244140625, 159.07000732421875, 157.3699951171875, 161.5, 167.2100067138672, 160.49000549316406, 157.1199951171875, 160.42999267578125, 175.85000610351562, 166.1199951171875, 161.16000366210938, 158.2899932861328, 167.49000549316406, 167.89999389648438, 160.08999633789062, 163.5800018310547, 146.25999450683594, 146.5, 150.72999572753906, 149.88999938964844, 145.41000366210938, 153.60000610351562])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$COIN</strong></a></td>
             <td class="col-master-name">Coinbase Global Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
             <td class="col-master-price price-col"><strong>$153.60</strong></td>
             <td class="col-master-cap price-col">$40,525M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">5.5%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('GS', 'Goldman Sachs Group Inc', 'Financial Services', '1039.61', '$302,705M', '74.5', '0.7', '705.55', '1153.99', '987.63', '914.86')" onmouseenter="showChartHover(event, 'GS', 'Goldman Sachs Group Inc', '$1,039.61', '+0.68%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$GS</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/GS" target="_blank" onmouseenter="showSparklineHover(event, 'GS', 'Goldman Sachs Group Inc', '$1,039.61', '+0.68%', 'var(--accent-green)', [1029.6400146484375, 1055.969970703125, 1055.1800537109375, 1045.9100341796875, 1140.0, 1152.0699462890625, 1095.4599609375, 1065.219970703125, 1055.030029296875, 1085.56005859375, 1098.199951171875, 1074.719970703125, 1061.22998046875, 1048.22998046875, 1033.3399658203125, 980.75, 1024.8599853515625, 1018.3800048828125, 1027.06005859375, 1052.97998046875, 1060.3800048828125, 1032.5799560546875, 1039.6099853515625])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$GS</strong></a></td>
             <td class="col-master-name">Goldman Sachs Group Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
             <td class="col-master-price price-col"><strong>$1,039.61</strong></td>
             <td class="col-master-cap price-col">$302,705M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">74.5%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('JPM', 'JPMorgan Chase & Co', 'Financial Services', '357.52', '$957,979M', '93.5', '0.6', '279.1', '363.0', '339.64', '314.62')" onmouseenter="showChartHover(event, 'JPM', 'JPMorgan Chase & Co', '$357.52', '+0.34%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$JPM</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/JPM" target="_blank" onmouseenter="showSparklineHover(event, 'JPM', 'JPMorgan Chase & Co', '$357.52', '+0.34%', 'var(--accent-green)', [330.6199951171875, 335.4700012207031, 336.4700012207031, 334.5299987792969, 342.8900146484375, 346.9100036621094, 343.1499938964844, 341.1000061035156, 338.8699951171875, 345.2300109863281, 348.2099914550781, 349.8999938964844, 353.2099914550781, 356.20001220703125, 357.30999755859375, 344.7099914550781, 350.8500061035156, 351.7900085449219, 352.6400146484375, 357.5199890136719, 359.239990234375, 356.29998779296875, 357.5199890136719])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$JPM</strong></a></td>
             <td class="col-master-name">JPMorgan Chase & Co</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
             <td class="col-master-price price-col"><strong>$357.52</strong></td>
             <td class="col-master-cap price-col">$957,979M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">93.5%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('V', 'Visa Inc', 'Financial Services', '362.5', '$691,685M', '85.7', '0.7', '293.89', '373.97', '344.38', '319.0')" onmouseenter="showChartHover(event, 'V', 'Visa Inc', '$362.50', '-2.15%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$V</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/V" target="_blank" onmouseenter="showSparklineHover(event, 'V', 'Visa Inc', '$362.50', '-2.15%', 'var(--accent-red)', [347.5299987792969, 348.20001220703125, 348.9700012207031, 357.75, 356.0199890136719, 355.1400146484375, 365.1400146484375, 358.55999755859375, 360.57000732421875, 355.82000732421875, 353.4200134277344, 351.6000061035156, 355.739990234375, 362.5299987792969, 366.5899963378906, 368.7300109863281, 366.2699890136719, 366.1300048828125, 365.6700134277344, 369.5899963378906, 368.5400085449219, 370.4700012207031, 362.5])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$V</strong></a></td>
             <td class="col-master-name">Visa Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
             <td class="col-master-price price-col"><strong>$362.50</strong></td>
             <td class="col-master-cap price-col">$691,685M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">85.7%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('AVGO', 'Broadcom Inc', 'Semiconductors', '427.76', '$2,035,102M', '68.5', '0.8', '281.87', '495.0', '406.37', '376.43')" onmouseenter="showChartHover(event, 'AVGO', 'Broadcom Inc', '$427.76', '+1.71%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$AVGO</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/AVGO" target="_blank" onmouseenter="showSparklineHover(event, 'AVGO', 'Broadcom Inc', '$427.76', '+1.71%', 'var(--accent-green)', [388.69000244140625, 401.1099853515625, 399.9700012207031, 384.04998779296875, 389.1099853515625, 394.2799987792969, 374.45001220703125, 370.8299865722656, 378.1600036621094, 386.5, 396.80999755859375, 392.4700012207031, 381.9200134277344, 383.2200012207031, 380.9100036621094, 370.32000732421875, 387.8399963378906, 389.2799987792969, 392.2300109863281, 418.1600036621094, 418.2799987792969, 420.57000732421875, 427.760009765625])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$AVGO</strong></a></td>
             <td class="col-master-name">Broadcom Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$427.76</strong></td>
             <td class="col-master-cap price-col">$2,035,102M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">68.5%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('MRVL', 'Marvell Technology Inc', 'Semiconductors', '218.72', '$191,548M', '58.6', '0.8', '61.44', '329.88', '207.78', '192.47')" onmouseenter="showChartHover(event, 'MRVL', 'Marvell Technology Inc', '$218.72', '+3.89%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$MRVL</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/MRVL" target="_blank" onmouseenter="showSparklineHover(event, 'MRVL', 'Marvell Technology Inc', '$218.72', '+3.89%', 'var(--accent-green)', [231.7100067138672, 243.27000427246094, 235.80999755859375, 217.52999877929688, 222.44000244140625, 206.25999450683594, 188.3000030517578, 188.67999267578125, 194.94000244140625, 207.9600067138672, 210.99000549316406, 209.32000732421875, 194.22999572753906, 189.1699981689453, 174.47000122070312, 163.39999389648438, 183.3000030517578, 187.55999755859375, 193.77999877929688, 218.58999633789062, 211.02000427246094, 210.5399932861328, 218.72000122070312])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$MRVL</strong></a></td>
             <td class="col-master-name">Marvell Technology Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$218.72</strong></td>
             <td class="col-master-cap price-col">$191,548M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">58.6%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('MU', 'Micron Technology Inc', 'Semiconductors', '877.57', '$991,121M', '67.0', '0.8', '110.79', '1255.0', '833.69', '772.26')" onmouseenter="showChartHover(event, 'MU', 'Micron Technology Inc', '$877.57', '-0.44%', 'var(--accent-red)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$MU</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/MU" target="_blank" onmouseenter="showSparklineHover(event, 'MU', 'Micron Technology Inc', '$877.57', '-0.44%', 'var(--accent-red)', [948.7999877929688, 991.6400146484375, 979.2999877929688, 937.0, 983.1199951171875, 904.280029296875, 853.2000122070312, 848.9500122070312, 865.4600219726562, 970.8200073242188, 959.47998046875, 990.2100219726562, 920.9500122070312, 900.2000122070312, 820.530029296875, 739.0, 874.6599731445312, 823.030029296875, 829.5, 892.6699829101562, 893.1900024414062, 881.469970703125, 877.5700073242188])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$MU</strong></a></td>
             <td class="col-master-name">Micron Technology Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$877.57</strong></td>
             <td class="col-master-cap price-col">$991,121M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">67.0%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('NVDA', 'NVIDIA Corp', 'Semiconductors', '223.96', '$5,419,832M', '82.6', '0.8', '164.07', '236.54', '212.76', '197.08')" onmouseenter="showChartHover(event, 'NVDA', 'NVIDIA Corp', '$223.96', '+2.27%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$NVDA</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/NVDA" target="_blank" onmouseenter="showSparklineHover(event, 'NVDA', 'NVIDIA Corp', '$223.96', '+2.27%', 'var(--accent-green)', [204.1199951171875, 202.77999877929688, 210.9600067138672, 203.52999877929688, 211.8000030517578, 212.5, 207.39999389648438, 202.80999755859375, 203.27999877929688, 207.2899932861328, 212.05999755859375, 208.75999450683594, 206.83999633789062, 196.50999450683594, 197.00999450683594, 190.00999450683594, 195.0399932861328, 200.75, 206.63999938964844, 211.94000244140625, 219.22000122070312, 218.99000549316406, 223.9600067138672])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$NVDA</strong></a></td>
             <td class="col-master-name">NVIDIA Corp</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$223.96</strong></td>
             <td class="col-master-cap price-col">$5,419,832M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">82.6%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('TSM', 'Taiwan Semiconductor Manufacturing Co Ltd', 'Semiconductors', '420.04', '$61,330,053M', '50.0', '0.6', '258.22', '581.86', '399.04', '369.64')" onmouseenter="showChartHover(event, 'TSM', 'Taiwan Semiconductor Manufacturing Co Ltd', '$420.04', '+0.44%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$TSM</strong></a></td>
-            <td class="col-master-name">Taiwan Semiconductor Manufacturing Co Ltd</td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/TSM" target="_blank" onmouseenter="showSparklineHover(event, 'TSM', 'TSM', '$420.04', '+0.44%', 'var(--accent-green)', [436.9800109863281, 436.9599914550781, 434.1099853515625, 421.5799865722656, 420.3900146484375, 419.4800109863281, 409.739990234375, 398.3699951171875, 402.29998779296875, 424.6099853515625, 421.2099914550781, 415.5799865722656, 403.4100036621094, 399.0899963378906, 392.30999755859375, 374.6700134277344, 403.30999755859375, 404.25, 406.1099853515625, 417.1700134277344, 414.0, 418.20001220703125, 420.0400085449219])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$TSM</strong></a></td>
+            <td class="col-master-name">TSM</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$420.04</strong></td>
-            <td class="col-master-cap price-col">$61,330,053M</td>
-            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">50.0%</span></td>
+            <td class="col-master-cap price-col">N/A</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">54.5%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('CRWD', 'CrowdStrike Holdings Inc', 'Technology', '214.42', '$218,335M', '96.3', '0.7', '85.68', '219.35', '203.7', '188.69')" onmouseenter="showChartHover(event, 'CRWD', 'CrowdStrike Holdings Inc', '$214.42', '+3.39%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$CRWD</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/CRWD" target="_blank" onmouseenter="showSparklineHover(event, 'CRWD', 'CrowdStrike Holdings Inc', '$214.42', '+3.39%', 'var(--accent-green)', [191.1199951171875, 198.39999389648438, 187.17999267578125, 187.91000366210938, 210.72999572753906, 206.77000427246094, 203.75999450683594, 203.0800018310547, 198.49000549316406, 191.14999389648438, 188.4199981689453, 183.4199981689453, 183.27999877929688, 180.11000061035156, 181.8000030517578, 179.3800048828125, 185.22000122070312, 190.86000061035156, 202.5399932861328, 211.22000122070312, 209.86000061035156, 207.38999938964844, 214.4199981689453])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$CRWD</strong></a></td>
             <td class="col-master-name">CrowdStrike Holdings Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
             <td class="col-master-price price-col"><strong>$214.42</strong></td>
             <td class="col-master-cap price-col">$218,335M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">96.3%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('DDOG', 'Datadog Inc (Pre-Reincorporation)', 'Technology', '233.93', '$83,270M', '69.8', '1.7', '98.01', '292.72', '222.23', '205.86')" onmouseenter="showChartHover(event, 'DDOG', 'Datadog Inc (Pre-Reincorporation)', '$233.93', '+2.02%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$DDOG</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/DDOG" target="_blank" onmouseenter="showSparklineHover(event, 'DDOG', 'Datadog Inc (Pre-Reincorporation)', '$233.93', '+2.02%', 'var(--accent-green)', [261.0899963378906, 269.0, 257.5400085449219, 260.239990234375, 270.7300109863281, 264.4599914550781, 262.32000732421875, 258.69000244140625, 263.20001220703125, 254.7899932861328, 245.77000427246094, 244.38999938964844, 246.86000061035156, 251.86000061035156, 250.8800048828125, 264.20001220703125, 268.55999755859375, 267.9700012207031, 273.6000061035156, 288.1499938964844, 283.1700134277344, 229.2899932861328, 233.92999267578125])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$DDOG</strong></a></td>
             <td class="col-master-name">Datadog Inc (Pre-Reincorporation)</td>
             <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
             <td class="col-master-price price-col"><strong>$233.93</strong></td>
             <td class="col-master-cap price-col">$83,270M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">69.8%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('PLTR', 'Palantir Technologies Inc', 'Technology', '172.01', '$413,356M', '64.9', '1.7', '106.37', '207.52', '163.41', '151.37')" onmouseenter="showChartHover(event, 'PLTR', 'Palantir Technologies Inc', '$172.01', '+10.32%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$PLTR</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/PLTR" target="_blank" onmouseenter="showSparklineHover(event, 'PLTR', 'Palantir Technologies Inc', '$172.01', '+10.32%', 'var(--accent-green)', [132.22000122070312, 129.0399932861328, 126.79000091552734, 130.0399932861328, 133.72000122070312, 133.75999450683594, 134.44000244140625, 132.3800048828125, 134.85000610351562, 132.66000366210938, 124.56999969482422, 123.37000274658203, 122.91999816894531, 131.52999877929688, 123.52999877929688, 123.0, 122.26000213623047, 123.05999755859375, 125.6500015258789, 162.66000366210938, 158.42999267578125, 155.9199981689453, 172.00999450683594])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$PLTR</strong></a></td>
             <td class="col-master-name">Palantir Technologies Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
             <td class="col-master-price price-col"><strong>$172.01</strong></td>
             <td class="col-master-cap price-col">$413,356M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">64.9%</span></td>
         </tr><tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('SNOW', 'Snowflake Inc', 'Technology', '330.49', '$114,548M', '99.6', '1.2', '118.3', '331.4', '313.97', '290.83')" onmouseenter="showChartHover(event, 'SNOW', 'Snowflake Inc', '$330.49', '+3.93%', 'var(--accent-green)')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>$SNOW</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/SNOW" target="_blank" onmouseenter="showSparklineHover(event, 'SNOW', 'Snowflake Inc', '$330.49', '+3.93%', 'var(--accent-green)', [261.30999755859375, 267.489990234375, 261.45001220703125, 268.6499938964844, 275.94000244140625, 271.8699951171875, 270.0199890136719, 268.8999938964844, 274.3399963378906, 271.7300109863281, 267.79998779296875, 265.1300048828125, 268.05999755859375, 272.9200134277344, 270.3599853515625, 282.8999938964844, 298.1000061035156, 293.2799987792969, 307.5299987792969, 316.7699890136719, 316.8399963378906, 318.0, 330.489990234375])" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>$SNOW</strong></a></td>
             <td class="col-master-name">Snowflake Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
             <td class="col-master-price price-col"><strong>$330.49</strong></td>
@@ -1511,84 +1502,47 @@ tr:hover{background-color:rgba(167,139,250,0.12);}
 
 </div>
 
-<div id="chartTooltip" class="chart-tooltip">
-    <div class="chart-tooltip-header">
+<div id="sparklineTooltip" class="sparkline-tooltip">
+    <div class="sparkline-header">
         <span id="tooltipTicker" style="font-weight:bold;"></span>
         <span id="tooltipReturn" style="font-weight:bold;"></span>
     </div>
-    <div style="font-size:0.7rem; color:var(--text-muted); margin-bottom:4px;" id="tooltipName"></div>
-    <div style="font-size:0.68rem; color:var(--accent-cyan); text-align:center; background:var(--bg-dark); padding:4px; border-radius:3px; border:1px solid var(--border-color);">
-        📈 Yahoo Finance Live Preview ↗
-    </div>
-</div>
-
-<div id="tickerModal" class="modal-overlay" onclick="closeModal(event)">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <span class="modal-close" onclick="closeModalDirect()">&times;</span>
-        <div class="modal-header">
-            <div>
-                <h2 id="modalTicker" style="color:var(--accent-cyan); display:inline-block; margin-right:8px;"></h2>
-                <span id="modalName" style="color:var(--text-muted); font-size:0.8rem;"></span>
-            </div>
-            <span id="modalIndustry" class="badge-confirmed"></span>
-        </div>
-        <div class="modal-body-grid">
-            <div class="modal-metric-box">Live Price: <strong id="modalPrice" style="color:var(--text-main);"></strong></div>
-            <div class="modal-metric-box">Market Cap: <strong id="modalCap" style="color:var(--text-main);"></strong></div>
-            <div class="modal-metric-box">52W Position: <strong id="modalPct" style="color:var(--accent-cyan);"></strong></div>
-            <div class="modal-metric-box">Volume Activity: <strong id="modalVol" style="color:var(--accent-yellow);"></strong></div>
-            <div class="modal-metric-box">52W Low: <strong id="modalLow" style="color:var(--text-muted);"></strong></div>
-            <div class="modal-metric-box">52W High: <strong id="modalHigh" style="color:var(--text-muted);"></strong></div>
-            <div class="modal-metric-box">50D MA: <strong id="modalMa50" style="color:var(--accent-yellow);"></strong></div>
-            <div class="modal-metric-box">200D MA: <strong id="modalMa200" style="color:var(--accent-red);"></strong></div>
-        </div>
-        <div style="margin-top: 15px; text-align: center;">
-            <a id="modalYahooLink" href="#" target="_blank" style="color:var(--accent-cyan); text-decoration:none; font-weight:bold; font-size:0.75rem;">📈 View Full Interactive Chart on Yahoo Finance ↗</a>
-        </div>
-    </div>
+    <svg id="tooltipSvg" width="180" height="45" style="overflow:visible; margin-top:2px;">
+        <path id="tooltipPath" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div style="font-size:0.62rem; color:var(--text-muted); text-align:center; margin-top:2px;">1-Month Trend</div>
 </div>
 
 <script>
-function showChartHover(event, ticker, name, price, retTxt, retColor) {
-    const tooltip = document.getElementById('chartTooltip');
+function showSparklineHover(event, ticker, name, price, retTxt, retColor, closes) {
+    const tooltip = document.getElementById('sparklineTooltip');
     document.getElementById('tooltipTicker').innerText = '$' + ticker + ' (' + price + ')';
     const retSpan = document.getElementById('tooltipReturn');
     retSpan.innerText = retTxt;
     retSpan.style.color = retColor;
-    document.getElementById('tooltipName').innerText = name;
+    
+    if (closes && closes.length > 1) {
+        const minC = Math.min(...closes);
+        const maxC = Math.max(...closes);
+        const cRange = (maxC !== minC) ? (maxC - minC) : 1.0;
+        const width = 180, height = 45;
+        let pts = [];
+        for (let i = 0; i < closes.length; i++) {
+            let x = (i / (closes.length - 1)) * width;
+            let y = height - ((closes[i] - minC) / cRange) * (height - 6) - 3;
+            pts.push(x.toFixed(1) + ',' + y.toFixed(1));
+        }
+        document.getElementById('tooltipPath.getAttribute') || document.getElementById('tooltipPath').setAttribute('d', 'M ' + pts.join(' L '));
+        document.getElementById('tooltipPath').setAttribute('stroke', retColor);
+    }
     
     tooltip.style.display = 'block';
     tooltip.style.left = (event.pageX + 15) + 'px';
     tooltip.style.top = (event.pageY + 15) + 'px';
 }
 
-function hideChartHover() {
-    document.getElementById('chartTooltip').style.display = 'none';
-}
-
-function openModal(ticker, name, industry, price, cap, pct, vol, low, high, ma50, ma200) {
-    hideChartHover();
-    document.getElementById('modalTicker').innerText = '$' + ticker;
-    document.getElementById('modalName').innerText = name;
-    document.getElementById('modalIndustry').innerText = industry;
-    document.getElementById('modalPrice').innerText = '$' + price;
-    document.getElementById('modalCap').innerText = cap;
-    document.getElementById('modalPct').innerText = pct + '%';
-    document.getElementById('modalVol').innerText = vol + 'x Normal';
-    document.getElementById('modalLow').innerText = '$' + low;
-    document.getElementById('modalHigh').innerText = '$' + high;
-    document.getElementById('modalMa50').innerText = '$' + ma50;
-    document.getElementById('modalMa200').innerText = '$' + ma200;
-    document.getElementById('modalYahooLink').href = 'https://finance.yahoo.com/quote/' + ticker;
-    document.getElementById('tickerModal').style.display = 'flex';
-}
-function closeModalDirect() {
-    document.getElementById('tickerModal').style.display = 'none';
-}
-function closeModal(event) {
-    if(event.target.id === 'tickerModal') {
-        document.getElementById('tickerModal').style.display = 'none';
-    }
+function hideSparklineHover() {
+    document.getElementById('sparklineTooltip').style.display = 'none';
 }
 </script>
 

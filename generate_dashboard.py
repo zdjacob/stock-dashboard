@@ -26,7 +26,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Hover Tooltips & Interactive Modals)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Sparkline Hover & Direct Links)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -53,6 +53,7 @@ def get_historical_data_yahoo(symbol, current_price):
     ret_10d, ret_30d = 0.0, 0.0
     p_10d, p_30d = 0.0, 0.0
     vol_ratio = 1.0
+    closes = []
     try:
         yf_url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?range=1mo&interval=1d"
         res = safe_api_get(yf_url, retries=2, delay=1, extra_headers=headers)
@@ -77,7 +78,7 @@ def get_historical_data_yahoo(symbol, current_price):
                     vol_ratio = round(today_vol / avg_vol, 1)
     except Exception:
         pass
-    return ret_10d, p_10d, ret_30d, p_30d, vol_ratio
+    return ret_10d, p_10d, ret_30d, p_30d, vol_ratio, closes
 
 def get_earnings_move_yahoo(symbol, earn_date_str, hour_timing):
     if not earn_date_str or earn_date_str == 'N/A':
@@ -161,13 +162,12 @@ for idx, symbol in enumerate(tickers, 1):
             "high52": round(high52, 2), "pct": round(pct_range, 1)
         })
 
-        return_10d_pct, price_10d, return_30d_pct, price_30d, vol_ratio = get_historical_data_yahoo(symbol, last_price)
+        return_10d_pct, price_10d, return_30d_pct, price_30d, vol_ratio, closes = get_historical_data_yahoo(symbol, last_price)
 
         master_list.append({
             "ticker": symbol, "name": comp_name, "industry": comp_industry,
             "price": round(last_price, 2), "mkt_cap": mkt_cap_str, "pct": round(pct_range, 1),
-            "vol_ratio": vol_ratio, "ma50": round(ma50, 2), "ma200": round(ma200, 2),
-            "low52": round(low52, 2), "high52": round(high52, 2), "daily_return": round(daily_return_pct, 2)
+            "vol_ratio": vol_ratio, "closes": closes, "daily_return": round(daily_return_pct, 2)
         })
         time.sleep(0.2)
 
@@ -390,10 +390,26 @@ def build_news_rows(items):
 def build_master_rows(items):
     rows = ""
     for item in items:
+        closes = item['closes']
+        # Compute SVG points string for sparkline
+        svg_points = ""
+        if closes and len(closes) > 1:
+            min_c, max_c = min(closes), max(closes)
+            c_range = (max_c - min_c) if max_c != min_c else 1.0
+            width, height = 180, 45
+            pts = []
+            for i, c in enumerate(closes):
+                x = (i / (len(closes) - 1)) * width
+                y = height - ((c - min_c) / c_range) * (height - 6) - 3
+                pts.append(f"{x:.1f},{y:.1f}")
+            svg_points = " ".join(pts)
+        
+        closes_json = str(closes).replace("'", '"')
         ret_color = "var(--accent-green)" if item['daily_return'] >= 0 else "var(--accent-red)"
         ret_txt = f"+{item['daily_return']:.2f}%" if item['daily_return'] >= 0 else f"{item['daily_return']:.2f}%"
+
         rows += f"""<tr class="master-row">
-            <td class="col-master-ticker"><a href="javascript:void(0)" onclick="openModal('{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['mkt_cap']}', '{item['pct']}', '{item['vol_ratio']}', '{item['low52']}', '{item['high52']}', '{item['ma50']}', '{item['ma200']}')" onmouseenter="showChartHover(event, '{item['ticker']}', '{item['name']}', '${item['price']:,.2f}', '{ret_txt}', '{ret_color}')" onmouseleave="hideChartHover()" class="ticker-popup-link"><strong>${item['ticker']}</strong></a></td>
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/{item['ticker']}" target="_blank" onmouseenter="showSparklineHover(event, '{item['ticker']}', '{item['name']}', '${item['price']:,.2f}', '{ret_txt}', '{ret_color}', {closes_json})" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>${item['ticker']}</strong></a></td>
             <td class="col-master-name">{item['name']}</td>
             <td class="col-master-industry"><span class="badge-confirmed">{item['industry']}</span></td>
             <td class="col-master-price price-col"><strong>${item['price']:,.2f}</strong></td>
@@ -483,18 +499,9 @@ tr:hover{{background-color:rgba(167,139,250,0.12);}}
 
 .vol-badge {{ background-color: rgba(250, 204, 21, 0.2); color: var(--accent-yellow); padding: 1px 4px; border-radius: 3px; font-weight: bold; font-size: 0.62rem; border: 1px solid rgba(250, 204, 21, 0.4); }}
 
-/* Hover Chart Tooltip CSS */
-.chart-tooltip {{ display: none; position: absolute; background: var(--bg-card); border: 1px solid var(--accent-cyan); border-radius: 6px; padding: 10px; z-index: 2000; width: 220px; box-shadow: 0 4px 16px rgba(0,0,0,0.6); pointer-events: none; }}
-.chart-tooltip-header {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 0.78rem; font-weight: bold; color: var(--accent-cyan); }}
-
-/* Modal Popup CSS */
-.modal-overlay {{ display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }}
-.modal-content {{ background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; width: 450px; max-width: 90%; padding: 20px; position: relative; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }}
-.modal-close {{ position: absolute; top: 12px; right: 15px; font-size: 1.2rem; color: var(--text-muted); cursor: pointer; font-weight: bold; }}
-.modal-close:hover {{ color: var(--text-main); }}
-.modal-header {{ display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 12px; }}
-.modal-body-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.78rem; }}
-.modal-metric-box {{ background: var(--bg-dark); padding: 8px; border-radius: 4px; border: 1px solid var(--border-color); }}
+/* Sparkline Hover Tooltip CSS */
+.sparkline-tooltip {{ display: none; position: absolute; background: var(--bg-card); border: 1px solid var(--accent-cyan); border-radius: 6px; padding: 8px; z-index: 2000; width: 200px; box-shadow: 0 4px 16px rgba(0,0,0,0.6); pointer-events: none; }}
+.sparkline-header {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; font-size: 0.78rem; font-weight: bold; color: var(--accent-cyan); }}
 
 .range-bar-container{{position:relative;width:100%;height:5px;background-color:var(--channel-bar);border-radius:3px;margin:2px 0;overflow:visible;}}
 .grid-line-33{{position:absolute;top:-3px;bottom:-3px;left:33.33%;border-left:1px dashed rgba(255,255,255,0.35);z-index:1;pointer-events:none;}}
@@ -581,7 +588,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
 
 <div class="dual-grid-wrapper" style="margin-top:6px;">
     <div class="grid-column">
-        <div class="section-title">📋 Tracked Tickers (Hover for Chart Preview / Click for Modal)</div>
+        <div class="section-title">📋 Tracked Tickers (Hover for Sparkline / Click for Yahoo Chart)</div>
         <table>{master_header_html}<tbody>{build_master_rows(master_by_ticker)}</tbody></table>
     </div>
     <div class="grid-column">
@@ -592,84 +599,47 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
 
 </div>
 
-<div id="chartTooltip" class="chart-tooltip">
-    <div class="chart-tooltip-header">
+<div id="sparklineTooltip" class="sparkline-tooltip">
+    <div class="sparkline-header">
         <span id="tooltipTicker" style="font-weight:bold;"></span>
         <span id="tooltipReturn" style="font-weight:bold;"></span>
     </div>
-    <div style="font-size:0.7rem; color:var(--text-muted); margin-bottom:4px;" id="tooltipName"></div>
-    <div style="font-size:0.68rem; color:var(--accent-cyan); text-align:center; background:var(--bg-dark); padding:4px; border-radius:3px; border:1px solid var(--border-color);">
-        📈 Yahoo Finance Live Preview ↗
-    </div>
-</div>
-
-<div id="tickerModal" class="modal-overlay" onclick="closeModal(event)">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <span class="modal-close" onclick="closeModalDirect()">&times;</span>
-        <div class="modal-header">
-            <div>
-                <h2 id="modalTicker" style="color:var(--accent-cyan); display:inline-block; margin-right:8px;"></h2>
-                <span id="modalName" style="color:var(--text-muted); font-size:0.8rem;"></span>
-            </div>
-            <span id="modalIndustry" class="badge-confirmed"></span>
-        </div>
-        <div class="modal-body-grid">
-            <div class="modal-metric-box">Live Price: <strong id="modalPrice" style="color:var(--text-main);"></strong></div>
-            <div class="modal-metric-box">Market Cap: <strong id="modalCap" style="color:var(--text-main);"></strong></div>
-            <div class="modal-metric-box">52W Position: <strong id="modalPct" style="color:var(--accent-cyan);"></strong></div>
-            <div class="modal-metric-box">Volume Activity: <strong id="modalVol" style="color:var(--accent-yellow);"></strong></div>
-            <div class="modal-metric-box">52W Low: <strong id="modalLow" style="color:var(--text-muted);"></strong></div>
-            <div class="modal-metric-box">52W High: <strong id="modalHigh" style="color:var(--text-muted);"></strong></div>
-            <div class="modal-metric-box">50D MA: <strong id="modalMa50" style="color:var(--accent-yellow);"></strong></div>
-            <div class="modal-metric-box">200D MA: <strong id="modalMa200" style="color:var(--accent-red);"></strong></div>
-        </div>
-        <div style="margin-top: 15px; text-align: center;">
-            <a id="modalYahooLink" href="#" target="_blank" style="color:var(--accent-cyan); text-decoration:none; font-weight:bold; font-size:0.75rem;">📈 View Full Interactive Chart on Yahoo Finance ↗</a>
-        </div>
-    </div>
+    <svg id="tooltipSvg" width="180" height="45" style="overflow:visible; margin-top:2px;">
+        <path id="tooltipPath" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div style="font-size:0.62rem; color:var(--text-muted); text-align:center; margin-top:2px;">1-Month Trend</div>
 </div>
 
 <script>
-function showChartHover(event, ticker, name, price, retTxt, retColor) {{
-    const tooltip = document.getElementById('chartTooltip');
+function showSparklineHover(event, ticker, name, price, retTxt, retColor, closes) {{
+    const tooltip = document.getElementById('sparklineTooltip');
     document.getElementById('tooltipTicker').innerText = '$' + ticker + ' (' + price + ')';
     const retSpan = document.getElementById('tooltipReturn');
     retSpan.innerText = retTxt;
     retSpan.style.color = retColor;
-    document.getElementById('tooltipName').innerText = name;
+    
+    if (closes && closes.length > 1) {{
+        const minC = Math.min(...closes);
+        const maxC = Math.max(...closes);
+        const cRange = (maxC !== minC) ? (maxC - minC) : 1.0;
+        const width = 180, height = 45;
+        let pts = [];
+        for (let i = 0; i < closes.length; i++) {{
+            let x = (i / (closes.length - 1)) * width;
+            let y = height - ((closes[i] - minC) / cRange) * (height - 6) - 3;
+            pts.push(x.toFixed(1) + ',' + y.toFixed(1));
+        }}
+        document.getElementById('tooltipPath.getAttribute') || document.getElementById('tooltipPath').setAttribute('d', 'M ' + pts.join(' L '));
+        document.getElementById('tooltipPath').setAttribute('stroke', retColor);
+    }}
     
     tooltip.style.display = 'block';
     tooltip.style.left = (event.pageX + 15) + 'px';
     tooltip.style.top = (event.pageY + 15) + 'px';
 }}
 
-function hideChartHover() {{
-    document.getElementById('chartTooltip').style.display = 'none';
-}}
-
-function openModal(ticker, name, industry, price, cap, pct, vol, low, high, ma50, ma200) {{
-    hideChartHover();
-    document.getElementById('modalTicker').innerText = '$' + ticker;
-    document.getElementById('modalName').innerText = name;
-    document.getElementById('modalIndustry').innerText = industry;
-    document.getElementById('modalPrice').innerText = '$' + price;
-    document.getElementById('modalCap').innerText = cap;
-    document.getElementById('modalPct').innerText = pct + '%';
-    document.getElementById('modalVol').innerText = vol + 'x Normal';
-    document.getElementById('modalLow').innerText = '$' + low;
-    document.getElementById('modalHigh').innerText = '$' + high;
-    document.getElementById('modalMa50').innerText = '$' + ma50;
-    document.getElementById('modalMa200').innerText = '$' + ma200;
-    document.getElementById('modalYahooLink').href = 'https://finance.yahoo.com/quote/' + ticker;
-    document.getElementById('tickerModal').style.display = 'flex';
-}}
-function closeModalDirect() {{
-    document.getElementById('tickerModal').style.display = 'none';
-}}
-function closeModal(event) {{
-    if(event.target.id === 'tickerModal') {{
-        document.getElementById('tickerModal').style.display = 'none';
-    }}
+function hideSparklineHover() {{
+    document.getElementById('sparklineTooltip').style.display = 'none';
 }}
 </script>
 
@@ -682,7 +652,7 @@ output_path = os.path.join(os.getcwd(), output_filename)
 with open(output_path, "w", encoding="utf-8") as f:
     f.write(html_content)
 
-print(f"\n🌐 Dashboard successfully generated with Hover Previews & saved to: {output_filename}")
+print(f"\n🌐 Dashboard successfully generated with Sparkline Hover Previews & saved to: {output_filename}")
 print(f"⏱️ EST Timestamp included: {generation_timestamp_str}")
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
 
