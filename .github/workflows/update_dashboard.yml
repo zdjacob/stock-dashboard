@@ -3,7 +3,7 @@ name: Update Stock Dashboard
 on:
   schedule:
     # Runs at 21:00 UTC (5:00 PM EST) Monday through Friday
-    - cron: '*/2 * * * *'
+    - cron: '00,20,40,52 * * * *'
   workflow_dispatch: # Allows manual trigger from GitHub UI
 
 jobs:
