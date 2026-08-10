@@ -1,4 +1,9 @@
 import os, time, datetime, webbrowser, requests, statistics
+try:
+    from zoneinfo import ZoneInfo
+    est_time = datetime.datetime.now(ZoneInfo("America/New_York"))
+except ImportError:
+    est_time = datetime.datetime.utcnow() - datetime.timedelta(hours=4)
 
 # ==========================================
 # 🔑 FINNHUB API KEY & CUSTOM INDUSTRY MAPPINGS
@@ -21,7 +26,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard with Volume Alerts & Interactive Modals)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - EST Timestamp & Interactive Modals)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -101,9 +106,8 @@ def get_earnings_move_yahoo(symbol, earn_date_str, hour_timing):
 
 data_list, earnings_list, movers_list, master_list, news_list = [], [], [], [], []
 
-now = datetime.datetime.now()
-generation_timestamp_str = now.strftime("%b %d, %Y at %H:%M:%S")
-today = now.date()
+generation_timestamp_str = est_time.strftime("%b %d, %Y at %H:%M:%S") + " EST"
+today = est_time.date()
 past_week_str = (today - datetime.timedelta(days=7)).strftime("%Y-%m-%d")
 today_str = today.strftime("%Y-%m-%d")
 future_str = (today + datetime.timedelta(days=120)).strftime("%Y-%m-%d")
@@ -157,7 +161,6 @@ for idx, symbol in enumerate(tickers, 1):
             "high52": round(high52, 2), "pct": round(pct_range, 1)
         })
 
-        # Fetch historical data and volume spike metric
         return_10d_pct, price_10d, return_30d_pct, price_30d, vol_ratio = get_historical_data_yahoo(symbol, last_price)
 
         master_list.append({
@@ -242,7 +245,7 @@ for idx, symbol in enumerate(tickers, 1):
                 "vol_ratio": vol_ratio
             })
 
-        print(f"[{idx}/{len(tickers)}] ✅ Loaded {symbol}: ${last_price:.2f} [{comp_industry}] (Vol: {vol_ratio}x)")
+        print(f"[{idx}/{len(tickers)}] ✅ Loaded {symbol}: ${last_price:.2f} [{comp_industry}]")
     except Exception as e:
         print(f"Error processing {symbol}: {e}")
 
@@ -611,7 +614,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
 
 <script>
 function openModal(ticker, name, industry, price, cap, pct, vol, low, high, ma50, ma200) {{
-    document.getElementById('modalTicker.inner') || (document.getElementById('modalTicker').innerText = '$' + ticker);
+    document.getElementById('modalTicker').innerText = '$' + ticker;
     document.getElementById('modalName').innerText = name;
     document.getElementById('modalIndustry').innerText = industry;
     document.getElementById('modalPrice').innerText = '$' + price;
@@ -622,9 +625,9 @@ function openModal(ticker, name, industry, price, cap, pct, vol, low, high, ma50
     document.getElementById('modalHigh').innerText = '$' + high;
     document.getElementById('modalMa50').innerText = '$' + ma50;
     document.getElementById('modalMa200').innerText = '$' + ma200;
-    document.getElementById('modalYahooLink.href') || (document.getElementById('modalYahooLink').href = 'https://finance.yahoo.com/quote/' + ticker);
+    document.getElementById('modalYahooLink').href = 'https://finance.yahoo.com/quote/' + ticker;
     document.getElementById('tickerModal').style.display = 'flex';
-}
+}}
 function closeModalDirect() {{
     document.getElementById('tickerModal').style.display = 'none';
 }}
@@ -644,9 +647,8 @@ output_path = os.path.join(os.getcwd(), output_filename)
 with open(output_path, "w", encoding="utf-8") as f:
     f.write(html_content)
 
-print(f"\n🌐 Dashboard successfully generated with Volume Alerts & Interactive Modals, and saved to: {output_filename}")
-print(f"⏱️ Timestamp included: {generation_timestamp_str}")
+print(f"\n🌐 Dashboard successfully generated and saved to: {output_filename}")
+print(f"⏱️ EST Timestamp included: {generation_timestamp_str}")
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
 
-# 🔔 Completion Message
 print("\n🎉 ALL TASKS COMPLETE: Jacob's Stock Dashboard generated, saved, and browser launched successfully!")
