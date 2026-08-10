@@ -26,7 +26,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Clickable Rows with 3-Week Sparklines)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Accordion Sparkline Drawers)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -55,7 +55,6 @@ def get_historical_data_yahoo(symbol, current_price):
     vol_ratio = 1.0
     closes_3w = []
     try:
-        # Fetch 1 month to get at least 3 weeks of daily bars for the sparkline drawer
         yf_url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?range=1mo&interval=1d"
         res = safe_api_get(yf_url, retries=2, delay=1, extra_headers=headers)
         result = res.get('chart', {}).get('result', [])
@@ -65,7 +64,6 @@ def get_historical_data_yahoo(symbol, current_price):
             closes = [c for c in quote.get('close', []) if c is not None]
             volumes = [v for v in quote.get('volume', []) if v is not None]
             
-            # Keep last 15-21 trading days (~3 weeks)
             closes_3w = closes[-21:] if len(closes) >= 21 else closes
             
             if len(closes) >= 10:
@@ -396,6 +394,7 @@ def build_master_rows(items):
     for item in items:
         closes = item['closes_3w']
         svg_points = ""
+        min_c, max_c = 0, 0
         if closes and len(closes) > 1:
             min_c, max_c = min(closes), max(closes)
             c_range = (max_c - min_c) if max_c != min_c else 1.0
@@ -410,7 +409,7 @@ def build_master_rows(items):
         ret_color = "#22c55e" if item['daily_return'] >= 0 else "#ef4444"
         row_id = f"drawer_{item['ticker']}"
 
-        rows += f"""<tr class="master-row click-row" onclick="toggleDrawer('{row_id}')">
+        rows += f"""<tr class="master-row click-row" onclick="toggleDrawer(this, '{row_id}')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/{item['ticker']}" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>${item['ticker']}</strong> ↗</a></td>
             <td class="col-master-name">{item['name']}</td>
             <td class="col-master-industry"><span class="badge-confirmed">{item['industry']}</span></td>
@@ -421,11 +420,19 @@ def build_master_rows(items):
         <tr id="{row_id}" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 ${item['ticker']} — Last 3 Weeks Price Trend</span>
+                    <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 ${item['ticker']} — Last 3 Weeks Trend (High: ${max_c:,.2f} | Low: ${min_c:,.2f})</span>
                     <span style="font-size: 0.68rem; color: var(--text-muted);">Click row again to close</span>
                 </div>
-                <div style="background: var(--bg-card); padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); text-align: center;">
+                <div style="background: var(--bg-card); padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); text-align: center; position: relative;">
                     <svg width="100%" height="60" viewBox="0 0 300 55" preserveAspectRatio="none" style="overflow:visible; max-width: 600px;">
+                        <line x1="0" y1="13.7" x2="300" y2="13.7" stroke="rgba(167,139,250,0.2)" stroke-dasharray="2,2" stroke-width="1"/>
+                        <line x1="0" y1="27.5" x2="300" y2="27.5" stroke="rgba(167,139,250,0.2)" stroke-dasharray="2,2" stroke-width="1"/>
+                        <line x1="0" y1="41.2" x2="300" y2="41.2" stroke="rgba(167,139,250,0.2)" stroke-dasharray="2,2" stroke-width="1"/>
+                        
+                        <line x1="75" y1="0" x2="75" y2="55" stroke="rgba(167,139,250,0.2)" stroke-dasharray="2,2" stroke-width="1"/>
+                        <line x1="150" y1="0" x2="150" y2="55" stroke="rgba(167,139,250,0.25)" stroke-dasharray="2,2" stroke-width="1"/>
+                        <line x1="225" y1="0" x2="225" y2="55" stroke="rgba(167,139,250,0.2)" stroke-dasharray="2,2" stroke-width="1"/>
+
                         <polyline fill="none" stroke="{ret_color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points="{svg_points}"/>
                     </svg>
                 </div>
@@ -600,7 +607,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
 
 <div class="dual-grid-wrapper" style="margin-top:6px;">
     <div class="grid-column">
-        <div class="section-title">📋 Tracked Tickers (Click Row for 3-Week Sparkline / Click Ticker for Yahoo)</div>
+        <div class="section-title">📋 Tracked Tickers (Click Row for Sparkline / Click Ticker for Yahoo)</div>
         <table>{master_header_html}<tbody>{build_master_rows(master_by_ticker)}</tbody></table>
     </div>
     <div class="grid-column">
@@ -612,10 +619,21 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
 </div>
 
 <script>
-function toggleDrawer(rowId) {{
-    const drawer = document.getElementById(rowId);
-    if (drawer) {{
-        drawer.style.display = drawer.style.display === 'none' ? 'table-row' : 'none';
+function toggleDrawer(rowElement, rowId) {{
+    const targetDrawer = document.getElementById(rowId);
+    const tableContainer = rowElement.closest('table');
+    
+    // Close all other drawers in the same table first (Accordion behavior)
+    const allDrawers = tableContainer.querySelectorAll('.sparkline-drawer');
+    allDrawers.forEach(drawer => {{
+        if (drawer.id !== rowId) {{
+            drawer.style.display = 'none';
+        }}
+    }});
+    
+    // Toggle the selected drawer
+    if (targetDrawer) {{
+        targetDrawer.style.display = targetDrawer.style.display === 'none' ? 'table-row' : 'none';
     }}
 }}
 </script>
@@ -629,7 +647,7 @@ output_path = os.path.join(os.getcwd(), output_filename)
 with open(output_path, "w", encoding="utf-8") as f:
     f.write(html_content)
 
-print(f"\n🌐 Dashboard successfully generated with Click-to-Open Sparkline Drawers & saved to: {output_filename}")
+print(f"\n🌐 Dashboard successfully generated with Accordion Sparklines & saved to: {output_filename}")
 print(f"⏱️ EST Timestamp included: {generation_timestamp_str}")
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
 
