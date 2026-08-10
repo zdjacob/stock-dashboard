@@ -1,9 +1,4 @@
 import os, time, datetime, webbrowser, requests, statistics
-try:
-    from zoneinfo import ZoneInfo
-    est_time = datetime.datetime.now(ZoneInfo("America/New_York"))
-except ImportError:
-    est_time = datetime.datetime.utcnow() - datetime.timedelta(hours=4)
 
 # ==========================================
 # 🔑 FINNHUB API KEY & CUSTOM INDUSTRY MAPPINGS
@@ -26,7 +21,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Global Single-Drawer Accordion)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - 3-Zone Custom Gradients)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -52,35 +47,22 @@ def safe_api_get(url, retries=3, delay=2, extra_headers=None):
 def get_historical_data_yahoo(symbol, current_price):
     ret_10d, ret_30d = 0.0, 0.0
     p_10d, p_30d = 0.0, 0.0
-    vol_ratio = 1.0
-    closes_3w = []
     try:
-        yf_url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?range=1mo&interval=1d"
+        yf_url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?range=3mo&interval=1d"
         res = safe_api_get(yf_url, retries=2, delay=1, extra_headers=headers)
         result = res.get('chart', {}).get('result', [])
         if result:
-            indicators = result[0].get('indicators', {})
-            quote = indicators.get('quote', [{}])[0]
+            quote = result[0].get('indicators', {}).get('quote', [{}])[0]
             closes = [c for c in quote.get('close', []) if c is not None]
-            volumes = [v for v in quote.get('volume', []) if v is not None]
-            
-            closes_3w = closes[-21:] if len(closes) >= 21 else closes
-            
             if len(closes) >= 10:
                 p_10d = closes[-11] if len(closes) >= 11 else closes[0]
                 ret_10d = ((current_price - p_10d) / p_10d) * 100
             if len(closes) >= 30:
                 p_30d = closes[-31] if len(closes) >= 31 else closes[0]
                 ret_30d = ((current_price - p_30d) / p_30d) * 100
-            
-            if len(volumes) >= 5:
-                today_vol = volumes[-1]
-                avg_vol = statistics.mean(volumes[-20:]) if len(volumes) >= 20 else statistics.mean(volumes)
-                if avg_vol > 0:
-                    vol_ratio = round(today_vol / avg_vol, 1)
     except Exception:
         pass
-    return ret_10d, p_10d, ret_30d, p_30d, vol_ratio, closes_3w
+    return ret_10d, p_10d, ret_30d, p_30d
 
 def get_earnings_move_yahoo(symbol, earn_date_str, hour_timing):
     if not earn_date_str or earn_date_str == 'N/A':
@@ -109,8 +91,9 @@ def get_earnings_move_yahoo(symbol, earn_date_str, hour_timing):
 
 data_list, earnings_list, movers_list, master_list, news_list = [], [], [], [], []
 
-generation_timestamp_str = est_time.strftime("%b %d, %Y at %H:%M:%S") + " EST"
-today = est_time.date()
+now = datetime.datetime.now()
+generation_timestamp_str = now.strftime("%b %d, %Y at %H:%M:%S")
+today = now.date()
 past_week_str = (today - datetime.timedelta(days=7)).strftime("%Y-%m-%d")
 today_str = today.strftime("%Y-%m-%d")
 future_str = (today + datetime.timedelta(days=120)).strftime("%Y-%m-%d")
@@ -164,12 +147,9 @@ for idx, symbol in enumerate(tickers, 1):
             "high52": round(high52, 2), "pct": round(pct_range, 1)
         })
 
-        return_10d_pct, price_10d, return_30d_pct, price_30d, vol_ratio, closes_3w = get_historical_data_yahoo(symbol, last_price)
-
         master_list.append({
             "ticker": symbol, "name": comp_name, "industry": comp_industry,
-            "price": round(last_price, 2), "mkt_cap": mkt_cap_str, "pct": round(pct_range, 1),
-            "vol_ratio": vol_ratio, "closes_3w": closes_3w, "daily_return": round(daily_return_pct, 2)
+            "price": round(last_price, 2), "mkt_cap": mkt_cap_str, "pct": round(pct_range, 1)
         })
         time.sleep(0.2)
 
@@ -239,12 +219,12 @@ for idx, symbol in enumerate(tickers, 1):
             })
         time.sleep(0.2)
 
-        if abs(daily_return_pct) >= 3.0 or abs(return_10d_pct) >= 5.0 or abs(return_30d_pct) >= 8.0 or vol_ratio >= 1.5:
+        return_10d_pct, price_10d, return_30d_pct, price_30d = get_historical_data_yahoo(symbol, last_price)
+        if abs(daily_return_pct) >= 3.0 or abs(return_10d_pct) >= 5.0 or abs(return_30d_pct) >= 8.0:
             movers_list.append({
                 "ticker": symbol, "price": round(last_price, 2), "daily_return": round(daily_return_pct, 2),
                 "return_10d": round(return_10d_pct, 2), "price_10d": round(price_10d, 2),
-                "return_30d": round(return_30d_pct, 2), "price_30d": round(price_30d, 2),
-                "vol_ratio": vol_ratio
+                "return_30d": round(return_30d_pct, 2), "price_30d": round(price_30d, 2)
             })
 
         print(f"[{idx}/{len(tickers)}] ✅ Loaded {symbol}: ${last_price:.2f} [{comp_industry}]")
@@ -301,17 +281,24 @@ def build_watchlist_rows(items):
         
         pct_val = max(0.0, min(100.0, item['pct']))
         
+        # 3-Zone Custom Gradients:
+        # 0% to 40%: Green gradient (Darker green to Bright Green)
+        # 40% to 60%: Yellow gradient / zone
+        # 60% to 100%: Red gradient (Yellow-Red to Bright Red)
         if pct_val <= 40.0:
+            # 0% to 40%: Darker green [22, 160, 90] to Bright Green [34, 197, 94]
             factor = pct_val / 40.0
             r_col = int(22 + (34 - 22) * factor)
             g_col = int(160 + (197 - 160) * factor)
             b_col = int(90 + (94 - 90) * factor)
         elif pct_val <= 60.0:
+            # 40% to 60%: Gradient of Yellow
             factor = (pct_val - 40.0) / 20.0
             r_col = int(230 + (250 - 230) * factor)
             g_col = int(180 + (204 - 180) * factor)
             b_col = int(20 + (21 - 20) * factor)
         else:
+            # 60% to 100%: Gradient of Red (Yellow [250, 204, 21] to Bright Red [239, 68, 68])
             factor = (pct_val - 60.0) / 40.0
             r_col = int(250 + (239 - 250) * factor)
             g_col = int(204 + (68 - 204) * factor)
@@ -366,9 +353,8 @@ def build_movers_rows(items):
         return """<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:10px;">No significant movers detected.</td></tr>"""
     rows = ""
     for item in items:
-        vol_badge = f'<span class="vol-badge" title="Volume is {item["vol_ratio"]}x normal volume">⚡{item["vol_ratio"]}x Vol</span>' if item['vol_ratio'] >= 1.5 else f'<span style="color:var(--text-muted); font-size:0.65rem;">{item["vol_ratio"]}x Vol</span>'
         rows += f"""<tr class="movers-row">
-            <td class="col-movers-ticker"><strong>${item['ticker']}</strong> {vol_badge}</td>
+            <td class="col-movers-ticker"><strong>${item['ticker']}</strong></td>
             <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">{item['composite_score']:+.2f}</span></td>
             <td class="col-movers-combined"><div class="combined-cell">{get_return_badge_html(item['daily_return'], 2.0)}<span class="price-col">${item['price']:,.2f}</span></div></td>
             <td class="col-movers-combined"><div class="combined-cell">{get_return_badge_html(item['return_10d'], 5.0)}<span class="price-col">${item['price_10d']:,.2f}</span></div></td>
@@ -392,57 +378,19 @@ def build_news_rows(items):
 def build_master_rows(items):
     rows = ""
     for item in items:
-        closes = item['closes_3w']
-        svg_points = ""
-        min_c, max_c = 0, 0
-        if closes and len(closes) > 1:
-            min_c, max_c = min(closes), max(closes)
-            c_range = (max_c - min_c) if max_c != min_c else 1.0
-            width, height = 300, 55
-            pts = []
-            for i, c in enumerate(closes):
-                x = (i / (len(closes) - 1)) * width
-                y = height - ((c - min_c) / c_range) * (height - 10) - 5
-                pts.append(f"{x:.1f},{y:.1f}")
-            svg_points = " ".join(pts)
-        
-        ret_color = "#22c55e" if item['daily_return'] >= 0 else "#ef4444"
-        row_id = f"drawer_{item['ticker']}_{id(item)}"
-
-        rows += f"""<tr class="master-row click-row" onclick="toggleDrawer(this, '{row_id}')">
-            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/{item['ticker']}" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>${item['ticker']}</strong> ↗</a></td>
+        rows += f"""<tr class="master-row">
+            <td class="col-master-ticker"><strong>${item['ticker']}</strong></td>
             <td class="col-master-name">{item['name']}</td>
             <td class="col-master-industry"><span class="badge-confirmed">{item['industry']}</span></td>
             <td class="col-master-price price-col"><strong>${item['price']:,.2f}</strong></td>
             <td class="col-master-cap price-col">{item['mkt_cap']}</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">{item['pct']}%</span></td>
-        </tr>
-        <tr id="{row_id}" class="sparkline-drawer" style="display:none;">
-            <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 ${item['ticker']} — Last 3 Weeks Trend (High: ${max_c:,.2f} | Low: ${min_c:,.2f})</span>
-                    <span style="font-size: 0.68rem; color: var(--text-muted);">Click row again to close</span>
-                </div>
-                <div style="background: var(--bg-card); padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); text-align: center; position: relative;">
-                    <svg width="100%" height="60" viewBox="0 0 300 55" preserveAspectRatio="none" style="overflow:visible; max-width: 600px;">
-                        <line x1="0" y1="13.7" x2="300" y2="13.7" stroke="rgba(167,139,250,0.2)" stroke-dasharray="2,2" stroke-width="1"/>
-                        <line x1="0" y1="27.5" x2="300" y2="27.5" stroke="rgba(167,139,250,0.2)" stroke-dasharray="2,2" stroke-width="1"/>
-                        <line x1="0" y1="41.2" x2="300" y2="41.2" stroke="rgba(167,139,250,0.2)" stroke-dasharray="2,2" stroke-width="1"/>
-                        
-                        <line x1="75" y1="0" x2="75" y2="55" stroke="rgba(167,139,250,0.2)" stroke-dasharray="2,2" stroke-width="1"/>
-                        <line x1="150" y1="0" x2="150" y2="55" stroke="rgba(167,139,250,0.25)" stroke-dasharray="2,2" stroke-width="1"/>
-                        <line x1="225" y1="0" x2="225" y2="55" stroke="rgba(167,139,250,0.2)" stroke-dasharray="2,2" stroke-width="1"/>
-
-                        <polyline fill="none" stroke="{ret_color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points="{svg_points}"/>
-                    </svg>
-                </div>
-            </td>
         </tr>"""
     return rows
 
 table_header_html = """<thead><tr class="watchlist-row"><th class="col-ticker">Ticker</th><th class="col-bar" style="text-align:center;">Range Bar (33% & 66% Grids)<div class="axis-labels"><span>0%</span><span style="color:#a78bfa;">33%</span><span style="color:#a78bfa;">66%</span><span>100%</span></div></th><th class="col-low52" style="text-align:right;">52W Low</th><th class="col-price" style="text-align:right;">Price</th><th class="col-high52" style="text-align:right;">52W High</th><th class="col-mini-gauge" style="text-align:center;">52W Pos</th></tr></thead>"""
 earnings_header_html = """<thead><tr class="earnings-row"><th class="col-earn-ticker">Ticker</th><th class="col-earn-price" style="text-align:right;">Price</th><th class="col-earn-date">Date</th><th class="col-earn-status">Status</th><th class="col-earn-eps">EPS</th><th class="col-earn-move">Earnings Move ⚡</th></tr></thead>"""
-movers_header_html = """<thead><tr class="movers-row"><th class="col-movers-ticker">Ticker & Vol</th><th class="col-movers-score">Score ↓</th><th class="col-movers-combined">1D Return / Price</th><th class="col-movers-combined">10D Return / Price</th><th class="col-movers-combined">30D Return / Price</th></tr></thead>"""
+movers_header_html = """<thead><tr class="movers-row"><th class="col-movers-ticker">Ticker</th><th class="col-movers-score">Score ↓</th><th class="col-movers-combined">1D Return / Price</th><th class="col-movers-combined">10D Return / Price</th><th class="col-movers-combined">30D Return / Price</th></tr></thead>"""
 news_header_html = """<thead><tr class="news-row"><th class="col-news-ticker">Ticker</th><th class="col-news-headline">Latest Article Headline</th><th class="col-news-source">Source</th><th class="col-news-date">Published</th></tr></thead>"""
 master_header_html = """<thead><tr class="master-row"><th class="col-master-ticker">Ticker</th><th class="col-master-name">Company Name</th><th class="col-master-industry">Industry</th><th class="col-master-price" style="text-align:right;">Price</th><th class="col-master-cap" style="text-align:right;">Market Cap</th><th class="col-master-gauge" style="text-align:center;">52W Pos</th></tr></thead>"""
 
@@ -476,8 +424,7 @@ table{{width:100%;border-collapse:collapse;text-align:left;}}
 th{{background-color:#281545;padding:4px 6px;color:var(--text-muted);font-weight:600;border-bottom:1px solid var(--border-color);font-size:0.72rem;}}
 td{{padding:4px 6px;border-bottom:1px solid var(--border-color);vertical-align:middle;white-space:nowrap;font-size:0.72rem;overflow:hidden;text-overflow:ellipsis;}}
 tr:nth-child(even){{background-color:var(--bg-row-alt);}}
-tr.click-row {{ cursor: pointer; }}
-tr.click-row:hover{{background-color:rgba(56,189,248,0.15) !important;}}
+tr:hover{{background-color:rgba(167,139,250,0.12);}}
 
 .watchlist-row{{display:table;width:100%;table-layout:fixed;}}
 .col-ticker{{width:70px;}}
@@ -488,8 +435,8 @@ tr.click-row:hover{{background-color:rgba(56,189,248,0.15) !important;}}
 .col-mini-gauge{{width:75px;text-align:center;}}
 
 .movers-row{{display:table;width:100%;table-layout:fixed;}}
-.col-movers-ticker{{width:75px;}}
-.col-movers-score{{width:55px;}}
+.col-movers-ticker{{width:65px;}}
+.col-movers-score{{width:65px;}}
 .col-movers-combined{{width:135px;}}
 .combined-cell{{display:flex;justify-content:space-between;align-items:center;width:100%;}}
 
@@ -516,11 +463,6 @@ tr.click-row:hover{{background-color:rgba(56,189,248,0.15) !important;}}
 .col-master-price{{width:85px;text-align:right;}}
 .col-master-cap{{width:95px;text-align:right;}}
 .col-master-gauge{{width:75px;text-align:center;}}
-
-.ticker-popup-link {{ color: var(--accent-cyan); text-decoration: none; font-weight: bold; cursor: pointer; }}
-.ticker-popup-link:hover {{ text-decoration: underline; }}
-
-.vol-badge {{ background-color: rgba(250, 204, 21, 0.2); color: var(--accent-yellow); padding: 1px 4px; border-radius: 3px; font-weight: bold; font-size: 0.62rem; border: 1px solid rgba(250, 204, 21, 0.4); }}
 
 .range-bar-container{{position:relative;width:100%;height:5px;background-color:var(--channel-bar);border-radius:3px;margin:2px 0;overflow:visible;}}
 .grid-line-33{{position:absolute;top:-3px;bottom:-3px;left:33.33%;border-left:1px dashed rgba(255,255,255,0.35);z-index:1;pointer-events:none;}}
@@ -576,7 +518,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
         </div>
     </div>
 </header>
-<div class="legend-bar"><span style="color:var(--text-muted);font-weight:600;>Indicator Key:</span><div class="legend-item"><span class="dot-cyan"></span> Live Price</div><div class="legend-item"><span class="bar-orange"></span> Support Level</div><div class="legend-item"><span class="diamond-yellow"></span> 50-Day Moving Avg</div><div class="legend-item"><span class="square-red"></span> 200-Day Moving Avg</div><div class="legend-item"><span class="line-grid"></span> 33% / 66% Range Dividers</div></div>
+<div class="legend-bar"><span style="color:var(--text-muted);font-weight:600;">Indicator Key:</span><div class="legend-item"><span class="dot-cyan"></span> Live Price</div><div class="legend-item"><span class="bar-orange"></span> Support Level</div><div class="legend-item"><span class="diamond-yellow"></span> 50-Day Moving Avg</div><div class="legend-item"><span class="square-red"></span> 200-Day Moving Avg</div><div class="legend-item"><span class="line-grid"></span> 33% / 66% Range Dividers</div></div>
 
 <div class="dual-grid-wrapper">
     <div class="grid-column"><table>{table_header_html}<tbody>{build_watchlist_rows(data_left)}</tbody></table></div>
@@ -585,7 +527,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
 
 <div class="dual-grid-wrapper">
     <div class="grid-column">
-        <div class="section-title">🚀 Significant Movers & Volume Spikes</div>
+        <div class="section-title">🚀 Significant Movers (Ranked by Multi-Timeframe Score)</div>
         <table>{movers_header_html}<tbody>{build_movers_rows(movers_list)}</tbody></table>
     </div>
     <div class="grid-column">
@@ -607,7 +549,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
 
 <div class="dual-grid-wrapper" style="margin-top:6px;">
     <div class="grid-column">
-        <div class="section-title">📋 Tracked Tickers (Click Row for Sparkline / Click Ticker for Yahoo)</div>
+        <div class="section-title">📋 Tracked Tickers (Sorted by Ticker)</div>
         <table>{master_header_html}<tbody>{build_master_rows(master_by_ticker)}</tbody></table>
     </div>
     <div class="grid-column">
@@ -616,27 +558,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
     </div>
 </div>
 
-</div>
-
-<script>
-function toggleDrawer(rowElement, rowId) {{
-    const targetDrawer = document.getElementById(rowId);
-    const isCurrentlyOpen = (targetDrawer.style.display === 'table-row');
-    
-    // Close ALL drawers across the entire page first
-    const allDrawers = document.querySelectorAll('.sparkline-drawer');
-    allDrawers.forEach(drawer => {{
-        drawer.style.display = 'none';
-    }});
-    
-    // If it wasn't open before, open it now (Accordion single-open behavior)
-    if (!isCurrentlyOpen && targetDrawer) {{
-        targetDrawer.style.display = 'table-row';
-    }}
-}}
-</script>
-
-</body></html>"""
+</div></body></html>"""
 
 date_filename_str = today.strftime("%Y.%m.%d")
 output_filename = f"JacobsStockDashboard.{date_filename_str}.html"
@@ -645,8 +567,9 @@ output_path = os.path.join(os.getcwd(), output_filename)
 with open(output_path, "w", encoding="utf-8") as f:
     f.write(html_content)
 
-print(f"\n🌐 Dashboard successfully generated with Global Single-Drawer Accordion & saved to: {output_filename}")
-print(f"⏱️ EST Timestamp included: {generation_timestamp_str}")
+print(f"\n🌐 Dashboard successfully generated and saved to: {output_filename}")
+print(f"⏱️ Timestamp included: {generation_timestamp_str}")
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
 
+# 🔔 Completion Message
 print("\n🎉 ALL TASKS COMPLETE: Jacob's Stock Dashboard generated, saved, and browser launched successfully!")
