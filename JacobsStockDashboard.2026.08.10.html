@@ -11,7 +11,7 @@ h1{font-size:1.2rem;color:var(--accent-cyan);}
 .speed-dial-card{background-color:var(--bg-card);border:1px solid var(--border-color);border-radius:6px;padding:6px 12px;display:flex;align-items:center;gap:12px;}
 .speed-dial-container{position:relative;width:60px;height:30px;overflow:hidden;}
 .speed-dial-arc{position:absolute;top:0;left:0;width:60px;height:60px;border-radius:50%;background:conic-gradient(from 270deg at 50% 50%, #22c55e 0deg, #facc15 90deg, #ef4444 180deg);clip-path:polygon(0 0, 100% 0, 100% 50%, 0 50%);}
-.speed-dial-needle{position:absolute;bottom:0;left:29px;width:2px;height:26px;background-color:#fff;transform-origin:bottom center;transform:rotate(52.94117647058823deg);transition:transform 0.5s ease;z-index:3;}
+.speed-dial-needle{position:absolute;bottom:0;left:29px;width:2px;height:26px;background-color:#fff;transform-origin:bottom center;transform:rotate(47.64705882352939deg);transition:transform 0.5s ease;z-index:3;}
 .speed-dial-pin{position:absolute;bottom:-2px;left:26px;width:8px;height:8px;background-color:var(--accent-cyan);border-radius:50%;border:1px solid #fff;z-index:4;}
 .speed-dial-info{display:flex;flex-direction:column;font-size:0.68rem;font-weight:bold;}
 
@@ -108,16 +108,16 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
 <body><div class="container"><header>
     <div><h1>📊 Jacob's Technical Watchlist & Market Dashboard</h1></div>
     <div class="header-meta">
-        <div class="timestamp-banner">⏱️ Aug 10, 2026 at 07:28:17 EST</div>
+        <div class="timestamp-banner">⏱️ Aug 10, 2026 at 08:29:53 EST</div>
         <div class="speed-dial-card">
             <div class="speed-dial-container">
                 <div class="speed-dial-arc"></div>
-                <div class="speed-dial-needle" style="transform: rotate(52.94117647058823deg);"></div>
+                <div class="speed-dial-needle" style="transform: rotate(47.64705882352939deg);"></div>
                 <div class="speed-dial-pin"></div>
             </div>
             <div class="speed-dial-info">
                 <span>🌡️ Market Hotness</span>
-                <span style="color:var(--accent-cyan);">79.4% (27/34)</span>
+                <span style="color:var(--accent-cyan);">76.5% (26/34)</span>
                 <span style="font-size:0.62rem;color:var(--text-muted);">🔥 Overheated / Bullish</span>
             </div>
         </div>
@@ -364,12 +364,12 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
         </tr><tr class="watchlist-row">
             <td class="col-ticker"><strong>$TSM</strong></td>
             <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
-            <div class="marker-orange" style="left:42.00069258072896%;" title="TSM Support: $391.06"></div>
-            <div class="marker-yellow" style="left:45.45493896632329%;" title="TSM 50d MA: $399.04"></div>
-            <div class="marker-red" style="left:32.7287680720284%;" title="TSM 200d MA: $369.64"></div>
-            <div class="marker-cyan" style="left:54.54506103367677%;" title="TSM Price: $420.04"></div></div></td>
-            <td class="col-low52">$294.03</td><td class="col-price">$420.04</td><td class="col-high52">$525.05</td>
-            <td class="col-mini-gauge" style="background-color: rgba(244, 197, 20, 0.85); color: #fff; font-weight: bold;"><span class="gauge-number">54.5%</span></td>
+            <div class="marker-orange" style="left:41.04560622914349%;" title="TSM Support: $391.06"></div>
+            <div class="marker-yellow" style="left:43.51130886169818%;" title="TSM 50d MA: $399.04"></div>
+            <div class="marker-red" style="left:34.42714126807563%;" title="TSM 200d MA: $369.64"></div>
+            <div class="marker-cyan" style="left:50.0%;" title="TSM Price: $420.04"></div></div></td>
+            <td class="col-low52">$258.22</td><td class="col-price">$420.04</td><td class="col-high52">$581.86</td>
+            <td class="col-mini-gauge" style="background-color: rgba(240, 192, 20, 0.85); color: #fff; font-weight: bold;"><span class="gauge-number">50.0%</span></td>
         </tr><tr class="watchlist-row">
             <td class="col-ticker"><strong>$GLW</strong></td>
             <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
@@ -714,13 +714,6 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$5.89</strong></td>
             <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
         </tr><tr class="earnings-row">
-            <td class="col-earn-ticker"><strong>$TSM</strong></td>
-            <td class="col-earn-price price-col"><strong>$420.04</strong></td>
-            <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-14</td>
-            <td class="col-earn-status"><span class="badge-month-after">Month After</span></td>
-            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$28.88</strong></td>
-            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
-        </tr><tr class="earnings-row">
             <td class="col-earn-ticker"><strong>$ISRG</strong></td>
             <td class="col-earn-price price-col"><strong>$378.81</strong></td>
             <td class="col-earn-date"><span class="month-pill m-shade-3">OCT</span> 2026-10-19</td>
@@ -825,6 +818,13 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-earn-status"><span class="badge-unconfirmed">Unconfirmed Est.</span></td>
             <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">$3.54</strong></td>
             <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
+        </tr><tr class="earnings-row">
+            <td class="col-earn-ticker"><strong>$TSM</strong></td>
+            <td class="col-earn-price price-col"><strong>$420.04</strong></td>
+            <td class="col-earn-date"><span class="month-pill m-shade-tbd">TBD</span> TBD / Next Qtr</td>
+            <td class="col-earn-status"><span class="badge-unconfirmed">Unconfirmed Est.</span></td>
+            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">N/A</strong></td>
+            <td class="col-earn-move"><span style="color:var(--text-muted);">-</span></td>
         </tr></tbody></table>
     </div>
 </div>
@@ -834,14 +834,14 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
         <div class="section-title">📰 Critical Company News (Grid 1)</div>
         <table><thead><tr class="news-row"><th class="col-news-ticker">Ticker</th><th class="col-news-headline">Latest Article Headline</th><th class="col-news-source">Source</th><th class="col-news-date">Published</th></tr></thead><tbody><tr class="news-row">
             <td class="col-news-ticker"><strong>$AAPL</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=5eb1d165fd0e5172d02851bba1b4347a3eb326a44ddb2fa7031ccead8a7d2ac5" target="_blank" class="news-link">S&P 500, Nasdaq, Dow Futures Mixed As Hormuz Uncertainty Weighs: Why AAPL, TSM, MU, SPCX, ASTS, SLS Stocks Are In Focus</a></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=f33118d510c11f497d05d3f2856cb01530507dc82913cd7df77d8b67d31eac11" target="_blank" class="news-link">US Treasury, IRS set out initial framework for Saver’s Match rollout</a></td>
             <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 08:24</td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 11:17</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$AMZN</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=ff9824b98e93926be236b9e7ccf0de379a4897178560f20f0f910b32ff5479ba" target="_blank" class="news-link">S&P 500 EPS / Revenue Growth, And Amazon Earnings</a></td>
-            <td class="col-news-source"><span class="badge-confirmed">SeekingAlpha</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 06:05</td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=c4850ef1efb39f4b0971e18e6c4b001c66613a10f13b47d07a2080b23900b2a2" target="_blank" class="news-link">48% of Google Cloud Revenue Next Year Could Come From Just 2 Companies That Have Still Never Turned a Profit</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 11:51</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$ANET</strong></td>
             <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=7218e0bec11be8fba5fbad953a310ba66c9b842b54b4bfd0e6574fe723d40bdb" target="_blank" class="news-link">Adobe vs. Arista Networks: Which Technology Stock Is a Better Buy in 2026?</a></td>
@@ -854,9 +854,9 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 08:49</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$AXON</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=47bfcd29fd20b3c562d7257d05c9adfb5830ee7fe22cf398774a93865b111d5f" target="_blank" class="news-link">1 Nasdaq 100 Stock for Long-Term Investors and 2 We Question</a></td>
-            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 22:13</td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=6f8a43c423139d4aa5c5acb0b42021ea7c79f2a847a19d123f097e75c210c24a" target="_blank" class="news-link">Software Had A Winning Week: 3 Stocks I'm Buying</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">SeekingAlpha</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 08:00</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$BA</strong></td>
             <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=a0c4429a7ba3ae623c662ca40b69ebe65bfd097189c86f9f325adbbff53d7b0f" target="_blank" class="news-link">Transdigm Group Q3 Earnings Call Highlights</a></td>
@@ -869,9 +869,9 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 07, 13:35</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$BLK</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=cca1e0dee13baecc45ee83c1d5971d863cc61ec82dae1c739bf809f63d10616e" target="_blank" class="news-link">Dear Circle Stock Fans, Mark Your Calendars for September 16</a></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=21b08a0505da20df2980aeb52a7dc9187d11e22cad08d5a039ae023659be7618" target="_blank" class="news-link">Should iShares MSCI USA Value Factor ETF (VLUE) Be on Your Investing Radar?</a></td>
             <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 19:30</td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 10:20</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$CAT</strong></td>
             <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=0ec504070a341b455fed0ae0af12aae2e6c702a574dfb868c66bf68669e88843" target="_blank" class="news-link">A $72 Billion Reason to Buy Caterpillar Stock Now</a></td>
@@ -884,19 +884,19 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 07, 23:49</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$COST</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=1454beb23fe29629b30d534d5ce66d7d4fd3bd698d0f64e9ba923e2121d73699" target="_blank" class="news-link">Costco vs. General Mills: Comparing Revenue Trends Between These Consumer Staples Companies</a></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=613f8b7f7c757e5ae9b1e4e356667de4b042e605b5c98a90741f5a1b82aef7e5" target="_blank" class="news-link">3 Stocks to Buy and Hold Even If There's a Stock Market Sell-Off in August</a></td>
             <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 19:48</td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 10:42</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$CRWD</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=7640c4dc5f31ea1cc4aeab9cf6e6ebf23fd0d72788c33c2589e0096577083b11" target="_blank" class="news-link">3 Mega-Cap Stocks to Research Further</a></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=c9f7554c2f624ba874ee71e1c9c20fab4dbb4d16e987ade2f3aba3f6baa10ccf" target="_blank" class="news-link">3 Market-Beating Stocks Worth Your Attention</a></td>
             <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 21:49</td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 11:09</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$DDOG</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=f8249efabca55c6856d5f668fc1f44958a80198998fb0fd92dccd4b17f43bb9b" target="_blank" class="news-link">DDOG Q2 Deep Dive: Market Reacts Negatively Despite Accelerating Core Growth and AI Momentum</a></td>
-            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 01:09</td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=6f8a43c423139d4aa5c5acb0b42021ea7c79f2a847a19d123f097e75c210c24a" target="_blank" class="news-link">Software Had A Winning Week: 3 Stocks I'm Buying</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">SeekingAlpha</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 08:00</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$ETN</strong></td>
             <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=40fda781bbd4712cbd387775dc256c219f210b3d33f75154ed64687b49beb317" target="_blank" class="news-link">Eaton (ETN) Q2 2026 Earnings Call Transcript</a></td>
@@ -914,18 +914,18 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 03:11</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$GOOGL</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=3265d1322a7e3a01d1233f899e1eb92b1554c6337fa460fa9b425d9af368fe77" target="_blank" class="news-link">Cold Jobs Report Warms Up Wall Street, Airbnb Steals the Show</a></td>
-            <td class="col-news-source"><span class="badge-confirmed">ChartMill</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 08:49</td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=c4850ef1efb39f4b0971e18e6c4b001c66613a10f13b47d07a2080b23900b2a2" target="_blank" class="news-link">48% of Google Cloud Revenue Next Year Could Come From Just 2 Companies That Have Still Never Turned a Profit</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 11:51</td>
         </tr></tbody></table>
     </div>
     <div class="grid-column">
         <div class="section-title">📰 Critical Company News (Grid 2)</div>
         <table><thead><tr class="news-row"><th class="col-news-ticker">Ticker</th><th class="col-news-headline">Latest Article Headline</th><th class="col-news-source">Source</th><th class="col-news-date">Published</th></tr></thead><tbody><tr class="news-row">
             <td class="col-news-ticker"><strong>$GS</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=d232cfd45304e60ec7fb0b2ae98a2a2e16a0ed354228d598fe3b8c8d0c5ca54d" target="_blank" class="news-link">Angi (ANGI) Stock Fair Value Moves Lower As Analysts Weigh Execution Risks</a></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=c7e035beb3312729e6d6a0dd2a9315b171799502ad7aa53e61e9e9a7b68cea1e" target="_blank" class="news-link">Goldman Sachs tops MEA M&A adviser table in H1 2026</a></td>
             <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 14:10</td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 11:02</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$ISRG</strong></td>
             <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=d2317de655bbe9049b1e6c799ed3a0c71d3b83931654cecd4b996611ac38f945" target="_blank" class="news-link">Intuitive Surgical (ISRG) Stock Looks Fairly Valued Despite Its 33% Slide</a></td>
@@ -933,14 +933,14 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 02:08</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$JPM</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=fde3ed5d14271445d206f2591fc1fd35246528e2bda9bd83597991facec9fcd3" target="_blank" class="news-link">New Strong Buy Stocks for August 10th</a></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=d3fc3db21e69498ac3bdf78e9e7e4a3cc3ed219d3dd74fc98563fcbc1781141f" target="_blank" class="news-link">Schroders gets Irish nod for tokenised money market fund</a></td>
             <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 08:33</td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 11:29</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$LLY</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=9356fed22ce295de843eda2daed53d41ab188e37f0a92398a2848a1d1d986204" target="_blank" class="news-link">Nvidia, Eli Lilly, and Disney Show It’s Time to Back the Top Dogs</a></td>
-            <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 05:00</td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=3cf21eb0d3798ce8a5f36093feaffef73215e072469618ccda4e38d901fd3569" target="_blank" class="news-link">Eli Lilly (NYSE:LLY) Pairs High Growth Momentum with a Defined Breakout Setup</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">ChartMill</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 12:11</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$MRVL</strong></td>
             <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=839ed02a784a723b4186e221b98b5f93319084ad494b5505b6f3cd8ac366d6fc" target="_blank" class="news-link">Marvell (MRVL) vs. AVGO and NVDA: Can AI Interconnect Growth Deliver the Earnings Its Premium Valuation Demands?</a></td>
@@ -948,29 +948,29 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 09, 18:19</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$MSFT</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=177397e685ed08ca73d685be4ee8dae0fefb21b442941597bcfd793be113f04e" target="_blank" class="news-link">Sovereign AI Infrastructure Market Till 2040 Now Available — Forecasts Growth from $24.8B to $301.6B, Profiles NVIDIA, Microsoft, AWS, and 15 Other Key Players</a></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=c4850ef1efb39f4b0971e18e6c4b001c66613a10f13b47d07a2080b23900b2a2" target="_blank" class="news-link">48% of Google Cloud Revenue Next Year Could Come From Just 2 Companies That Have Still Never Turned a Profit</a></td>
             <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 08:05</td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 11:51</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$MU</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=1922005264833be86cb75f391e58df358d6c74820799229a4e0a99b418ca2b49" target="_blank" class="news-link">Micron Trades at 6 Times Next Year's Earnings. The $38 Billion of Capacity That Ends This Cycle Doesn't Open Until 2028.</a></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=06d896163777df42b836f237380644a24032771f3b8c0a1c96ac345ce3a9e3b3" target="_blank" class="news-link">Why Micron Stock Plummeted 28.7% in July But Is Rebounding in August</a></td>
             <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 09:11</td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 11:20</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$NFLX</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=35f4f8c14cad1c8f8823ca37f88b6fbb0dc98408a0f169db47fdfddef99718e8" target="_blank" class="news-link">Why Is Disney So Much Cheaper Than Netflix? This Is the Only Answer I Can Think Of.</a></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=f57ea8afd003855794d9688fc464e2bfb653eef4e346159a988aeb19b0ed7213" target="_blank" class="news-link">Warren Buffett Bought Alphabet Stock Last Year. He Might Buy This Megacap Stock Next, Says a Wall Street Expert.</a></td>
             <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 08:05</td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 08:50</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$NVDA</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=99dde8b846a446ce85034586da01b5622a9cef4bf7d8a65f2aa17582b5a82128" target="_blank" class="news-link">Disney's Valuation Is at Multiyear Lows, and Buybacks Are at a 9-Year High. Is Disney a No-Brainer Value Stock to Buy Now?</a></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=511ee12fc559875a463f826632b56e801b25bdb971af1f43bc742d0a67a0fcf7" target="_blank" class="news-link">Peter Beck's Rocket Lab Fell 30% in a Month While Revenue Grew 63%</a></td>
             <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 09:50</td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 11:25</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$PLTR</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=65447c5fba4dff974820b6107b86eb9c3a78fb4abe2e7252b174a42c141951c2" target="_blank" class="news-link">Why Palantir Stock Skyrocketed This Past Week</a></td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=9273470f1c28199053583483cbf4314c9d12dcfb25852f4ee074e25f25140a9b" target="_blank" class="news-link">Stocks Mostly Up Pre-Bell as Traders Assess Middle East Developments, Await Key Inflation Data</a></td>
             <td class="col-news-source"><span class="badge-confirmed">Yahoo</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 04:15</td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 11:43</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$REGN</strong></td>
             <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=6e6628b589862d33e59c226c841ee0d1bace982e3f3f1326c64fc54c64df69be" target="_blank" class="news-link">Regeneron Pharmaceuticals (REGN) Keeps Buybacks And Dividend In Focus As Fair Value Stays In Sight</a></td>
@@ -988,9 +988,9 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 07, 01:20</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$TSM</strong></td>
-            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=3b927a14a18d57bb82a7fd5ecacd77c7fce9a6ee9183da869696a924d72adf22" target="_blank" class="news-link">Tracking Ken Fisher's Fisher Asset Management Portfolio - Q2 2026 Update</a></td>
-            <td class="col-news-source"><span class="badge-confirmed">SeekingAlpha</span></td>
-            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 07, 22:05</td>
+            <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=62df15935107c77c1ffca3c58c5e72baa93a2428f4a67d5175c84ce0a9e36550" target="_blank" class="news-link">Taiwan Semiconductor (NYSE:TSM): Strong Growth Backed by a Convincing Technical Setup</a></td>
+            <td class="col-news-source"><span class="badge-confirmed">ChartMill</span></td>
+            <td class="col-news-date" style="color:var(--text-muted); font-size:0.65rem;">Aug 10, 11:31</td>
         </tr><tr class="news-row">
             <td class="col-news-ticker"><strong>$V</strong></td>
             <td class="col-news-headline"><a href="https://finnhub.io/api/news?id=fee0d41997d229b35898a92e26dc9b20fafd253a016ec576d522913f46657148" target="_blank" class="news-link">Campaign Asia Agency of the Year Awards 2026 Unveils Its Most Extensive Regional Judging Panel as Final Entry Deadline Nears</a></td>
@@ -1013,7 +1013,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
 <div class="dual-grid-wrapper" style="margin-top:6px;">
     <div class="grid-column">
         <div class="section-title">📋 Tracked Tickers (Click Row for Sparkline / Click Ticker for Yahoo)</div>
-        <table><thead><tr class="master-row"><th class="col-master-ticker">Ticker</th><th class="col-master-name">Company Name</th><th class="col-master-industry">Industry</th><th class="col-master-price" style="text-align:right;">Price</th><th class="col-master-cap" style="text-align:right;">Market Cap</th><th class="col-master-gauge" style="text-align:center;">52W Pos</th></tr></thead><tbody><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_AAPL_140335779636928')">
+        <table><thead><tr class="master-row"><th class="col-master-ticker">Ticker</th><th class="col-master-name">Company Name</th><th class="col-master-industry">Industry</th><th class="col-master-price" style="text-align:right;">Price</th><th class="col-master-cap" style="text-align:right;">Market Cap</th><th class="col-master-gauge" style="text-align:center;">52W Pos</th></tr></thead><tbody><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_AAPL_140210297954368')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/AAPL" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$AAPL</strong> ↗</a></td>
             <td class="col-master-name">Apple Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
@@ -1021,7 +1021,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$4,572,794M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">75.6%</span></td>
         </tr>
-        <tr id="drawer_AAPL_140335779636928" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_AAPL_140210297954368" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $AAPL — Last 3 Weeks Trend (High: $340.08 | Low: $303.42)</span>
@@ -1041,7 +1041,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_AMZN_140335782374976')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_AMZN_140210300708800')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/AMZN" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$AMZN</strong> ↗</a></td>
             <td class="col-master-name">Amazon.com Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
@@ -1049,7 +1049,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$2,960,628M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">86.1%</span></td>
         </tr>
-        <tr id="drawer_AMZN_140335782374976" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_AMZN_140210300708800" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $AMZN — Last 3 Weeks Trend (High: $284.02 | Low: $226.65)</span>
@@ -1069,7 +1069,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_ANET_140335780077696')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_ANET_140210298395136')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/ANET" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$ANET</strong> ↗</a></td>
             <td class="col-master-name">Arista Networks Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
@@ -1077,7 +1077,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$237,955M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">73.9%</span></td>
         </tr>
-        <tr id="drawer_ANET_140335780077696" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_ANET_140210298395136" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $ANET — Last 3 Weeks Trend (High: $197.31 | Low: $157.97)</span>
@@ -1097,7 +1097,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_AVGO_140335780000704')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_AVGO_140210298334528')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/AVGO" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$AVGO</strong> ↗</a></td>
             <td class="col-master-name">Broadcom Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
@@ -1105,7 +1105,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$2,035,102M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">68.5%</span></td>
         </tr>
-        <tr id="drawer_AVGO_140335780000704" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_AVGO_140210298334528" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $AVGO — Last 3 Weeks Trend (High: $427.76 | Low: $370.32)</span>
@@ -1125,7 +1125,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_AXON_140335782375360')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_AXON_140210300709184')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/AXON" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$AXON</strong> ↗</a></td>
             <td class="col-master-name">Axon Enterprise Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Aerospace & Defense</span></td>
@@ -1133,7 +1133,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$46,025M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">42.5%</span></td>
         </tr>
-        <tr id="drawer_AXON_140335782375360" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_AXON_140210300709184" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $AXON — Last 3 Weeks Trend (High: $609.49 | Low: $491.49)</span>
@@ -1153,7 +1153,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_BA_140335780000448')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_BA_140210298334272')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/BA" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$BA</strong> ↗</a></td>
             <td class="col-master-name">Boeing Co</td>
             <td class="col-master-industry"><span class="badge-confirmed">Aerospace & Defense</span></td>
@@ -1161,7 +1161,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$185,279M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">74.3%</span></td>
         </tr>
-        <tr id="drawer_BA_140335780000448" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_BA_140210298334272" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $BA — Last 3 Weeks Trend (High: $240.19 | Low: $204.80)</span>
@@ -1181,7 +1181,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_BE_140335779722048')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_BE_140210298395008')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/BE" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$BE</strong> ↗</a></td>
             <td class="col-master-name">Bloom Energy Corp</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
@@ -1189,7 +1189,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$64,602M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">58.2%</span></td>
         </tr>
-        <tr id="drawer_BE_140335779722048" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_BE_140210298395008" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $BE — Last 3 Weeks Trend (High: $244.61 | Low: $163.75)</span>
@@ -1209,15 +1209,15 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_BLK_140335780078848')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_BLK_140210298011584')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/BLK" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$BLK</strong> ↗</a></td>
             <td class="col-master-name">BlackRock Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
             <td class="col-master-price price-col"><strong>$1,136.39</strong></td>
-            <td class="col-master-cap price-col">$184,780M</td>
+            <td class="col-master-cap price-col">$184,636M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">72.4%</span></td>
         </tr>
-        <tr id="drawer_BLK_140335780078848" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_BLK_140210298011584" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $BLK — Last 3 Weeks Trend (High: $1,136.39 | Low: $1,025.44)</span>
@@ -1237,7 +1237,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_CAT_140335779467392')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_CAT_140210297719040')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/CAT" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$CAT</strong> ↗</a></td>
             <td class="col-master-name">Caterpillar Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
@@ -1245,7 +1245,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$387,134M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">65.4%</span></td>
         </tr>
-        <tr id="drawer_CAT_140335779467392" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_CAT_140210297719040" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $CAT — Last 3 Weeks Trend (High: $952.41 | Low: $782.71)</span>
@@ -1265,7 +1265,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_COIN_140335783129472')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_COIN_140210295917952')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/COIN" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$COIN</strong> ↗</a></td>
             <td class="col-master-name">Coinbase Global Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
@@ -1273,7 +1273,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$40,525M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">5.5%</span></td>
         </tr>
-        <tr id="drawer_COIN_140335783129472" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_COIN_140210295917952" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $COIN — Last 3 Weeks Trend (High: $175.85 | Low: $145.41)</span>
@@ -1293,7 +1293,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_COST_140335780328768')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_COST_140210296306176')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/COST" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$COST</strong> ↗</a></td>
             <td class="col-master-name">Costco Wholesale Corp</td>
             <td class="col-master-industry"><span class="badge-confirmed">Consumer</span></td>
@@ -1301,7 +1301,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$420,338M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">41.1%</span></td>
         </tr>
-        <tr id="drawer_COST_140335780328768" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_COST_140210296306176" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $COST — Last 3 Weeks Trend (High: $974.03 | Low: $916.25)</span>
@@ -1321,7 +1321,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_CRWD_140335783123456')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_CRWD_140210298397760')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/CRWD" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$CRWD</strong> ↗</a></td>
             <td class="col-master-name">CrowdStrike Holdings Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
@@ -1329,7 +1329,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$218,335M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">96.3%</span></td>
         </tr>
-        <tr id="drawer_CRWD_140335783123456" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_CRWD_140210298397760" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $CRWD — Last 3 Weeks Trend (High: $214.42 | Low: $179.38)</span>
@@ -1349,7 +1349,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_DDOG_140335781087488')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_DDOG_140210298251840')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/DDOG" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$DDOG</strong> ↗</a></td>
             <td class="col-master-name">Datadog Inc (Pre-Reincorporation)</td>
             <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
@@ -1357,7 +1357,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$83,270M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">69.8%</span></td>
         </tr>
-        <tr id="drawer_DDOG_140335781087488" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_DDOG_140210298251840" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $DDOG — Last 3 Weeks Trend (High: $288.15 | Low: $229.29)</span>
@@ -1377,7 +1377,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_ETN_140335779723840')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_ETN_140210298399488')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/ETN" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$ETN</strong> ↗</a></td>
             <td class="col-master-name">Eaton Corporation PLC</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
@@ -1385,7 +1385,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$174,267M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">93.8%</span></td>
         </tr>
-        <tr id="drawer_ETN_140335779723840" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_ETN_140210298399488" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $ETN — Last 3 Weeks Trend (High: $448.68 | Low: $361.88)</span>
@@ -1405,7 +1405,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_GEV_140335781088768')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_GEV_140210297009408')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/GEV" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$GEV</strong> ↗</a></td>
             <td class="col-master-name">GE Vernova Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
@@ -1413,7 +1413,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$263,755M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">69.1%</span></td>
         </tr>
-        <tr id="drawer_GEV_140335781088768" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_GEV_140210297009408" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $GEV — Last 3 Weeks Trend (High: $1,091.57 | Low: $900.28)</span>
@@ -1433,7 +1433,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_GLW_140335779640128')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_GLW_140210300707648')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/GLW" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$GLW</strong> ↗</a></td>
             <td class="col-master-name">Corning Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
@@ -1441,7 +1441,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$142,715M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">49.1%</span></td>
         </tr>
-        <tr id="drawer_GLW_140335779640128" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_GLW_140210300707648" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $GLW — Last 3 Weeks Trend (High: $190.89 | Low: $124.05)</span>
@@ -1461,7 +1461,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_GOOGL_140335779463552')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_GOOGL_140210297721984')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/GOOGL" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$GOOGL</strong> ↗</a></td>
             <td class="col-master-name">Alphabet Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
@@ -1469,7 +1469,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$4,333,089M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">74.7%</span></td>
         </tr>
-        <tr id="drawer_GOOGL_140335779463552" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_GOOGL_140210297721984" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $GOOGL — Last 3 Weeks Trend (High: $377.65 | Low: $317.69)</span>
@@ -1489,7 +1489,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_GS_140335779479424')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_GS_140210298028608')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/GS" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$GS</strong> ↗</a></td>
             <td class="col-master-name">Goldman Sachs Group Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
@@ -1497,7 +1497,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$302,705M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">74.5%</span></td>
         </tr>
-        <tr id="drawer_GS_140335779479424" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_GS_140210298028608" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $GS — Last 3 Weeks Trend (High: $1,152.07 | Low: $980.75)</span>
@@ -1517,7 +1517,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_ISRG_140335777576128')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_ISRG_140210298391936')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/ISRG" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$ISRG</strong> ↗</a></td>
             <td class="col-master-name">Intuitive Surgical Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
@@ -1525,7 +1525,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$133,825M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">18.2%</span></td>
         </tr>
-        <tr id="drawer_ISRG_140335777576128" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_ISRG_140210298391936" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $ISRG — Last 3 Weeks Trend (High: $407.12 | Low: $332.02)</span>
@@ -1545,7 +1545,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_JPM_140335779929536')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_JPM_140210298336960')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/JPM" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$JPM</strong> ↗</a></td>
             <td class="col-master-name">JPMorgan Chase & Co</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
@@ -1553,7 +1553,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$957,979M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">93.5%</span></td>
         </tr>
-        <tr id="drawer_JPM_140335779929536" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_JPM_140210298336960" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $JPM — Last 3 Weeks Trend (High: $359.24 | Low: $334.53)</span>
@@ -1573,7 +1573,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_LLY_140335782376768')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_LLY_140210298251648')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/LLY" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$LLY</strong> ↗</a></td>
             <td class="col-master-name">Eli Lilly and Co</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
@@ -1581,7 +1581,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$1,116,176M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">89.8%</span></td>
         </tr>
-        <tr id="drawer_LLY_140335782376768" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_LLY_140210298251648" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $LLY — Last 3 Weeks Trend (High: $1,220.66 | Low: $1,115.68)</span>
@@ -1601,7 +1601,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_MRVL_140335783125696')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_MRVL_140210299311872')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/MRVL" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$MRVL</strong> ↗</a></td>
             <td class="col-master-name">Marvell Technology Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
@@ -1609,7 +1609,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$191,548M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">58.6%</span></td>
         </tr>
-        <tr id="drawer_MRVL_140335783125696" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_MRVL_140210299311872" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $MRVL — Last 3 Weeks Trend (High: $235.81 | Low: $163.40)</span>
@@ -1629,7 +1629,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_MSFT_140335779473984')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_MSFT_140210297729088')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/MSFT" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$MSFT</strong> ↗</a></td>
             <td class="col-master-name">Microsoft Corp</td>
             <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
@@ -1637,7 +1637,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$3,712,698M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">73.7%</span></td>
         </tr>
-        <tr id="drawer_MSFT_140335779473984" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_MSFT_140210297729088" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $MSFT — Last 3 Weeks Trend (High: $499.99 | Low: $381.58)</span>
@@ -1657,7 +1657,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_MU_140335780552448')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_MU_140210298324352')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/MU" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$MU</strong> ↗</a></td>
             <td class="col-master-name">Micron Technology Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
@@ -1665,7 +1665,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$991,121M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">67.0%</span></td>
         </tr>
-        <tr id="drawer_MU_140335780552448" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_MU_140210298324352" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $MU — Last 3 Weeks Trend (High: $990.21 | Low: $739.00)</span>
@@ -1685,7 +1685,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_NFLX_140335783132992')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_NFLX_140210299310272')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/NFLX" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$NFLX</strong> ↗</a></td>
             <td class="col-master-name">Netflix Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Consumer</span></td>
@@ -1693,7 +1693,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$308,715M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">14.7%</span></td>
         </tr>
-        <tr id="drawer_NFLX_140335783132992" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_NFLX_140210299310272" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $NFLX — Last 3 Weeks Trend (High: $74.35 | Low: $67.60)</span>
@@ -1713,7 +1713,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_NVDA_140335780329024')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_NVDA_140210296860160')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/NVDA" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$NVDA</strong> ↗</a></td>
             <td class="col-master-name">NVIDIA Corp</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
@@ -1721,7 +1721,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$5,419,832M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">82.6%</span></td>
         </tr>
-        <tr id="drawer_NVDA_140335780329024" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_NVDA_140210296860160" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $NVDA — Last 3 Weeks Trend (High: $223.96 | Low: $190.01)</span>
@@ -1741,7 +1741,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_PLTR_140335784162624')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_PLTR_140210296864128')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/PLTR" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$PLTR</strong> ↗</a></td>
             <td class="col-master-name">Palantir Technologies Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
@@ -1749,7 +1749,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$413,356M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">64.9%</span></td>
         </tr>
-        <tr id="drawer_PLTR_140335784162624" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_PLTR_140210296864128" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $PLTR — Last 3 Weeks Trend (High: $172.01 | Low: $122.26)</span>
@@ -1769,7 +1769,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_REGN_140335778868224')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_REGN_140210298553280')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/REGN" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$REGN</strong> ↗</a></td>
             <td class="col-master-name">Regeneron Pharmaceuticals Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
@@ -1777,7 +1777,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$80,754M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">86.9%</span></td>
         </tr>
-        <tr id="drawer_REGN_140335778868224" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_REGN_140210298553280" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $REGN — Last 3 Weeks Trend (High: $784.36 | Low: $651.18)</span>
@@ -1797,7 +1797,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_SNOW_140335783121024')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_SNOW_140210299311296')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/SNOW" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$SNOW</strong> ↗</a></td>
             <td class="col-master-name">Snowflake Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
@@ -1805,7 +1805,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$114,548M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">99.6%</span></td>
         </tr>
-        <tr id="drawer_SNOW_140335783121024" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_SNOW_140210299311296" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $SNOW — Last 3 Weeks Trend (High: $330.49 | Low: $261.45)</span>
@@ -1825,7 +1825,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_SPOT_140335782777728')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_SPOT_140210300704384')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/SPOT" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$SPOT</strong> ↗</a></td>
             <td class="col-master-name">Spotify Technology SA</td>
             <td class="col-master-industry"><span class="badge-confirmed">Consumer</span></td>
@@ -1833,7 +1833,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$100,499M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">24.2%</span></td>
         </tr>
-        <tr id="drawer_SPOT_140335782777728" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_SPOT_140210300704384" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $SPOT — Last 3 Weeks Trend (High: $524.01 | Low: $468.99)</span>
@@ -1853,15 +1853,15 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_TSM_140335782775552')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_TSM_140210298253760')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/TSM" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$TSM</strong> ↗</a></td>
-            <td class="col-master-name">TSM</td>
+            <td class="col-master-name">Taiwan Semiconductor Manufacturing Co Ltd</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$420.04</strong></td>
-            <td class="col-master-cap price-col">N/A</td>
-            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">54.5%</span></td>
+            <td class="col-master-cap price-col">$61,330,053M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">50.0%</span></td>
         </tr>
-        <tr id="drawer_TSM_140335782775552" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_TSM_140210298253760" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $TSM — Last 3 Weeks Trend (High: $434.11 | Low: $374.67)</span>
@@ -1881,7 +1881,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_V_140335787534080')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_V_140210298246400')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/V" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$V</strong> ↗</a></td>
             <td class="col-master-name">Visa Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
@@ -1889,7 +1889,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$691,685M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">85.7%</span></td>
         </tr>
-        <tr id="drawer_V_140335787534080" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_V_140210298246400" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $V — Last 3 Weeks Trend (High: $370.47 | Low: $348.97)</span>
@@ -1909,7 +1909,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_VRT_140335779317760')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_VRT_140210297622080')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/VRT" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$VRT</strong> ↗</a></td>
             <td class="col-master-name">Vertiv Holdings Co</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
@@ -1917,7 +1917,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$93,002M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">58.8%</span></td>
         </tr>
-        <tr id="drawer_VRT_140335779317760" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_VRT_140210297622080" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $VRT — Last 3 Weeks Trend (High: $318.86 | Low: $223.04)</span>
@@ -1937,7 +1937,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_VRTX_140335780321088')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_VRTX_140210298564416')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/VRTX" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$VRTX</strong> ↗</a></td>
             <td class="col-master-name">Vertex Pharmaceuticals Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
@@ -1945,7 +1945,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$121,091M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">78.0%</span></td>
         </tr>
-        <tr id="drawer_VRTX_140335780321088" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_VRTX_140210298564416" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $VRTX — Last 3 Weeks Trend (High: $496.07 | Low: $470.72)</span>
@@ -1969,7 +1969,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
     </div>
     <div class="grid-column">
         <div class="section-title">🏭 Tracked Tickers (Sorted by Industry)</div>
-        <table><thead><tr class="master-row"><th class="col-master-ticker">Ticker</th><th class="col-master-name">Company Name</th><th class="col-master-industry">Industry</th><th class="col-master-price" style="text-align:right;">Price</th><th class="col-master-cap" style="text-align:right;">Market Cap</th><th class="col-master-gauge" style="text-align:center;">52W Pos</th></tr></thead><tbody><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_AXON_140335782375360')">
+        <table><thead><tr class="master-row"><th class="col-master-ticker">Ticker</th><th class="col-master-name">Company Name</th><th class="col-master-industry">Industry</th><th class="col-master-price" style="text-align:right;">Price</th><th class="col-master-cap" style="text-align:right;">Market Cap</th><th class="col-master-gauge" style="text-align:center;">52W Pos</th></tr></thead><tbody><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_AXON_140210300709184')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/AXON" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$AXON</strong> ↗</a></td>
             <td class="col-master-name">Axon Enterprise Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Aerospace & Defense</span></td>
@@ -1977,7 +1977,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$46,025M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">42.5%</span></td>
         </tr>
-        <tr id="drawer_AXON_140335782375360" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_AXON_140210300709184" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $AXON — Last 3 Weeks Trend (High: $609.49 | Low: $491.49)</span>
@@ -1997,7 +1997,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_BA_140335780000448')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_BA_140210298334272')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/BA" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$BA</strong> ↗</a></td>
             <td class="col-master-name">Boeing Co</td>
             <td class="col-master-industry"><span class="badge-confirmed">Aerospace & Defense</span></td>
@@ -2005,7 +2005,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$185,279M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">74.3%</span></td>
         </tr>
-        <tr id="drawer_BA_140335780000448" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_BA_140210298334272" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $BA — Last 3 Weeks Trend (High: $240.19 | Low: $204.80)</span>
@@ -2025,7 +2025,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_AAPL_140335779636928')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_AAPL_140210297954368')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/AAPL" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$AAPL</strong> ↗</a></td>
             <td class="col-master-name">Apple Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
@@ -2033,7 +2033,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$4,572,794M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">75.6%</span></td>
         </tr>
-        <tr id="drawer_AAPL_140335779636928" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_AAPL_140210297954368" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $AAPL — Last 3 Weeks Trend (High: $340.08 | Low: $303.42)</span>
@@ -2053,7 +2053,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_AMZN_140335782374976')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_AMZN_140210300708800')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/AMZN" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$AMZN</strong> ↗</a></td>
             <td class="col-master-name">Amazon.com Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
@@ -2061,7 +2061,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$2,960,628M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">86.1%</span></td>
         </tr>
-        <tr id="drawer_AMZN_140335782374976" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_AMZN_140210300708800" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $AMZN — Last 3 Weeks Trend (High: $284.02 | Low: $226.65)</span>
@@ -2081,7 +2081,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_GOOGL_140335779463552')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_GOOGL_140210297721984')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/GOOGL" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$GOOGL</strong> ↗</a></td>
             <td class="col-master-name">Alphabet Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
@@ -2089,7 +2089,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$4,333,089M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">74.7%</span></td>
         </tr>
-        <tr id="drawer_GOOGL_140335779463552" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_GOOGL_140210297721984" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $GOOGL — Last 3 Weeks Trend (High: $377.65 | Low: $317.69)</span>
@@ -2109,7 +2109,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_MSFT_140335779473984')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_MSFT_140210297729088')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/MSFT" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$MSFT</strong> ↗</a></td>
             <td class="col-master-name">Microsoft Corp</td>
             <td class="col-master-industry"><span class="badge-confirmed">Big Guys</span></td>
@@ -2117,7 +2117,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$3,712,698M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">73.7%</span></td>
         </tr>
-        <tr id="drawer_MSFT_140335779473984" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_MSFT_140210297729088" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $MSFT — Last 3 Weeks Trend (High: $499.99 | Low: $381.58)</span>
@@ -2137,7 +2137,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_ISRG_140335777576128')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_ISRG_140210298391936')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/ISRG" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$ISRG</strong> ↗</a></td>
             <td class="col-master-name">Intuitive Surgical Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
@@ -2145,7 +2145,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$133,825M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">18.2%</span></td>
         </tr>
-        <tr id="drawer_ISRG_140335777576128" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_ISRG_140210298391936" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $ISRG — Last 3 Weeks Trend (High: $407.12 | Low: $332.02)</span>
@@ -2165,7 +2165,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_LLY_140335782376768')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_LLY_140210298251648')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/LLY" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$LLY</strong> ↗</a></td>
             <td class="col-master-name">Eli Lilly and Co</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
@@ -2173,7 +2173,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$1,116,176M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">89.8%</span></td>
         </tr>
-        <tr id="drawer_LLY_140335782376768" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_LLY_140210298251648" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $LLY — Last 3 Weeks Trend (High: $1,220.66 | Low: $1,115.68)</span>
@@ -2193,7 +2193,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_REGN_140335778868224')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_REGN_140210298553280')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/REGN" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$REGN</strong> ↗</a></td>
             <td class="col-master-name">Regeneron Pharmaceuticals Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
@@ -2201,7 +2201,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$80,754M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">86.9%</span></td>
         </tr>
-        <tr id="drawer_REGN_140335778868224" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_REGN_140210298553280" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $REGN — Last 3 Weeks Trend (High: $784.36 | Low: $651.18)</span>
@@ -2221,7 +2221,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_VRTX_140335780321088')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_VRTX_140210298564416')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/VRTX" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$VRTX</strong> ↗</a></td>
             <td class="col-master-name">Vertex Pharmaceuticals Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Biotech And Healthcare</span></td>
@@ -2229,7 +2229,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$121,091M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">78.0%</span></td>
         </tr>
-        <tr id="drawer_VRTX_140335780321088" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_VRTX_140210298564416" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $VRTX — Last 3 Weeks Trend (High: $496.07 | Low: $470.72)</span>
@@ -2249,7 +2249,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_COST_140335780328768')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_COST_140210296306176')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/COST" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$COST</strong> ↗</a></td>
             <td class="col-master-name">Costco Wholesale Corp</td>
             <td class="col-master-industry"><span class="badge-confirmed">Consumer</span></td>
@@ -2257,7 +2257,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$420,338M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">41.1%</span></td>
         </tr>
-        <tr id="drawer_COST_140335780328768" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_COST_140210296306176" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $COST — Last 3 Weeks Trend (High: $974.03 | Low: $916.25)</span>
@@ -2277,7 +2277,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_NFLX_140335783132992')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_NFLX_140210299310272')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/NFLX" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$NFLX</strong> ↗</a></td>
             <td class="col-master-name">Netflix Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Consumer</span></td>
@@ -2285,7 +2285,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$308,715M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">14.7%</span></td>
         </tr>
-        <tr id="drawer_NFLX_140335783132992" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_NFLX_140210299310272" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $NFLX — Last 3 Weeks Trend (High: $74.35 | Low: $67.60)</span>
@@ -2305,7 +2305,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_SPOT_140335782777728')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_SPOT_140210300704384')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/SPOT" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$SPOT</strong> ↗</a></td>
             <td class="col-master-name">Spotify Technology SA</td>
             <td class="col-master-industry"><span class="badge-confirmed">Consumer</span></td>
@@ -2313,7 +2313,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$100,499M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">24.2%</span></td>
         </tr>
-        <tr id="drawer_SPOT_140335782777728" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_SPOT_140210300704384" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $SPOT — Last 3 Weeks Trend (High: $524.01 | Low: $468.99)</span>
@@ -2333,7 +2333,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_ANET_140335780077696')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_ANET_140210298395136')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/ANET" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$ANET</strong> ↗</a></td>
             <td class="col-master-name">Arista Networks Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
@@ -2341,7 +2341,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$237,955M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">73.9%</span></td>
         </tr>
-        <tr id="drawer_ANET_140335780077696" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_ANET_140210298395136" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $ANET — Last 3 Weeks Trend (High: $197.31 | Low: $157.97)</span>
@@ -2361,7 +2361,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_BE_140335779722048')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_BE_140210298395008')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/BE" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$BE</strong> ↗</a></td>
             <td class="col-master-name">Bloom Energy Corp</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
@@ -2369,7 +2369,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$64,602M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">58.2%</span></td>
         </tr>
-        <tr id="drawer_BE_140335779722048" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_BE_140210298395008" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $BE — Last 3 Weeks Trend (High: $244.61 | Low: $163.75)</span>
@@ -2389,7 +2389,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_CAT_140335779467392')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_CAT_140210297719040')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/CAT" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$CAT</strong> ↗</a></td>
             <td class="col-master-name">Caterpillar Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
@@ -2397,7 +2397,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$387,134M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">65.4%</span></td>
         </tr>
-        <tr id="drawer_CAT_140335779467392" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_CAT_140210297719040" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $CAT — Last 3 Weeks Trend (High: $952.41 | Low: $782.71)</span>
@@ -2417,7 +2417,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_ETN_140335779723840')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_ETN_140210298399488')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/ETN" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$ETN</strong> ↗</a></td>
             <td class="col-master-name">Eaton Corporation PLC</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
@@ -2425,7 +2425,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$174,267M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">93.8%</span></td>
         </tr>
-        <tr id="drawer_ETN_140335779723840" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_ETN_140210298399488" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $ETN — Last 3 Weeks Trend (High: $448.68 | Low: $361.88)</span>
@@ -2445,7 +2445,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_GEV_140335781088768')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_GEV_140210297009408')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/GEV" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$GEV</strong> ↗</a></td>
             <td class="col-master-name">GE Vernova Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
@@ -2453,7 +2453,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$263,755M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">69.1%</span></td>
         </tr>
-        <tr id="drawer_GEV_140335781088768" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_GEV_140210297009408" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $GEV — Last 3 Weeks Trend (High: $1,091.57 | Low: $900.28)</span>
@@ -2473,7 +2473,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_GLW_140335779640128')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_GLW_140210300707648')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/GLW" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$GLW</strong> ↗</a></td>
             <td class="col-master-name">Corning Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
@@ -2481,7 +2481,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$142,715M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">49.1%</span></td>
         </tr>
-        <tr id="drawer_GLW_140335779640128" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_GLW_140210300707648" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $GLW — Last 3 Weeks Trend (High: $190.89 | Low: $124.05)</span>
@@ -2501,7 +2501,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_VRT_140335779317760')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_VRT_140210297622080')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/VRT" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$VRT</strong> ↗</a></td>
             <td class="col-master-name">Vertiv Holdings Co</td>
             <td class="col-master-industry"><span class="badge-confirmed">Engineering And Chips</span></td>
@@ -2509,7 +2509,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$93,002M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">58.8%</span></td>
         </tr>
-        <tr id="drawer_VRT_140335779317760" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_VRT_140210297622080" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $VRT — Last 3 Weeks Trend (High: $318.86 | Low: $223.04)</span>
@@ -2529,15 +2529,15 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_BLK_140335780078848')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_BLK_140210298011584')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/BLK" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$BLK</strong> ↗</a></td>
             <td class="col-master-name">BlackRock Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
             <td class="col-master-price price-col"><strong>$1,136.39</strong></td>
-            <td class="col-master-cap price-col">$184,780M</td>
+            <td class="col-master-cap price-col">$184,636M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">72.4%</span></td>
         </tr>
-        <tr id="drawer_BLK_140335780078848" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_BLK_140210298011584" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $BLK — Last 3 Weeks Trend (High: $1,136.39 | Low: $1,025.44)</span>
@@ -2557,7 +2557,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_COIN_140335783129472')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_COIN_140210295917952')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/COIN" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$COIN</strong> ↗</a></td>
             <td class="col-master-name">Coinbase Global Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
@@ -2565,7 +2565,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$40,525M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">5.5%</span></td>
         </tr>
-        <tr id="drawer_COIN_140335783129472" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_COIN_140210295917952" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $COIN — Last 3 Weeks Trend (High: $175.85 | Low: $145.41)</span>
@@ -2585,7 +2585,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_GS_140335779479424')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_GS_140210298028608')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/GS" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$GS</strong> ↗</a></td>
             <td class="col-master-name">Goldman Sachs Group Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
@@ -2593,7 +2593,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$302,705M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">74.5%</span></td>
         </tr>
-        <tr id="drawer_GS_140335779479424" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_GS_140210298028608" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $GS — Last 3 Weeks Trend (High: $1,152.07 | Low: $980.75)</span>
@@ -2613,7 +2613,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_JPM_140335779929536')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_JPM_140210298336960')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/JPM" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$JPM</strong> ↗</a></td>
             <td class="col-master-name">JPMorgan Chase & Co</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
@@ -2621,7 +2621,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$957,979M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">93.5%</span></td>
         </tr>
-        <tr id="drawer_JPM_140335779929536" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_JPM_140210298336960" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $JPM — Last 3 Weeks Trend (High: $359.24 | Low: $334.53)</span>
@@ -2641,7 +2641,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_V_140335787534080')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_V_140210298246400')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/V" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$V</strong> ↗</a></td>
             <td class="col-master-name">Visa Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Financial Services</span></td>
@@ -2649,7 +2649,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$691,685M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">85.7%</span></td>
         </tr>
-        <tr id="drawer_V_140335787534080" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_V_140210298246400" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $V — Last 3 Weeks Trend (High: $370.47 | Low: $348.97)</span>
@@ -2669,7 +2669,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_AVGO_140335780000704')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_AVGO_140210298334528')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/AVGO" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$AVGO</strong> ↗</a></td>
             <td class="col-master-name">Broadcom Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
@@ -2677,7 +2677,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$2,035,102M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">68.5%</span></td>
         </tr>
-        <tr id="drawer_AVGO_140335780000704" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_AVGO_140210298334528" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $AVGO — Last 3 Weeks Trend (High: $427.76 | Low: $370.32)</span>
@@ -2697,7 +2697,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_MRVL_140335783125696')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_MRVL_140210299311872')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/MRVL" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$MRVL</strong> ↗</a></td>
             <td class="col-master-name">Marvell Technology Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
@@ -2705,7 +2705,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$191,548M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">58.6%</span></td>
         </tr>
-        <tr id="drawer_MRVL_140335783125696" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_MRVL_140210299311872" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $MRVL — Last 3 Weeks Trend (High: $235.81 | Low: $163.40)</span>
@@ -2725,7 +2725,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_MU_140335780552448')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_MU_140210298324352')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/MU" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$MU</strong> ↗</a></td>
             <td class="col-master-name">Micron Technology Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
@@ -2733,7 +2733,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$991,121M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">67.0%</span></td>
         </tr>
-        <tr id="drawer_MU_140335780552448" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_MU_140210298324352" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $MU — Last 3 Weeks Trend (High: $990.21 | Low: $739.00)</span>
@@ -2753,7 +2753,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_NVDA_140335780329024')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_NVDA_140210296860160')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/NVDA" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$NVDA</strong> ↗</a></td>
             <td class="col-master-name">NVIDIA Corp</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
@@ -2761,7 +2761,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$5,419,832M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">82.6%</span></td>
         </tr>
-        <tr id="drawer_NVDA_140335780329024" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_NVDA_140210296860160" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $NVDA — Last 3 Weeks Trend (High: $223.96 | Low: $190.01)</span>
@@ -2781,15 +2781,15 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_TSM_140335782775552')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_TSM_140210298253760')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/TSM" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$TSM</strong> ↗</a></td>
-            <td class="col-master-name">TSM</td>
+            <td class="col-master-name">Taiwan Semiconductor Manufacturing Co Ltd</td>
             <td class="col-master-industry"><span class="badge-confirmed">Semiconductors</span></td>
             <td class="col-master-price price-col"><strong>$420.04</strong></td>
-            <td class="col-master-cap price-col">N/A</td>
-            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">54.5%</span></td>
+            <td class="col-master-cap price-col">$61,330,053M</td>
+            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">50.0%</span></td>
         </tr>
-        <tr id="drawer_TSM_140335782775552" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_TSM_140210298253760" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $TSM — Last 3 Weeks Trend (High: $434.11 | Low: $374.67)</span>
@@ -2809,7 +2809,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_CRWD_140335783123456')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_CRWD_140210298397760')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/CRWD" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$CRWD</strong> ↗</a></td>
             <td class="col-master-name">CrowdStrike Holdings Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
@@ -2817,7 +2817,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$218,335M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">96.3%</span></td>
         </tr>
-        <tr id="drawer_CRWD_140335783123456" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_CRWD_140210298397760" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $CRWD — Last 3 Weeks Trend (High: $214.42 | Low: $179.38)</span>
@@ -2837,7 +2837,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_DDOG_140335781087488')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_DDOG_140210298251840')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/DDOG" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$DDOG</strong> ↗</a></td>
             <td class="col-master-name">Datadog Inc (Pre-Reincorporation)</td>
             <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
@@ -2845,7 +2845,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$83,270M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">69.8%</span></td>
         </tr>
-        <tr id="drawer_DDOG_140335781087488" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_DDOG_140210298251840" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $DDOG — Last 3 Weeks Trend (High: $288.15 | Low: $229.29)</span>
@@ -2865,7 +2865,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_PLTR_140335784162624')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_PLTR_140210296864128')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/PLTR" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$PLTR</strong> ↗</a></td>
             <td class="col-master-name">Palantir Technologies Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
@@ -2873,7 +2873,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$413,356M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">64.9%</span></td>
         </tr>
-        <tr id="drawer_PLTR_140335784162624" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_PLTR_140210296864128" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $PLTR — Last 3 Weeks Trend (High: $172.01 | Low: $122.26)</span>
@@ -2893,7 +2893,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
                     </svg>
                 </div>
             </td>
-        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_SNOW_140335783121024')">
+        </tr><tr class="master-row click-row" onclick="toggleDrawer(this, 'drawer_SNOW_140210299311296')">
             <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/SNOW" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>$SNOW</strong> ↗</a></td>
             <td class="col-master-name">Snowflake Inc</td>
             <td class="col-master-industry"><span class="badge-confirmed">Technology</span></td>
@@ -2901,7 +2901,7 @@ tr.click-row:hover{background-color:rgba(56,189,248,0.15) !important;}
             <td class="col-master-cap price-col">$114,548M</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">99.6%</span></td>
         </tr>
-        <tr id="drawer_SNOW_140335783121024" class="sparkline-drawer" style="display:none;">
+        <tr id="drawer_SNOW_140210299311296" class="sparkline-drawer" style="display:none;">
             <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 $SNOW — Last 3 Weeks Trend (High: $330.49 | Low: $261.45)</span>
