@@ -26,7 +26,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Sparkline Hover & Direct Links)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Clickable Rows with 3-Week Sparklines)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -53,8 +53,9 @@ def get_historical_data_yahoo(symbol, current_price):
     ret_10d, ret_30d = 0.0, 0.0
     p_10d, p_30d = 0.0, 0.0
     vol_ratio = 1.0
-    closes = []
+    closes_3w = []
     try:
+        # Fetch 1 month to get at least 3 weeks of daily bars for the sparkline drawer
         yf_url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?range=1mo&interval=1d"
         res = safe_api_get(yf_url, retries=2, delay=1, extra_headers=headers)
         result = res.get('chart', {}).get('result', [])
@@ -63,6 +64,9 @@ def get_historical_data_yahoo(symbol, current_price):
             quote = indicators.get('quote', [{}])[0]
             closes = [c for c in quote.get('close', []) if c is not None]
             volumes = [v for v in quote.get('volume', []) if v is not None]
+            
+            # Keep last 15-21 trading days (~3 weeks)
+            closes_3w = closes[-21:] if len(closes) >= 21 else closes
             
             if len(closes) >= 10:
                 p_10d = closes[-11] if len(closes) >= 11 else closes[0]
@@ -78,7 +82,7 @@ def get_historical_data_yahoo(symbol, current_price):
                     vol_ratio = round(today_vol / avg_vol, 1)
     except Exception:
         pass
-    return ret_10d, p_10d, ret_30d, p_30d, vol_ratio, closes
+    return ret_10d, p_10d, ret_30d, p_30d, vol_ratio, closes_3w
 
 def get_earnings_move_yahoo(symbol, earn_date_str, hour_timing):
     if not earn_date_str or earn_date_str == 'N/A':
@@ -162,12 +166,12 @@ for idx, symbol in enumerate(tickers, 1):
             "high52": round(high52, 2), "pct": round(pct_range, 1)
         })
 
-        return_10d_pct, price_10d, return_30d_pct, price_30d, vol_ratio, closes = get_historical_data_yahoo(symbol, last_price)
+        return_10d_pct, price_10d, return_30d_pct, price_30d, vol_ratio, closes_3w = get_historical_data_yahoo(symbol, last_price)
 
         master_list.append({
             "ticker": symbol, "name": comp_name, "industry": comp_industry,
             "price": round(last_price, 2), "mkt_cap": mkt_cap_str, "pct": round(pct_range, 1),
-            "vol_ratio": vol_ratio, "closes": closes, "daily_return": round(daily_return_pct, 2)
+            "vol_ratio": vol_ratio, "closes_3w": closes_3w, "daily_return": round(daily_return_pct, 2)
         })
         time.sleep(0.2)
 
@@ -390,31 +394,42 @@ def build_news_rows(items):
 def build_master_rows(items):
     rows = ""
     for item in items:
-        closes = item['closes']
-        # Compute SVG points string for sparkline
+        closes = item['closes_3w']
         svg_points = ""
         if closes and len(closes) > 1:
             min_c, max_c = min(closes), max(closes)
             c_range = (max_c - min_c) if max_c != min_c else 1.0
-            width, height = 180, 45
+            width, height = 300, 55
             pts = []
             for i, c in enumerate(closes):
                 x = (i / (len(closes) - 1)) * width
-                y = height - ((c - min_c) / c_range) * (height - 6) - 3
+                y = height - ((c - min_c) / c_range) * (height - 10) - 5
                 pts.append(f"{x:.1f},{y:.1f}")
             svg_points = " ".join(pts)
         
-        closes_json = str(closes).replace("'", '"')
-        ret_color = "var(--accent-green)" if item['daily_return'] >= 0 else "var(--accent-red)"
-        ret_txt = f"+{item['daily_return']:.2f}%" if item['daily_return'] >= 0 else f"{item['daily_return']:.2f}%"
+        ret_color = "#22c55e" if item['daily_return'] >= 0 else "#ef4444"
+        row_id = f"drawer_{item['ticker']}"
 
-        rows += f"""<tr class="master-row">
-            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/{item['ticker']}" target="_blank" onmouseenter="showSparklineHover(event, '{item['ticker']}', '{item['name']}', '${item['price']:,.2f}', '{ret_txt}', '{ret_color}', {closes_json})" onmouseleave="hideSparklineHover()" class="ticker-popup-link"><strong>${item['ticker']}</strong></a></td>
+        rows += f"""<tr class="master-row click-row" onclick="toggleDrawer('{row_id}')">
+            <td class="col-master-ticker"><a href="https://finance.yahoo.com/quote/{item['ticker']}" target="_blank" class="ticker-popup-link" onclick="event.stopPropagation()"><strong>${item['ticker']}</strong> ↗</a></td>
             <td class="col-master-name">{item['name']}</td>
             <td class="col-master-industry"><span class="badge-confirmed">{item['industry']}</span></td>
             <td class="col-master-price price-col"><strong>${item['price']:,.2f}</strong></td>
             <td class="col-master-cap price-col">{item['mkt_cap']}</td>
             <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">{item['pct']}%</span></td>
+        </tr>
+        <tr id="{row_id}" class="sparkline-drawer" style="display:none;">
+            <td colspan="6" style="background-color: #170b2e; padding: 10px 15px; border-bottom: 2px solid var(--accent-cyan);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <span style="font-weight: bold; color: var(--accent-yellow); font-size: 0.75rem;">📈 ${item['ticker']} — Last 3 Weeks Price Trend</span>
+                    <span style="font-size: 0.68rem; color: var(--text-muted);">Click row again to close</span>
+                </div>
+                <div style="background: var(--bg-card); padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); text-align: center;">
+                    <svg width="100%" height="60" viewBox="0 0 300 55" preserveAspectRatio="none" style="overflow:visible; max-width: 600px;">
+                        <polyline fill="none" stroke="{ret_color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points="{svg_points}"/>
+                    </svg>
+                </div>
+            </td>
         </tr>"""
     return rows
 
@@ -454,7 +469,8 @@ table{{width:100%;border-collapse:collapse;text-align:left;}}
 th{{background-color:#281545;padding:4px 6px;color:var(--text-muted);font-weight:600;border-bottom:1px solid var(--border-color);font-size:0.72rem;}}
 td{{padding:4px 6px;border-bottom:1px solid var(--border-color);vertical-align:middle;white-space:nowrap;font-size:0.72rem;overflow:hidden;text-overflow:ellipsis;}}
 tr:nth-child(even){{background-color:var(--bg-row-alt);}}
-tr:hover{{background-color:rgba(167,139,250,0.12);}}
+tr.click-row {{ cursor: pointer; }}
+tr.click-row:hover{{background-color:rgba(56,189,248,0.15) !important;}}
 
 .watchlist-row{{display:table;width:100%;table-layout:fixed;}}
 .col-ticker{{width:70px;}}
@@ -498,10 +514,6 @@ tr:hover{{background-color:rgba(167,139,250,0.12);}}
 .ticker-popup-link:hover {{ text-decoration: underline; }}
 
 .vol-badge {{ background-color: rgba(250, 204, 21, 0.2); color: var(--accent-yellow); padding: 1px 4px; border-radius: 3px; font-weight: bold; font-size: 0.62rem; border: 1px solid rgba(250, 204, 21, 0.4); }}
-
-/* Sparkline Hover Tooltip CSS */
-.sparkline-tooltip {{ display: none; position: absolute; background: var(--bg-card); border: 1px solid var(--accent-cyan); border-radius: 6px; padding: 8px; z-index: 2000; width: 200px; box-shadow: 0 4px 16px rgba(0,0,0,0.6); pointer-events: none; }}
-.sparkline-header {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; font-size: 0.78rem; font-weight: bold; color: var(--accent-cyan); }}
 
 .range-bar-container{{position:relative;width:100%;height:5px;background-color:var(--channel-bar);border-radius:3px;margin:2px 0;overflow:visible;}}
 .grid-line-33{{position:absolute;top:-3px;bottom:-3px;left:33.33%;border-left:1px dashed rgba(255,255,255,0.35);z-index:1;pointer-events:none;}}
@@ -588,7 +600,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
 
 <div class="dual-grid-wrapper" style="margin-top:6px;">
     <div class="grid-column">
-        <div class="section-title">📋 Tracked Tickers (Hover for Sparkline / Click for Yahoo Chart)</div>
+        <div class="section-title">📋 Tracked Tickers (Click Row for 3-Week Sparkline / Click Ticker for Yahoo)</div>
         <table>{master_header_html}<tbody>{build_master_rows(master_by_ticker)}</tbody></table>
     </div>
     <div class="grid-column">
@@ -599,47 +611,12 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
 
 </div>
 
-<div id="sparklineTooltip" class="sparkline-tooltip">
-    <div class="sparkline-header">
-        <span id="tooltipTicker" style="font-weight:bold;"></span>
-        <span id="tooltipReturn" style="font-weight:bold;"></span>
-    </div>
-    <svg id="tooltipSvg" width="180" height="45" style="overflow:visible; margin-top:2px;">
-        <path id="tooltipPath" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    <div style="font-size:0.62rem; color:var(--text-muted); text-align:center; margin-top:2px;">1-Month Trend</div>
-</div>
-
 <script>
-function showSparklineHover(event, ticker, name, price, retTxt, retColor, closes) {{
-    const tooltip = document.getElementById('sparklineTooltip');
-    document.getElementById('tooltipTicker').innerText = '$' + ticker + ' (' + price + ')';
-    const retSpan = document.getElementById('tooltipReturn');
-    retSpan.innerText = retTxt;
-    retSpan.style.color = retColor;
-    
-    if (closes && closes.length > 1) {{
-        const minC = Math.min(...closes);
-        const maxC = Math.max(...closes);
-        const cRange = (maxC !== minC) ? (maxC - minC) : 1.0;
-        const width = 180, height = 45;
-        let pts = [];
-        for (let i = 0; i < closes.length; i++) {{
-            let x = (i / (closes.length - 1)) * width;
-            let y = height - ((closes[i] - minC) / cRange) * (height - 6) - 3;
-            pts.push(x.toFixed(1) + ',' + y.toFixed(1));
-        }}
-        document.getElementById('tooltipPath.getAttribute') || document.getElementById('tooltipPath').setAttribute('d', 'M ' + pts.join(' L '));
-        document.getElementById('tooltipPath').setAttribute('stroke', retColor);
+function toggleDrawer(rowId) {{
+    const drawer = document.getElementById(rowId);
+    if (drawer) {{
+        drawer.style.display = drawer.style.display === 'none' ? 'table-row' : 'none';
     }}
-    
-    tooltip.style.display = 'block';
-    tooltip.style.left = (event.pageX + 15) + 'px';
-    tooltip.style.top = (event.pageY + 15) + 'px';
-}}
-
-function hideSparklineHover() {{
-    document.getElementById('sparklineTooltip').style.display = 'none';
 }}
 </script>
 
@@ -652,7 +629,7 @@ output_path = os.path.join(os.getcwd(), output_filename)
 with open(output_path, "w", encoding="utf-8") as f:
     f.write(html_content)
 
-print(f"\n🌐 Dashboard successfully generated with Sparkline Hover Previews & saved to: {output_filename}")
+print(f"\n🌐 Dashboard successfully generated with Click-to-Open Sparkline Drawers & saved to: {output_filename}")
 print(f"⏱️ EST Timestamp included: {generation_timestamp_str}")
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
 
