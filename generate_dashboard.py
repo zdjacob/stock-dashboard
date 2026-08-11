@@ -21,7 +21,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard with Crosshair Sparklines & EST Archiving)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard with Mobile Touch Crosshairs & EST Archiving)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -115,7 +115,6 @@ def get_earnings_move_yahoo(symbol, earn_date_str, hour_timing, est_today):
 
 data_list, earnings_list, movers_list, master_list, news_list = [], [], [], [], []
 
-# Built-in Eastern Time Offset Class (Zero external dependencies)
 class EST_Tz(datetime.tzinfo):
     def utcoffset(self, dt):
         return datetime.timedelta(hours=-4)
@@ -696,11 +695,11 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
         <div id="popReturnBanner" style="font-size: 0.72rem; font-weight: bold; padding: 2px 8px; border-radius: 4px;"></div>
     </div>
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-        <div id="popHoverTip" style="font-size: 0.68rem; color: var(--accent-yellow); font-family: monospace; font-weight: bold; background: rgba(250,204,21,0.1); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(250,204,21,0.3);">Hover chart for price & date</div>
+        <div id="popHoverTip" style="font-size: 0.68rem; color: var(--accent-yellow); font-family: monospace; font-weight: bold; background: rgba(250,204,21,0.1); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(250,204,21,0.3);">Hover or Tap chart for price & date</div>
     </div>
     <div style="display: flex; align-items: center; gap: 8px;">
         <div style="display: flex; flex-direction: column;">
-            <svg id="popSvg" viewBox="0 0 320 130" width="320" height="130" style="background:var(--bg-dark); border-radius:6px; border:1px solid var(--border-color); cursor: crosshair;">
+            <svg id="popSvg" viewBox="0 0 320 130" width="320" height="130" style="background:var(--bg-dark); border-radius:6px; border:1px solid var(--border-color); cursor: crosshair; touch-action: none;">
                 <line x1="0" y1="32.5" x2="320" y2="32.5" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
                 <line x1="0" y1="65" x2="320" y2="65" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
                 <line x1="0" y1="97.5" x2="320" y2="97.5" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
@@ -751,7 +750,7 @@ function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints
     
     document.getElementById('popTicker').innerText = '$' + ticker + ' (' + name + ')';
     document.getElementById('popInfo').innerHTML = 'Ind: <b>' + industry + '</b><br>Price: <b>$' + price + '</b> | 52W: <b>' + pct + '%</b>';
-    document.getElementById('popHoverTip').innerText = 'Hover chart for price & date';
+    document.getElementById('popHoverTip').innerText = 'Hover or Tap chart for price & date';
     
     const banner = document.getElementById('popReturnBanner');
     const retNum = parseFloat(ret3mo);
@@ -806,7 +805,7 @@ function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints
     popup.style.left = leftPos + 'px';
 }}
 
-// SVG Crosshair Hover Event Handlers
+// Universal Crosshair & Mobile Touch Handlers
 document.addEventListener("DOMContentLoaded", function() {{
     const svg = document.getElementById('popSvg');
     const hoverLine = document.getElementById('hoverLine');
@@ -814,15 +813,15 @@ document.addEventListener("DOMContentLoaded", function() {{
     const hoverTip = document.getElementById('popHoverTip');
 
     if (svg) {{
-        svg.addEventListener('mousemove', function(e) {{
+        function updateCrosshair(clientX) {{
             if (!currentCloses || currentCloses.length === 0) return;
             const rect = svg.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
+            const mouseX = Math.max(0, Math.min(clientX - rect.left, rect.width));
             const svgWidth = 320;
             const svgHeight = 130;
 
-            let xPct = Math.max(0, Math.min(1, mouseX / svgWidth));
-            let index = Math.round(xPct * (currentCloses.length - 1));
+            const xRatio = mouseX / rect.width;
+            let index = Math.round(xRatio * (currentCloses.length - 1));
             
             if (index < 0) index = 0;
             if (index >= currentCloses.length) index = currentCloses.length - 1;
@@ -843,13 +842,30 @@ document.addEventListener("DOMContentLoaded", function() {{
             hoverDot.style.display = 'block';
 
             hoverTip.innerText = dateStr + ' : $' + val.toFixed(2);
+        }}
+
+        svg.addEventListener('mousemove', function(e) {{
+            updateCrosshair(e.clientX);
         }});
 
         svg.addEventListener('mouseleave', function() {{
             hoverLine.style.display = 'none';
             hoverDot.style.display = 'none';
-            hoverTip.innerText = 'Hover chart for price & date';
+            hoverTip.innerText = 'Hover or Tap chart for price & date';
         }});
+
+        // Mobile Touch Support (Tap or Drag to inspect)
+        svg.addEventListener('touchstart', function(e) {{
+            if (e.touches.length > 0) {{
+                updateCrosshair(e.touches[0].clientX);
+            }}
+        }}, {{passive: true}});
+
+        svg.addEventListener('touchmove', function(e) {{
+            if (e.touches.length > 0) {{
+                updateCrosshair(e.touches[0].clientX);
+            }}
+        }}, {{passive: true}});
     }}
 }});
 
@@ -894,4 +910,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: Zero-dependency EST calculation, crosshair popup, and GitHub sync complete!")
+print("\n🎉 ALL TASKS COMPLETE: Mobile touch crosshairs, EST archiving, and GitHub sync ready!")
