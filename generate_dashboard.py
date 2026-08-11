@@ -21,7 +21,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Enhanced Visible Chart Grid Lines)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - PC Optimized & Fully Feature-Packed)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -115,21 +115,12 @@ def get_earnings_move_yahoo(symbol, earn_date_str, hour_timing, est_today):
 
 data_list, earnings_list, movers_list, master_list, news_list = [], [], [], [], []
 
-class EST_Tz(datetime.tzinfo):
-    def utcoffset(self, dt):
-        return datetime.timedelta(hours=-4)
-    def dst(self, dt):
-        return datetime.timedelta(hours=1)
-    def tzname(self, dt):
-        return "EDT"
-
-est_tz = EST_Tz()
-now_est = datetime.datetime.now(est_tz)
-generation_timestamp_str = now_est.strftime("%b %d, %Y at %H:%M:%S %Z")
-today_est = now_est.date()
-past_week_str = (today_est - datetime.timedelta(days=7)).strftime("%Y-%m-%d")
-today_str = today_est.strftime("%Y-%m-%d")
-future_str = (today_est + datetime.timedelta(days=120)).strftime("%Y-%m-%d")
+now = datetime.datetime.now()
+generation_timestamp_str = now.strftime("%b %d, %Y at %H:%M:%S")
+today = now.date()
+past_week_str = (today - datetime.timedelta(days=7)).strftime("%Y-%m-%d")
+today_str = today.strftime("%Y-%m-%d")
+future_str = (today + datetime.timedelta(days=120)).strftime("%Y-%m-%d")
 
 for idx, symbol in enumerate(tickers, 1):
     try:
@@ -267,21 +258,21 @@ for idx, symbol in enumerate(tickers, 1):
             hour_raw = next_earn.get('hour', '').upper()
             timing = "Before Open" if hour_raw == "BMO" else ("After Close" if hour_raw == "AMC" else "TBD")
 
-            earn_move, has_moved = get_earnings_move_yahoo(symbol, earn_date_str, hour_raw, today_est)
+            earn_move, has_moved = get_earnings_move_yahoo(symbol, earn_date_str, hour_raw, today)
             earn_move_badge = f'<span class="return-badge {"badge-pos" if earn_move > 0 else ("badge-neg" if earn_move < 0 else "badge-neutral")}">{f"+{earn_move:.2f}%" if earn_move > 0 else f"{earn_move:.2f}%"}</span>' if has_moved else '<span style="color:var(--text-muted);">-</span>'
 
-            if eps_act is not None or (earn_date_str != 'N/A' and datetime.datetime.strptime(earn_date_str, "%Y-%m-%d").date() < today_est):
+            if eps_act is not None or (earn_date_str != 'N/A' and datetime.datetime.strptime(earn_date_str, "%Y-%m-%d").date() < today):
                 status_class, status_text = "badge-reported", "Reported"
                 eps_str = f"${eps_act:.2f}" if eps_act is not None else (f"${eps_est:.2f}" if eps_est is not None else "N/A")
             elif earn_date_str != 'N/A':
                 try:
                     earn_date_obj = datetime.datetime.strptime(earn_date_str, "%Y-%m-%d").date()
-                    cur_year, cur_month = today_est.year, today_est.month
+                    cur_year, cur_month = today.year, today.month
                     next_month = cur_month + 1 if cur_month < 12 else 1
                     next_year = cur_year if cur_month < 12 else cur_year + 1
                     after_month = next_month + 1 if next_month < 12 else 1
                     after_year = next_year if next_month < 12 else next_year + 1
-                    days_away = (earn_date_obj - today_est).days
+                    days_away = (earn_date_obj - today).days
                     if days_away < 0:
                         status_class, status_text = "badge-reported", "Reported"
                     elif earn_date_obj.year == next_year and earn_date_obj.month == next_month:
@@ -539,7 +530,6 @@ def build_industry_grouped_grid(items):
             ret_class = "badge-pos" if item['ret_6mo'] > 0 else ("badge-neg" if item['ret_6mo'] < 0 else "badge-neutral")
             ret_str = f"{item['ret_6mo']:+.2f}% 6M"
             
-            # Brighter/Lighter month-end vertical dotted grid lines for maximum visibility
             month_lines_svg = ""
             try:
                 m_list = json.loads(item['month_ends'])
@@ -727,7 +717,7 @@ tr:nth-child(even){{background-color:var(--bg-row-alt);}}
 mid_news = (len(news_list) + 1) // 2
 news_left, news_right = news_list[:mid_news], news_list[mid_news:]
 
-html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Jacob's Stock Dashboard - {today_est.strftime('%b %d, %Y')}</title><style>{condensed_css}</style></head>
+html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Jacob's Stock Dashboard - {today.strftime('%b %d, %Y')}</title><style>{condensed_css}</style></head>
 <body><div class="container"><header>
     <div><h1>📊 Jacob's Technical Watchlist & Market Dashboard</h1></div>
     <div class="header-meta">
@@ -920,7 +910,6 @@ function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints
     popup.style.left = leftPos + 'px';
 }}
 
-# Setup Modal Popup Crosshair & Touch Support
 document.addEventListener("DOMContentLoaded", function() {{
     const svg = document.getElementById('popSvg');
     const hoverLineX = document.getElementById('hoverLineX');
@@ -974,7 +963,6 @@ document.addEventListener("DOMContentLoaded", function() {{
         svg.addEventListener('touchmove', function(e) {{ if (e.touches.length > 0) updatePopCrosshair(e.touches[0].clientX); }}, {{passive: true}});
     }}
 
-    # Setup Inline Industry-Grouped Interactive Charts
     const inlineSvgs = document.querySelectorAll('.inline-svg');
     inlineSvgs.forEach(svgEl => {{
         let closes = [];
@@ -1052,30 +1040,26 @@ window.addEventListener('click', function(e) {{
 
 </body></html>"""
 
-date_filename_str = today_est.strftime("%Y.%m.%d")
+date_filename_str = today.strftime("%Y.%m.%d")
 output_filename = f"JacobsStockDashboard.{date_filename_str}.html"
 output_path = os.path.join(os.getcwd(), output_filename)
 
 with open(output_path, "w", encoding="utf-8") as f:
     f.write(html_content)
 
-index_output_path = os.path.join(os.getcwd(), "index.html")
-with open(index_output_path, "w", encoding="utf-8") as f:
-    f.write(html_content)
-
-print(f"\n🌐 Dashboard successfully generated and saved as: {output_filename}")
+print(f"\n🌐 Dashboard successfully generated and saved to: {output_filename}")
+print(f"⏱️ Timestamp included: {generation_timestamp_str}")
 
 try:
-    print("\n🔄 Syncing and pushing archives to GitHub...")
+    print("\n🔄 Syncing and pushing dashboard to GitHub...")
     subprocess.run(["git", "add", output_path], check=True)
-    subprocess.run(["git", "add", index_output_path], check=True)
     subprocess.run(["git", "add", __file__], check=True)
-    commit_message = f"Add daily archived stock dashboard for {today_est.strftime('%b %d, %Y')} (ET)"
+    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')}"
     subprocess.run(["git", "commit", "-m", commit_message], check=True)
     subprocess.run(["git", "push", "origin", "main"], check=True)
-    print("🚀 Successfully pushed files and archives to GitHub!")
+    print("🚀 Successfully pushed files to GitHub!")
 except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: Lighter, more visible chart grid lines applied successfully!")
+print("\n🎉 ALL TASKS COMPLETE: PC-optimized script successfully updated, saved, and executed!")
