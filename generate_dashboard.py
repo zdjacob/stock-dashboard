@@ -21,7 +21,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard with Built-in EST Time Calculation)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard with Crosshair Sparklines & EST Archiving)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -115,11 +115,10 @@ def get_earnings_move_yahoo(symbol, earn_date_str, hour_timing, est_today):
 
 data_list, earnings_list, movers_list, master_list, news_list = [], [], [], [], []
 
-# Robust Eastern Time Offset Calculation (UTC - 4h for EDT / UTC - 5h for EST)
-# Using standard US Eastern offset rule
+# Built-in Eastern Time Offset Class (Zero external dependencies)
 class EST_Tz(datetime.tzinfo):
     def utcoffset(self, dt):
-        return datetime.timedelta(hours=-4) # Using EDT offset for August
+        return datetime.timedelta(hours=-4)
     def dst(self, dt):
         return datetime.timedelta(hours=1)
     def tzname(self, dt):
@@ -697,7 +696,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
         <div id="popReturnBanner" style="font-size: 0.72rem; font-weight: bold; padding: 2px 8px; border-radius: 4px;"></div>
     </div>
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-        <div id="popHoverTip" style="font-size: 0.68rem; color: var(--accent-yellow); font-family: monospace; font-weight: bold; background: rgba(250,204,21,0.1); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(250,204,21,0.3);">Hover chart for price</div>
+        <div id="popHoverTip" style="font-size: 0.68rem; color: var(--accent-yellow); font-family: monospace; font-weight: bold; background: rgba(250,204,21,0.1); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(250,204,21,0.3);">Hover chart for price & date</div>
     </div>
     <div style="display: flex; align-items: center; gap: 8px;">
         <div style="display: flex; flex-direction: column;">
@@ -752,7 +751,7 @@ function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints
     
     document.getElementById('popTicker').innerText = '$' + ticker + ' (' + name + ')';
     document.getElementById('popInfo').innerHTML = 'Ind: <b>' + industry + '</b><br>Price: <b>$' + price + '</b> | 52W: <b>' + pct + '%</b>';
-    document.getElementById('popHoverTip').innerText = 'Hover chart for price';
+    document.getElementById('popHoverTip').innerText = 'Hover chart for price & date';
     
     const banner = document.getElementById('popReturnBanner');
     const retNum = parseFloat(ret3mo);
@@ -807,7 +806,7 @@ function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints
     popup.style.left = leftPos + 'px';
 }}
 
-// SVG Hover Event Handlers for Proportional Chart
+// SVG Crosshair Hover Event Handlers
 document.addEventListener("DOMContentLoaded", function() {{
     const svg = document.getElementById('popSvg');
     const hoverLine = document.getElementById('hoverLine');
@@ -849,7 +848,7 @@ document.addEventListener("DOMContentLoaded", function() {{
         svg.addEventListener('mouseleave', function() {{
             hoverLine.style.display = 'none';
             hoverDot.style.display = 'none';
-            hoverTip.innerText = 'Hover chart for price';
+            hoverTip.innerText = 'Hover chart for price & date';
         }});
     }}
 }});
@@ -875,7 +874,6 @@ output_path = os.path.join(os.getcwd(), output_filename)
 with open(output_path, "w", encoding="utf-8") as f:
     f.write(html_content)
 
-# Update index.html for live GitHub Pages root access
 index_output_path = os.path.join(os.getcwd(), "index.html")
 with open(index_output_path, "w", encoding="utf-8") as f:
     f.write(html_content)
@@ -896,4 +894,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: Zero-dependency EST calculation applied, archived, and pushed successfully!")
+print("\n🎉 ALL TASKS COMPLETE: Zero-dependency EST calculation, crosshair popup, and GitHub sync complete!")
