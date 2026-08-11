@@ -21,7 +21,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard with Dynamic Column Click Positioning)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard with Permanent Daily Archiving)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -609,7 +609,7 @@ tr:nth-child(even){{background-color:var(--bg-row-alt);}}
 mid_news = (len(news_list) + 1) // 2
 news_left, news_right = news_list[:mid_news], news_list[mid_news:]
 
-html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Jacob's Stock Dashboard</title><style>{condensed_css}</style></head>
+html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Jacob's Stock Dashboard - {today.strftime('%b %d, %Y')}</title><style>{condensed_css}</style></head>
 <body><div class="container"><header>
     <div><h1>📊 Jacob's Technical Watchlist & Market Dashboard</h1></div>
     <div class="header-meta">
@@ -781,7 +781,6 @@ function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints
     
     popup.style.display = 'block';
     
-    // Position popup dynamically right next to the exact cell clicked
     const cellRect = event.currentTarget.getBoundingClientRect();
     const popupWidth = popup.offsetWidth || 390;
     
@@ -865,20 +864,26 @@ output_path = os.path.join(os.getcwd(), output_filename)
 with open(output_path, "w", encoding="utf-8") as f:
     f.write(html_content)
 
-print(f"\n🌐 Dashboard successfully generated and saved to: {output_filename}")
-print(f"⏱️ Timestamp included: {generation_timestamp_str}")
+# Additionally, maintain an 'index.html' so GitHub Pages serves the latest dashboard immediately by default
+index_output_path = os.path.join(os.getcwd(), "index.html")
+with open(index_output_path, "w", encoding="utf-8") as f:
+    f.write(html_content)
 
-# Auto-commit and push to GitHub
+print(f"\n🌐 Dashboard successfully generated and saved as: {output_filename}")
+print(f"📁 Permanent daily archive created alongside index.html.")
+
+# Auto-commit and push to GitHub (preserving all past daily files)
 try:
-    print("\n🔄 Syncing and pushing dashboard to GitHub...")
+    print("\n🔄 Syncing and pushing permanent archives to GitHub...")
     subprocess.run(["git", "add", output_path], check=True)
+    subprocess.run(["git", "add", index_output_path], check=True)
     subprocess.run(["git", "add", __file__], check=True)
-    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')}"
+    commit_message = f"Add daily archived stock dashboard for {today.strftime('%b %d, %Y')}"
     subprocess.run(["git", "commit", "-m", commit_message], check=True)
     subprocess.run(["git", "push", "origin", "main"], check=True)
-    print("🚀 Successfully pushed files to GitHub!")
+    print("🚀 Successfully pushed daily archives to GitHub!")
 except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: Clicking any cell now opens the popup sparkline right next to that specific column, saved, and browser launched successfully!")
+print("\n🎉 ALL TASKS COMPLETE: Permanent daily file archiving enabled, saved, and browser launched successfully!")
