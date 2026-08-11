@@ -21,7 +21,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard with Mobile Touch Crosshairs & EST Archiving)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard with Dual-Axis Crosshairs & EST Archiving)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -707,7 +707,8 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
                 <line x1="213.3" y1="0" x2="213.3" y2="130" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
                 <line id="popBaseLine" x1="0" y1="65" x2="320" y2="65" stroke="rgba(255,255,255,0.5)" stroke-dasharray="3,3" stroke-width="1.2"/>
                 <polyline id="popPolyline" fill="none" stroke-width="2" points=""/>
-                <line id="hoverLine" x1="0" y1="0" x2="0" y2="130" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
+                <line id="hoverLineX" x1="0" y1="0" x2="0" y2="130" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
+                <line id="hoverLineY" x1="0" y1="0" x2="320" y2="0" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
                 <circle id="hoverDot" cx="0" cy="0" r="4" fill="var(--accent-cyan)" stroke="#fff" stroke-width="1" style="display: none;"/>
             </svg>
             <div style="display: flex; justify-content: space-between; font-size: 0.62rem; color: var(--text-muted); font-weight: 600; margin-top: 3px; padding: 0 2px;">
@@ -805,10 +806,11 @@ function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints
     popup.style.left = leftPos + 'px';
 }}
 
-// Universal Crosshair & Mobile Touch Handlers
+// SVG Dual-Axis Crosshair & Mobile Touch Handlers
 document.addEventListener("DOMContentLoaded", function() {{
     const svg = document.getElementById('popSvg');
-    const hoverLine = document.getElementById('hoverLine');
+    const hoverLineX = document.getElementById('hoverLineX');
+    const hoverLineY = document.getElementById('hoverLineY');
     const hoverDot = document.getElementById('hoverDot');
     const hoverTip = document.getElementById('popHoverTip');
 
@@ -833,10 +835,17 @@ document.addEventListener("DOMContentLoaded", function() {{
             const cRange = (currentMax !== currentMin) ? (currentMax - currentMin) : 1.0;
             const yCoord = svgHeight - ((val - currentMin) / cRange) * (svgHeight - 20) - 10;
 
-            hoverLine.setAttribute('x1', xCoord);
-            hoverLine.setAttribute('x2', xCoord);
-            hoverLine.style.display = 'block';
+            // Update Vertical Line X
+            hoverLineX.setAttribute('x1', xCoord);
+            hoverLineX.setAttribute('x2', xCoord);
+            hoverLineX.style.display = 'block';
 
+            // Update Horizontal Line Y (tracks price across to price axis)
+            hoverLineY.setAttribute('y1', yCoord);
+            hoverLineY.setAttribute('y2', yCoord);
+            hoverLineY.style.display = 'block';
+
+            // Update Data Point Dot
             hoverDot.setAttribute('cx', xCoord);
             hoverDot.setAttribute('cy', yCoord);
             hoverDot.style.display = 'block';
@@ -849,12 +858,12 @@ document.addEventListener("DOMContentLoaded", function() {{
         }});
 
         svg.addEventListener('mouseleave', function() {{
-            hoverLine.style.display = 'none';
+            hoverLineX.style.display = 'none';
+            hoverLineY.style.display = 'none';
             hoverDot.style.display = 'none';
             hoverTip.innerText = 'Hover or Tap chart for price & date';
         }});
 
-        // Mobile Touch Support (Tap or Drag to inspect)
         svg.addEventListener('touchstart', function(e) {{
             if (e.touches.length > 0) {{
                 updateCrosshair(e.touches[0].clientX);
@@ -910,4 +919,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: Mobile touch crosshairs, EST archiving, and GitHub sync ready!")
+print("\n🎉 ALL TASKS COMPLETE: Dual-axis crosshairs, mobile touch support, and GitHub sync complete!")
