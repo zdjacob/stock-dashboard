@@ -21,7 +21,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard with 6-Month 4-Column Grid & Importance Points)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard with Inline Interactive 6M Cards)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -203,15 +203,14 @@ for idx, symbol in enumerate(tickers, 1):
             min_idx = recent_closes.index(min_c)
             max_idx = recent_closes.index(max_c)
             
-            # Importance points calculation
             if recent_ts and len(recent_ts) > min_idx and len(recent_ts) > max_idx:
                 low_date = datetime.datetime.fromtimestamp(recent_ts[min_idx]).strftime("%b %d")
                 high_date = datetime.datetime.fromtimestamp(recent_ts[max_idx]).strftime("%b %d")
-                importance_notes.append(f"📉 6M Trough: ${min_c:,.2f} ({low_date})")
-                importance_notes.append(f"📈 6M Peak: ${max_c:,.2f} ({high_date})")
+                importance_notes.append(f"📉 Trough: ${min_c:,.2f} ({low_date})")
+                importance_notes.append(f"📈 Peak: ${max_c:,.2f} ({high_date})")
             
             c_range = (max_c - min_c) if max_c != min_c else 1.0
-            width, height = 320, 130
+            width, height = 320, 110
             
             start_val = recent_closes[0]
             start_y_pct = ((start_val - min_c) / c_range) * 100
@@ -226,7 +225,7 @@ for idx, symbol in enumerate(tickers, 1):
             p_mid = round((max_c + min_c) / 2, 2)
             p_min = round(min_c, 2)
             
-            importance_notes.append(f"⚡ 6M Return: {return_6mo_pct:+.2f}%")
+            importance_notes.append(f"⚡ 6M: {return_6mo_pct:+.2f}%")
 
         stock_item = {
             "ticker": symbol, "name": comp_name, "industry": comp_industry,
@@ -514,13 +513,12 @@ def build_four_column_cards(items):
     for item in items:
         closes_json = item['chart_closes'].replace('"', '&quot;')
         dates_json = item['chart_dates'].replace('"', '&quot;')
-        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}'"
         
         ret_class = "badge-pos" if item['ret_6mo'] > 0 else ("badge-neg" if item['ret_6mo'] < 0 else "badge-neutral")
         ret_str = f"{item['ret_6mo']:+.2f}% 6M"
         
         cards_html += f"""
-        <div class="bottom-card" onclick="showSidePopup(event, {popup_args})">
+        <div class="bottom-card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
                 <span style="color:var(--accent-cyan); font-weight:bold; font-size:0.8rem;">${item['ticker']}</span>
                 <span class="return-badge {ret_class}" style="font-size:0.62rem; padding:1px 5px;">{ret_str}</span>
@@ -530,10 +528,14 @@ def build_four_column_cards(items):
                 <span>Price: <strong>${item['price']:,.2f}</strong></span>
                 <span style="color:var(--accent-yellow);">52W Pos: <strong>{item['pct']}%</strong></span>
             </div>
-            <div class="mini-card-chart-wrap" style="position:relative; width:100%; height:80px; background:var(--bg-dark); border-radius:4px; border:1px solid var(--border-color); overflow:hidden;">
-                <svg viewBox="0 0 320 130" width="100%" height="100%" preserveAspectRatio="none" style="display:block;">
-                    <polyline fill="none" stroke="{'#22c55e' if item['is_pos'] == 'true' else '#ef4444'}" stroke-width="2.5" points="{item['svg_points']}"/>
+            <div class="inline-chart-wrap" style="position:relative; width:100%; height:110px; background:var(--bg-dark); border-radius:4px; border:1px solid var(--border-color); overflow:hidden;">
+                <svg class="inline-svg" data-closes="{closes_json}" data-dates="{dates_json}" data-min="{item['p_min']}" data-max="{item['p_max']}" viewBox="0 0 320 110" width="100%" height="100%" preserveAspectRatio="none" style="display:block; cursor: crosshair; touch-action: none;">
+                    <line class="inline-line-x" x1="0" y1="0" x2="0" y2="110" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
+                    <line class="inline-line-y" x1="0" y1="0" x2="320" y2="0" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
+                    <polyline fill="none" stroke="{'#22c55e' if item['is_pos'] == 'true' else '#ef4444'}" stroke-width="2" points="{item['svg_points']}"/>
+                    <circle class="inline-dot" cx="0" cy="0" r="3.5" fill="var(--accent-cyan)" stroke="#fff" stroke-width="1" style="display: none;"/>
                 </svg>
+                <div class="inline-hover-tip" style="position:absolute; bottom:2px; left:4px; font-size:0.58rem; color:var(--accent-yellow); font-family:monospace; font-weight:bold; background:rgba(21,9,36,0.85); padding:1px 4px; border-radius:3px; pointer-events:none;">Hover/Tap chart</div>
             </div>
             <div style="font-size:0.6rem; color:var(--text-muted); margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="{item['importance_notes']}">
                 {item['importance_notes']}
@@ -587,12 +589,6 @@ h1{{font-size:1.2rem;color:var(--accent-cyan);}}
     border: 1px solid var(--border-color);
     border-radius: 6px;
     padding: 8px;
-    cursor: pointer;
-    transition: transform 0.2s ease, border-color 0.2s ease;
-}}
-.bottom-card:hover {{
-    border-color: var(--accent-cyan);
-    transform: translateY(-2px);
 }}
 @media (max-width: 1400px) {{
     .four-column-grid {{ grid-template-columns: repeat(2, 1fr); }}
@@ -694,7 +690,7 @@ tr:nth-child(even){{background-color:var(--bg-row-alt);}}
 
 mid_news = (len(news_list) + 1) // 2
 news_left, news_right = news_list[:mid_news], news_list[mid_news:]
-four_col_items = data_list[:8] if len(data_list) >= 8 else data_list
+four_col_items = data_list[:12] if len(data_list) >= 12 else data_list
 
 html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Jacob's Stock Dashboard - {today_est.strftime('%b %d, %Y')}</title><style>{condensed_css}</style></head>
 <body><div class="container"><header>
@@ -813,29 +809,29 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
 </div>
 
 <script>
-let currentCloses = [];
-let currentDates = [];
-let currentMin = 0;
-let currentMax = 0;
+let popCloses = [];
+let popDates = [];
+let popMin = 0;
+let popMax = 0;
 
 function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints, pMax, pMid, pMin, dStart, dMid, dEnd, isPos, startYPct, ret6mo, closesInput, datesInput, importanceNotes) {{
     event.stopPropagation();
     const popup = document.getElementById('sideSparklinePopup');
     
     try {{
-        currentCloses = typeof closesInput === 'string' ? JSON.parse(closesInput) : closesInput;
-        currentDates = typeof datesInput === 'string' ? JSON.parse(datesInput) : datesInput;
+        popCloses = typeof closesInput === 'string' ? JSON.parse(closesInput) : closesInput;
+        popDates = typeof datesInput === 'string' ? JSON.parse(datesInput) : datesInput;
     }} catch (e) {{
-        currentCloses = [];
-        currentDates = [];
+        popCloses = [];
+        popDates = [];
     }}
     
-    currentMin = parseFloat(pMin);
-    currentMax = parseFloat(pMax);
+    popMin = parseFloat(pMin);
+    popMax = parseFloat(pMax);
     
     document.getElementById('popTicker').innerText = '$' + ticker + ' (' + name + ')';
     document.getElementById('popInfo').innerHTML = 'Ind: <b>' + industry + '</b><br>Price: <b>$' + price + '</b> | 52W: <b>' + pct + '%</b>';
-    document.getElementById('popHoverTip').innerText = 'Hover or Tap chart for price & date';
+    document.getElementById('popHoverTip').innerText = 'Hover chart for price & date';
     document.getElementById('popImportance').innerHTML = '<b>Importance Highlights:</b><br>' + importanceNotes;
     
     const banner = document.getElementById('popReturnBanner');
@@ -891,7 +887,7 @@ function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints
     popup.style.left = leftPos + 'px';
 }}
 
-// SVG Dual-Axis Crosshair & Mobile Touch Handlers
+// Setup Modal Popup Crosshair
 document.addEventListener("DOMContentLoaded", function() {{
     const svg = document.getElementById('popSvg');
     const hoverLineX = document.getElementById('hoverLineX');
@@ -900,25 +896,24 @@ document.addEventListener("DOMContentLoaded", function() {{
     const hoverTip = document.getElementById('popHoverTip');
 
     if (svg) {{
-        function updateCrosshair(clientX) {{
-            if (!currentCloses || currentCloses.length === 0) return;
+        function updatePopCrosshair(clientX) {{
+            if (!popCloses || popCloses.length === 0) return;
             const rect = svg.getBoundingClientRect();
             const mouseX = Math.max(0, Math.min(clientX - rect.left, rect.width));
             const svgWidth = 320;
             const svgHeight = 130;
 
             const xRatio = mouseX / rect.width;
-            let index = Math.round(xRatio * (currentCloses.length - 1));
-            
+            let index = Math.round(xRatio * (popCloses.length - 1));
             if (index < 0) index = 0;
-            if (index >= currentCloses.length) index = currentCloses.length - 1;
+            if (index >= popCloses.length) index = popCloses.length - 1;
 
-            const val = currentCloses[index];
-            const dateStr = currentDates[index] || 'Recent';
+            const val = popCloses[index];
+            const dateStr = popDates[index] || 'Recent';
 
-            const xCoord = (index / (currentCloses.length - 1)) * svgWidth;
-            const cRange = (currentMax !== currentMin) ? (currentMax - currentMin) : 1.0;
-            const yCoord = svgHeight - ((val - currentMin) / cRange) * (svgHeight - 20) - 10;
+            const xCoord = (index / (popCloses.length - 1)) * svgWidth;
+            const cRange = (popMax !== popMin) ? (popMax - popMin) : 1.0;
+            const yCoord = svgHeight - ((val - popMin) / cRange) * (svgHeight - 20) - 10;
 
             hoverLineX.setAttribute('x1', xCoord);
             hoverLineX.setAttribute('x2', xCoord);
@@ -935,29 +930,79 @@ document.addEventListener("DOMContentLoaded", function() {{
             hoverTip.innerText = dateStr + ' : $' + val.toFixed(2);
         }}
 
-        svg.addEventListener('mousemove', function(e) {{
-            updateCrosshair(e.clientX);
-        }});
-
+        svg.addEventListener('mousemove', function(e) {{ updatePopCrosshair(e.clientX); }});
         svg.addEventListener('mouseleave', function() {{
             hoverLineX.style.display = 'none';
             hoverLineY.style.display = 'none';
             hoverDot.style.display = 'none';
-            hoverTip.innerText = 'Hover or Tap chart for price & date';
+            hoverTip.innerText = 'Hover chart for price & date';
         }});
-
-        svg.addEventListener('touchstart', function(e) {{
-            if (e.touches.length > 0) {{
-                updateCrosshair(e.touches[0].clientX);
-            }}
-        }}, {{passive: true}});
-
-        svg.addEventListener('touchmove', function(e) {{
-            if (e.touches.length > 0) {{
-                updateCrosshair(e.touches[0].clientX);
-            }}
-        }}, {{passive: true}});
+        svg.addEventListener('touchstart', function(e) {{ if (e.touches.length > 0) updatePopCrosshair(e.touches[0].clientX); }}, {{passive: true}});
+        svg.addEventListener('touchmove', function(e) {{ if (e.touches.length > 0) updatePopCrosshair(e.touches[0].clientX); }}, {{passive: true}});
     }}
+
+    // Setup Inline 4-Column Card Interactive Charts
+    const inlineSvgs = document.querySelectorAll('.inline-svg');
+    inlineSvgs.forEach(svgEl => {{
+        let closes = [];
+        let dates = [];
+        let sMin = parseFloat(svgEl.getAttribute('data-min'));
+        let sMax = parseFloat(svgEl.getAttribute('data-max'));
+        try {{
+            closes = JSON.parse(svgEl.getAttribute('data-closes'));
+            dates = JSON.parse(svgEl.getAttribute('data-dates'));
+        }} catch(e) {{}}
+
+        const lineX = svgEl.querySelector('.inline-line-x');
+        const lineY = svgEl.querySelector('.inline-line-y');
+        const dot = svgEl.querySelector('.inline-dot');
+        const wrap = svgEl.closest('.inline-chart-wrap');
+        const tip = wrap.querySelector('.inline-hover-tip');
+
+        function updateInline(clientX) {{
+            if (!closes || closes.length === 0) return;
+            const rect = svgEl.getBoundingClientRect();
+            const mouseX = Math.max(0, Math.min(clientX - rect.left, rect.width));
+            const svgWidth = 320;
+            const svgHeight = 110;
+
+            const xRatio = mouseX / rect.width;
+            let index = Math.round(xRatio * (closes.length - 1));
+            if (index < 0) index = 0;
+            if (index >= closes.length) index = closes.length - 1;
+
+            const val = closes[index];
+            const dateStr = dates[index] || 'Recent';
+
+            const xCoord = (index / (closes.length - 1)) * svgWidth;
+            const cRange = (sMax !== sMin) ? (sMax - sMin) : 1.0;
+            const yCoord = svgHeight - ((val - sMin) / cRange) * (svgHeight - 20) - 10;
+
+            lineX.setAttribute('x1', xCoord);
+            lineX.setAttribute('x2', xCoord);
+            lineX.style.display = 'block';
+
+            lineY.setAttribute('y1', yCoord);
+            lineY.setAttribute('y2', yCoord);
+            lineY.style.display = 'block';
+
+            dot.setAttribute('cx', xCoord);
+            dot.setAttribute('cy', yCoord);
+            dot.style.display = 'block';
+
+            tip.innerText = dateStr + ' : $' + val.toFixed(2);
+        }}
+
+        svgEl.addEventListener('mousemove', function(e) {{ updateInline(e.clientX); }});
+        svgEl.addEventListener('mouseleave', function() {{
+            lineX.style.display = 'none';
+            lineY.style.display = 'none';
+            dot.style.display = 'none';
+            tip.innerText = 'Hover/Tap chart';
+        }});
+        svgEl.addEventListener('touchstart', function(e) {{ if (e.touches.length > 0) updateInline(e.touches[0].clientX); }}, {{passive: true}});
+        svgEl.addEventListener('touchmove', function(e) {{ if (e.touches.length > 0) updateInline(e.touches[0].clientX); }}, {{passive: true}});
+    }});
 }});
 
 function closeSidePopup() {{
@@ -987,7 +1032,6 @@ with open(index_output_path, "w", encoding="utf-8") as f:
 
 print(f"\n🌐 Dashboard successfully generated and saved as: {output_filename}")
 
-# Auto-commit and push permanent daily archives to GitHub
 try:
     print("\n🔄 Syncing and pushing archives to GitHub...")
     subprocess.run(["git", "add", output_path], check=True)
@@ -1001,4 +1045,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: 4-Column 6M Grid, Importance Highlights, and Dual-Axis Crosshairs complete!")
+print("\n🎉 ALL TASKS COMPLETE: Inline 6M Cards without popup sparkline complete!")
