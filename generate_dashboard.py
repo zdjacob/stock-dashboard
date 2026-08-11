@@ -21,7 +21,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard with Chart-Overlay 3M Return)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard with Dynamic Column Click Positioning)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -191,7 +191,7 @@ for idx, symbol in enumerate(tickers, 1):
             min_c = min(recent_closes)
             max_c = max(recent_closes)
             c_range = (max_c - min_c) if max_c != min_c else 1.0
-            width, height = 240, 130  # Larger sparkline dimensions
+            width, height = 320, 130
             
             start_val = recent_closes[0]
             start_y_pct = ((start_val - min_c) / c_range) * 100
@@ -267,13 +267,19 @@ for idx, symbol in enumerate(tickers, 1):
                 status_class, status_text, eps_str = "badge-unconfirmed", "Unconfirmed Est.", "N/A"
 
             earnings_list.append({
-                "ticker": symbol, "date": earn_date_str, "eps_est": eps_str, "timing": timing,
-                "status_class": status_class, "status_text": status_text, "price": round(last_price, 2), "earn_move": earn_move_badge
+                "ticker": symbol, "name": comp_name, "industry": comp_industry, "date": earn_date_str, "eps_est": eps_str, "timing": timing,
+                "status_class": status_class, "status_text": status_text, "price": round(last_price, 2), "earn_move": earn_move_badge,
+                "pct": round(pct_range, 1), "vol_ratio": vol_ratio, "svg_points": svg_points, "p_max": p_max, "p_mid": p_mid, "p_min": p_min,
+                "d_start": d_start, "d_mid": d_mid, "d_end": d_end, "is_pos": is_pos, "start_y_pct": round(start_y_pct, 1), "ret_3mo": round(return_3mo_pct, 2),
+                "chart_closes": json.dumps(closes), "chart_dates": json.dumps(formatted_dates)
             })
         else:
             earnings_list.append({
-                "ticker": symbol, "date": "TBD / Next Qtr", "eps_est": "N/A", "timing": "TBD",
-                "status_class": "badge-unconfirmed", "status_text": "Unconfirmed Est.", "price": round(last_price, 2), "earn_move": '<span style="color:var(--text-muted);">-</span>'
+                "ticker": symbol, "name": comp_name, "industry": comp_industry, "date": "TBD / Next Qtr", "eps_est": "N/A", "timing": "TBD",
+                "status_class": "badge-unconfirmed", "status_text": "Unconfirmed Est.", "price": round(last_price, 2), "earn_move": '<span style="color:var(--text-muted);">-</span>',
+                "pct": round(pct_range, 1), "vol_ratio": vol_ratio, "svg_points": svg_points, "p_max": p_max, "p_mid": p_mid, "p_min": p_min,
+                "d_start": d_start, "d_mid": d_mid, "d_end": d_end, "is_pos": is_pos, "start_y_pct": round(start_y_pct, 1), "ret_3mo": round(return_3mo_pct, 2),
+                "chart_closes": json.dumps(closes), "chart_dates": json.dumps(formatted_dates)
             })
         time.sleep(0.2)
 
@@ -375,16 +381,19 @@ def build_watchlist_rows(items):
         
         closes_json = item['chart_closes'].replace('"', '&quot;')
         dates_json = item['chart_dates'].replace('"', '&quot;')
+        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_3mo']}, '{closes_json}', '{dates_json}'"
         
-        rows += f"""<tr class="watchlist-row" onclick="showSidePopup(event, '{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_3mo']}, '{closes_json}', '{dates_json}')" style="cursor: pointer;">
-            <td class="col-ticker"><span class="ticker-popup-link"><strong>${item['ticker']}</strong></span></td>
-            <td class="col-bar"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
+        rows += f"""<tr class="watchlist-row">
+            <td class="col-ticker clickable-cell" onclick="showSidePopup(event, {popup_args})"><span class="ticker-popup-link"><strong>${item['ticker']}</strong></span></td>
+            <td class="col-bar clickable-cell" onclick="showSidePopup(event, {popup_args})"><div class="range-bar-container"><div class="grid-line-33"></div><div class="grid-line-66"></div>
             <div class="marker-orange" style="left:{p_supp}%;" title="{item['ticker']} Support: ${item['supp']:,.2f}"></div>
             <div class="marker-yellow" style="left:{p_ma50}%;" title="{item['ticker']} 50d MA: ${item['ma50']:,.2f}"></div>
             <div class="marker-red" style="left:{p_ma200}%;" title="{item['ticker']} 200d MA: ${item['ma200']:,.2f}"></div>
             <div class="marker-cyan" style="left:{p_last}%;" title="{item['ticker']} Price: ${item['last']:,.2f}"></div></div></td>
-            <td class="col-low52">${item['low52']:,.2f}</td><td class="col-price">${item['last']:,.2f}</td><td class="col-high52">${item['high52']:,.2f}</td>
-            <td class="col-mini-gauge" style="background-color: rgba({r_col}, {g_col}, {b_col}, 0.85); color: #fff; font-weight: bold;"><span class="gauge-number">{item['pct']}%</span></td>
+            <td class="col-low52 clickable-cell" onclick="showSidePopup(event, {popup_args})">${item['low52']:,.2f}</td>
+            <td class="col-price clickable-cell" onclick="showSidePopup(event, {popup_args})">${item['last']:,.2f}</td>
+            <td class="col-high52 clickable-cell" onclick="showSidePopup(event, {popup_args})">${item['high52']:,.2f}</td>
+            <td class="col-mini-gauge clickable-cell" onclick="showSidePopup(event, {popup_args})" style="background-color: rgba({r_col}, {g_col}, {b_col}, 0.85); color: #fff; font-weight: bold;"><span class="gauge-number">{item['pct']}%</span></td>
         </tr>"""
     return rows
 
@@ -403,13 +412,17 @@ def build_earnings_rows(items):
     rows = ""
     for item in items:
         m_class, m_label = get_month_info(item['date'])
+        closes_json = item['chart_closes'].replace('"', '&quot;')
+        dates_json = item['chart_dates'].replace('"', '&quot;')
+        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_3mo']}, '{closes_json}', '{dates_json}'"
+        
         rows += f"""<tr class="earnings-row">
-            <td class="col-earn-ticker"><strong>${item['ticker']}</strong></td>
-            <td class="col-earn-price price-col"><strong>${item['price']:,.2f}</strong></td>
-            <td class="col-earn-date"><span class="month-pill {m_class}">{m_label}</span> {item['date']}</td>
-            <td class="col-earn-status"><span class="{item['status_class']}">{item['status_text']}</span></td>
-            <td class="col-earn-eps"><strong style="color:var(--accent-yellow);">{item['eps_est']}</strong></td>
-            <td class="col-earn-move">{item['earn_move']}</td>
+            <td class="col-earn-ticker clickable-cell" onclick="showSidePopup(event, {popup_args})"><span class="ticker-popup-link"><strong>${item['ticker']}</strong></span></td>
+            <td class="col-earn-price price-col clickable-cell" onclick="showSidePopup(event, {popup_args})"><strong>${item['price']:,.2f}</strong></td>
+            <td class="col-earn-date clickable-cell" onclick="showSidePopup(event, {popup_args})"><span class="month-pill {m_class}">{m_label}</span> {item['date']}</td>
+            <td class="col-earn-status clickable-cell" onclick="showSidePopup(event, {popup_args})"><span class="{item['status_class']}">{item['status_text']}</span></td>
+            <td class="col-earn-eps clickable-cell" onclick="showSidePopup(event, {popup_args})"><strong style="color:var(--accent-yellow);">{item['eps_est']}</strong></td>
+            <td class="col-earn-move clickable-cell" onclick="showSidePopup(event, {popup_args})">{item['earn_move']}</td>
         </tr>"""
     return rows
 
@@ -428,12 +441,14 @@ def build_movers_rows(items):
         vol_badge = f'<span class="vol-badge" title="Volume is {item["vol_ratio"]}x normal volume">⚡{item["vol_ratio"]}x Vol</span>' if item['vol_ratio'] >= 1.5 else f'<span style="color:var(--text-muted); font-size:0.65rem;">{item["vol_ratio"]}x Vol</span>'
         closes_json = item['chart_closes'].replace('"', '&quot;')
         dates_json = item['chart_dates'].replace('"', '&quot;')
-        rows += f"""<tr class="movers-row" onclick="showSidePopup(event, '{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_3mo']}, '{closes_json}', '{dates_json}')" style="cursor: pointer;">
-            <td class="col-movers-ticker"><span class="ticker-popup-link"><strong>${item['ticker']}</strong></span> {vol_badge}</td>
-            <td class="col-movers-score"><span style="color:var(--accent-cyan); font-weight:bold;">{item['composite_score']:+.2f}</span></td>
-            <td class="col-movers-combined"><div class="combined-cell">{get_return_badge_html(item['daily_return'], 2.0)}<span class="price-col">${item['price']:,.2f}</span></div></td>
-            <td class="col-movers-combined"><div class="combined-cell">{get_return_badge_html(item['return_10d'], 5.0)}<span class="price-col">${item['price_10d']:,.2f}</span></div></td>
-            <td class="col-movers-combined"><div class="combined-cell">{get_return_badge_html(item['return_30d'], 10.0)}<span class="price-col">${item['price_30d']:,.2f}</span></div></td>
+        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_3mo']}, '{closes_json}', '{dates_json}'"
+        
+        rows += f"""<tr class="movers-row">
+            <td class="col-movers-ticker clickable-cell" onclick="showSidePopup(event, {popup_args})"><strong>${item['ticker']}</strong> {vol_badge}</td>
+            <td class="col-movers-score clickable-cell" onclick="showSidePopup(event, {popup_args})"><span style="color:var(--accent-cyan); font-weight:bold;">{item['composite_score']:+.2f}</span></td>
+            <td class="col-movers-combined clickable-cell" onclick="showSidePopup(event, {popup_args})"><div class="combined-cell">{get_return_badge_html(item['daily_return'], 2.0)}<span class="price-col">${item['price']:,.2f}</span></div></td>
+            <td class="col-movers-combined clickable-cell" onclick="showSidePopup(event, {popup_args})"><div class="combined-cell">{get_return_badge_html(item['return_10d'], 5.0)}<span class="price-col">${item['price_10d']:,.2f}</span></div></td>
+            <td class="col-movers-combined clickable-cell" onclick="showSidePopup(event, {popup_args})"><div class="combined-cell">{get_return_badge_html(item['return_30d'], 10.0)}<span class="price-col">${item['price_30d']:,.2f}</span></div></td>
         </tr>"""
     return rows
 
@@ -455,14 +470,16 @@ def build_master_rows(items):
     for item in items:
         closes_json = item['chart_closes'].replace('"', '&quot;')
         dates_json = item['chart_dates'].replace('"', '&quot;')
+        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_3mo']}, '{closes_json}', '{dates_json}'"
+        
         rows += f"""
-        <tr class="master-row" onclick="showSidePopup(event, '{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_3mo']}, '{closes_json}', '{dates_json}')" style="cursor: pointer;">
-            <td class="col-master-ticker"><span class="ticker-popup-link"><strong>${item['ticker']}</strong></span></td>
-            <td class="col-master-name">{item['name']}</td>
-            <td class="col-master-industry"><span class="badge-confirmed">{item['industry']}</span></td>
-            <td class="col-master-price price-col"><strong>${item['price']:,.2f}</strong></td>
-            <td class="col-master-cap price-col">{item['mkt_cap']}</td>
-            <td class="col-master-gauge"><span style="color:var(--accent-cyan);font-weight:bold;">{item['pct']}%</span></td>
+        <tr class="master-row">
+            <td class="col-master-ticker clickable-cell" onclick="showSidePopup(event, {popup_args})"><span class="ticker-popup-link"><strong>${item['ticker']}</strong></span></td>
+            <td class="col-master-name clickable-cell" onclick="showSidePopup(event, {popup_args})">{item['name']}</td>
+            <td class="col-master-industry clickable-cell" onclick="showSidePopup(event, {popup_args})"><span class="badge-confirmed">{item['industry']}</span></td>
+            <td class="col-master-price price-col clickable-cell" onclick="showSidePopup(event, {popup_args})"><strong>${item['price']:,.2f}</strong></td>
+            <td class="col-master-cap price-col clickable-cell" onclick="showSidePopup(event, {popup_args})">{item['mkt_cap']}</td>
+            <td class="col-master-gauge clickable-cell" onclick="showSidePopup(event, {popup_args})" style="color:var(--accent-cyan);font-weight:bold;"><span class="gauge-number">{item['pct']}%</span></td>
         </tr>"""
     return rows
 
@@ -502,7 +519,9 @@ table{{width:100%;border-collapse:collapse;text-align:left;table-layout:fixed;}}
 th{{background-color:#281545;padding:4px 6px;color:var(--text-muted);font-weight:600;border-bottom:1px solid var(--border-color);font-size:0.72rem;overflow:hidden;text-overflow:ellipsis;}}
 td{{padding:4px 6px;border-bottom:1px solid var(--border-color);vertical-align:middle;white-space:nowrap;font-size:0.72rem;overflow:hidden;text-overflow:ellipsis;}}
 tr:nth-child(even){{background-color:var(--bg-row-alt);}}
-tr:hover{{background-color:rgba(167,139,250,0.12);}}
+
+.clickable-cell {{ cursor: pointer; }}
+.clickable-cell:hover {{ background-color: rgba(56, 189, 248, 0.15); }}
 
 .watchlist-row{{display:table;width:100%;table-layout:fixed;}}
 .col-ticker{{width:70px;}}
@@ -542,16 +561,11 @@ tr:hover{{background-color:rgba(167,139,250,0.12);}}
 .col-master-cap{{width:95px;text-align:right;}}
 .col-master-gauge{{width:75px;text-align:center;}}
 
-.ticker-popup-link {{ color: var(--accent-cyan); text-decoration: none; font-weight: bold; cursor: pointer; }}
-.ticker-popup-link:hover {{ text-decoration: underline; }}
-
-.vol-badge {{ background-color: rgba(250, 204, 21, 0.2); color: var(--accent-yellow); padding: 1px 4px; border-radius: 3px; font-weight: bold; font-size: 0.62rem; border: 1px solid rgba(250, 204, 21, 0.4); }}
-
-/* Floating Side Popup Card CSS (Adjusted for 240 width chart with direct overlay badge) */
+/* Floating Side Popup Card CSS */
 #sideSparklinePopup {{
     display: none;
     position: absolute;
-    width: 410px;
+    width: 390px;
     background: var(--bg-card);
     border: 1px solid var(--accent-cyan);
     border-radius: 8px;
@@ -614,7 +628,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
         </div>
     </div>
 </header>
-<div class="legend-bar"><span style="color:var(--text-muted);font-weight:600;>Indicator Key:</span><div class="legend-item"><span class="dot-cyan"></span> Live Price</div><div class="legend-item"><span class="bar-orange"></span> Support Level</div><div class="legend-item"><span class="diamond-yellow"></span> 50-Day Moving Avg</div><div class="legend-item"><span class="square-red"></span> 200-Day Moving Avg</div><div class="legend-item"><span class="line-grid"></span> 33% / 66% Range Dividers</div></div>
+<div class="legend-bar"><span style="color:var(--text-muted);font-weight:600;">Indicator Key:</span><div class="legend-item"><span class="dot-cyan"></span> Live Price</div><div class="legend-item"><span class="bar-orange"></span> Support Level</div><div class="legend-item"><span class="diamond-yellow"></span> 50-Day Moving Avg</div><div class="legend-item"><span class="square-red"></span> 200-Day Moving Avg</div><div class="legend-item"><span class="line-grid"></span> 33% / 66% Range Dividers</div></div>
 
 <div class="dual-grid-wrapper">
     <div class="grid-column">
@@ -651,7 +665,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
 
 <div class="dual-grid-wrapper" style="margin-top:6px;">
     <div class="grid-column">
-        <div class="section-title">📋 Tracked Tickers (Click Row for Rectangular Popup)</div>
+        <div class="section-title">📋 Tracked Tickers (Click Any Cell for Sparkline)</div>
         <table>{master_header_html}<tbody>{build_master_rows(master_by_ticker)}</tbody></table>
     </div>
     <div class="grid-column">
@@ -667,24 +681,26 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
         <span id="popTicker" style="color: var(--accent-cyan); font-weight: bold; font-size: 0.9rem;"></span>
         <span style="cursor: pointer; font-size: 1rem; color: var(--text-muted);" onclick="closeSidePopup()">&times;</span>
     </div>
-    <div id="popInfo" style="font-size: 0.7rem; margin-bottom: 6px; line-height: 1.3;"></div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+        <div id="popInfo" style="font-size: 0.7rem; line-height: 1.3;"></div>
+        <div id="popReturnBanner" style="font-size: 0.72rem; font-weight: bold; padding: 2px 8px; border-radius: 4px;"></div>
+    </div>
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
         <div id="popHoverTip" style="font-size: 0.68rem; color: var(--accent-yellow); font-family: monospace; font-weight: bold; background: rgba(250,204,21,0.1); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(250,204,21,0.3);">Hover chart for price</div>
     </div>
     <div style="display: flex; align-items: center; gap: 8px;">
-        <div style="display: flex; flex-direction: column; position: relative;">
-            <svg id="popSvg" viewBox="0 0 240 130" width="240" height="130" style="background:var(--bg-dark); border-radius:6px; border:1px solid var(--border-color); cursor: crosshair;">
-                <line x1="0" y1="32.5" x2="240" y2="32.5" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
-                <line x1="0" y1="65" x2="240" y2="65" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
-                <line x1="0" y1="97.5" x2="240" y2="97.5" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
-                <line x1="80" y1="0" x2="80" y2="130" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
-                <line x1="160" y1="0" x2="160" y2="130" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
-                <line id="popBaseLine" x1="0" y1="65" x2="240" y2="65" stroke="rgba(255,255,255,0.5)" stroke-dasharray="3,3" stroke-width="1.2"/>
+        <div style="display: flex; flex-direction: column;">
+            <svg id="popSvg" viewBox="0 0 320 130" width="320" height="130" style="background:var(--bg-dark); border-radius:6px; border:1px solid var(--border-color); cursor: crosshair;">
+                <line x1="0" y1="32.5" x2="320" y2="32.5" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
+                <line x1="0" y1="65" x2="320" y2="65" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
+                <line x1="0" y1="97.5" x2="320" y2="97.5" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
+                <line x1="106.6" y1="0" x2="106.6" y2="130" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
+                <line x1="213.3" y1="0" x2="213.3" y2="130" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
+                <line id="popBaseLine" x1="0" y1="65" x2="320" y2="65" stroke="rgba(255,255,255,0.5)" stroke-dasharray="3,3" stroke-width="1.2"/>
                 <polyline id="popPolyline" fill="none" stroke-width="2" points=""/>
                 <line id="hoverLine" x1="0" y1="0" x2="0" y2="130" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
                 <circle id="hoverDot" cx="0" cy="0" r="4" fill="var(--accent-cyan)" stroke="#fff" stroke-width="1" style="display: none;"/>
             </svg>
-            <div id="chartOverlayReturnBadge" style="position: absolute; top: 6px; right: 6px; font-size: 0.72rem; font-weight: bold; padding: 2px 6px; border-radius: 4px; pointer-events: none; z-index: 5;"></div>
             <div style="display: flex; justify-content: space-between; font-size: 0.62rem; color: var(--text-muted); font-weight: 600; margin-top: 3px; padding: 0 2px;">
                 <span id="labelStart"></span>
                 <span id="labelMidDate"></span>
@@ -724,25 +740,25 @@ function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints
     currentMax = parseFloat(pMax);
     
     document.getElementById('popTicker').innerText = '$' + ticker + ' (' + name + ')';
-    document.getElementById('popInfo').innerHTML = 'Ind: <b>' + industry + '</b><br>Price: <b>$' + price + '</b> | 52W: <b>' + pct + '%</b><br>Volume: <b>' + vol + 'x Normal</b>';
+    document.getElementById('popInfo').innerHTML = 'Ind: <b>' + industry + '</b><br>Price: <b>$' + price + '</b> | 52W: <b>' + pct + '%</b>';
     document.getElementById('popHoverTip').innerText = 'Hover chart for price';
     
-    const overlayBadge = document.getElementById('chartOverlayReturnBadge');
+    const banner = document.getElementById('popReturnBanner');
     const retNum = parseFloat(ret3mo);
     const retStr = (retNum > 0 ? '+' : '') + retNum.toFixed(2) + '% 3M';
-    overlayBadge.innerText = retStr;
+    banner.innerText = retStr;
     if (retNum > 0) {{
-        overlayBadge.style.backgroundColor = 'rgba(34,197,94,0.85)';
-        overlayBadge.style.color = '#ffffff';
-        overlayBadge.style.border = '1px solid #4ade80';
+        banner.style.backgroundColor = 'rgba(74,222,128,0.2)';
+        banner.style.color = '#22c55e';
+        banner.style.border = '1px solid rgba(74,222,128,0.4)';
     }} else if (retNum < 0) {{
-        overlayBadge.style.backgroundColor = 'rgba(239,68,68,0.85)';
-        overlayBadge.style.color = '#ffffff';
-        overlayBadge.style.border = '1px solid #f87171';
+        banner.style.backgroundColor = 'rgba(248,113,113,0.2)';
+        banner.style.color = '#ef4444';
+        banner.style.border = '1px solid rgba(248,113,113,0.4)';
     }} else {{
-        overlayBadge.style.backgroundColor = 'rgba(100,116,139,0.85)';
-        overlayBadge.style.color = '#ffffff';
-        overlayBadge.style.border = '1px solid #94a3b8';
+        banner.style.backgroundColor = 'rgba(100,116,139,0.2)';
+        banner.style.color = '#94a3b8';
+        banner.style.border = '1px solid rgba(100,116,139,0.4)';
     }}
     
     const chartHeight = 130;
@@ -765,22 +781,23 @@ function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints
     
     popup.style.display = 'block';
     
-    const rect = event.currentTarget.getBoundingClientRect();
-    const popupWidth = popup.offsetWidth || 410;
+    // Position popup dynamically right next to the exact cell clicked
+    const cellRect = event.currentTarget.getBoundingClientRect();
+    const popupWidth = popup.offsetWidth || 390;
     
-    let leftPos = window.scrollX + rect.right + 10;
+    let leftPos = window.scrollX + cellRect.right + 12;
     if (leftPos + popupWidth > window.innerWidth + window.scrollX) {{
-        leftPos = window.scrollX + rect.left - popupWidth - 10;
+        leftPos = window.scrollX + cellRect.left - popupWidth - 12;
         if (leftPos < window.scrollX) {{
-            leftPos = window.scrollX + 10;
+            leftPos = window.scrollX + 12;
         }}
     }}
     
-    popup.style.top = (window.scrollY + rect.top) + 'px';
+    popup.style.top = (window.scrollY + cellRect.top) + 'px';
     popup.style.left = leftPos + 'px';
 }}
 
-// SVG Hover Event Handlers for Larger Live Tooltip Chart
+// SVG Hover Event Handlers for Proportional Chart
 document.addEventListener("DOMContentLoaded", function() {{
     const svg = document.getElementById('popSvg');
     const hoverLine = document.getElementById('hoverLine');
@@ -792,7 +809,7 @@ document.addEventListener("DOMContentLoaded", function() {{
             if (!currentCloses || currentCloses.length === 0) return;
             const rect = svg.getBoundingClientRect();
             const mouseX = e.clientX - rect.left;
-            const svgWidth = 240;
+            const svgWidth = 320;
             const svgHeight = 130;
 
             let xPct = Math.max(0, Math.min(1, mouseX / svgWidth));
@@ -864,4 +881,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: Dashboard generated with in-chart return badge, saved, and browser launched successfully!")
+print("\n🎉 ALL TASKS COMPLETE: Clicking any cell now opens the popup sparkline right next to that specific column, saved, and browser launched successfully!")
