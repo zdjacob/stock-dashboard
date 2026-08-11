@@ -1,4 +1,3 @@
-
 import os, time, datetime, webbrowser, requests, statistics, json, subprocess
 
 # ==========================================
@@ -888,7 +887,7 @@ try:
     subprocess.run(["git", "add", index_output_path], check=True)
     subprocess.run(["git", "add", __file__], check=True)
     commit_message = f"Add daily archived stock dashboard for {today_est.strftime('%b %d, %Y')} (ET)"
-    subprocess.run(["git", "commit", -m", commit_message], check=True)
+    subprocess.run(["git", "commit", "-m", commit_message], check=True)
     subprocess.run(["git", "push", "origin", "main"], check=True)
     print("🚀 Successfully pushed files and archives to GitHub!")
 except Exception as e:
