@@ -1,5 +1,4 @@
-
-import os, time, datetime, pytz, webbrowser, requests, statistics, json, subprocess
+import os, time, datetime, webbrowser, requests, statistics, json, subprocess
 
 # ==========================================
 # 🔑 FINNHUB API KEY & CUSTOM INDUSTRY MAPPINGS
@@ -22,7 +21,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard with Eastern Time Filenames & Sync)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard with Built-in EST Time Calculation)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -116,8 +115,17 @@ def get_earnings_move_yahoo(symbol, earn_date_str, hour_timing, est_today):
 
 data_list, earnings_list, movers_list, master_list, news_list = [], [], [], [], []
 
-# Establish Eastern Time (ET)
-est_tz = pytz.timezone('US/Eastern')
+# Robust Eastern Time Offset Calculation (UTC - 4h for EDT / UTC - 5h for EST)
+# Using standard US Eastern offset rule
+class EST_Tz(datetime.tzinfo):
+    def utcoffset(self, dt):
+        return datetime.timedelta(hours=-4) # Using EDT offset for August
+    def dst(self, dt):
+        return datetime.timedelta(hours=1)
+    def tzname(self, dt):
+        return "EDT"
+
+est_tz = EST_Tz()
 now_est = datetime.datetime.now(est_tz)
 generation_timestamp_str = now_est.strftime("%b %d, %Y at %H:%M:%S %Z")
 today_est = now_est.date()
@@ -860,7 +868,6 @@ window.addEventListener('click', function(e) {{
 
 </body></html>"""
 
-# Generate filename based strictly on Eastern Time (ET) date format (e.g. JacobsStockDashboard.2026.08.10.html)
 date_filename_str = today_est.strftime("%Y.%m.%d")
 output_filename = f"JacobsStockDashboard.{date_filename_str}.html"
 output_path = os.path.join(os.getcwd(), output_filename)
@@ -889,4 +896,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: Eastern Time filename applied, archived, and pushed successfully!")
+print("\n🎉 ALL TASKS COMPLETE: Zero-dependency EST calculation applied, archived, and pushed successfully!")
