@@ -8,7 +8,7 @@ API_KEY = "d9rihopr01qoo7o4k3igd9rihopr01qoo7o4k3j0"
 CUSTOM_INDUSTRY_MAP = {
     "REGN": "Biotech And Healthcare", "ISRG": "Biotech And Healthcare", "LLY": "Biotech And Healthcare", "VRTX": "Biotech And Healthcare",
     "JPM": "Financial Services", "V": "Financial Services", "BLK": "Financial Services", "COIN": "Financial Services", "GS": "Financial Services",
-    "BE": "Engineering And Chips", "ETN": "Engineering And Chips", "GEV": "Engineering And Chips", "GLW": "Engineering And Chips", "CAT": "Engineering And Chips", "ANET": "Engineering And Chips", "VRT": "Engineering And Chips",
+    "BE": "Engineering And Chips", "ETN": "Engineering And Chips", "GEV": "Engineering And Chips", "GLW": "Engineering And Chips", "CAT": "Engineering And Chips", "ANET": "Engineering And Chips", "VRT": "Engineering And Chips", "MRVL": "Engineering And Chips",
     "TSM": "Semiconductors",
     "AAPL": "Big Guys", "AMZN": "Big Guys", "MSFT": "Big Guys", "GOOGL": "Big Guys",
     "COST": "Consumer", "SPOT": "Consumer", "NFLX": "Consumer"
@@ -21,7 +21,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard with Industry-Grouped 2-Column Grid)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard with MRVL in Engineering & Month-End / 25-50-75% Grids)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -182,27 +182,40 @@ for idx, symbol in enumerate(tickers, 1):
         is_pos = "false"
         start_y_pct = 50.0
         importance_notes = []
+        month_end_x_coords = []
         
         if closes and len(closes) > 1:
             recent_closes = closes
             recent_ts = timestamps if len(timestamps) >= len(recent_closes) else []
+            
+            width, height = 320, 110
+            min_c = min(recent_closes)
+            max_c = max(recent_closes)
+            min_idx = recent_closes.index(min_c)
+            max_idx = recent_closes.index(max_c)
             
             if recent_ts:
                 try:
                     d_start = datetime.datetime.fromtimestamp(recent_ts[0]).strftime("%b %d")
                     d_mid = datetime.datetime.fromtimestamp(recent_ts[len(recent_ts) // 2]).strftime("%b %d")
                     d_end = datetime.datetime.fromtimestamp(recent_ts[-1]).strftime("%b %d")
+                    
+                    # Detect month-end index transitions for vertical dotted grid lines
+                    prev_month = None
+                    for idx_t, ts in enumerate(recent_ts):
+                        dt = datetime.datetime.fromtimestamp(ts)
+                        curr_month = dt.month
+                        if prev_month is not None and curr_month != prev_month:
+                            # Month boundary transition
+                            x_pos = (idx_t / (len(recent_closes) - 1)) * width
+                            month_end_x_coords.append(round(x_pos, 1))
+                        prev_month = curr_month
                 except Exception:
                     pass
 
             if recent_closes[-1] > recent_closes[0]:
                 is_pos = "true"
 
-            min_c = min(recent_closes)
-            max_c = max(recent_closes)
-            min_idx = recent_closes.index(min_c)
-            max_idx = recent_closes.index(max_c)
-            
             if recent_ts and len(recent_ts) > min_idx and len(recent_ts) > max_idx:
                 low_date = datetime.datetime.fromtimestamp(recent_ts[min_idx]).strftime("%b %d")
                 high_date = datetime.datetime.fromtimestamp(recent_ts[max_idx]).strftime("%b %d")
@@ -210,7 +223,6 @@ for idx, symbol in enumerate(tickers, 1):
                 importance_notes.append(f"📈 Peak: ${max_c:,.2f} ({high_date})")
             
             c_range = (max_c - min_c) if max_c != min_c else 1.0
-            width, height = 320, 110
             
             start_val = recent_closes[0]
             start_y_pct = ((start_val - min_c) / c_range) * 100
@@ -237,6 +249,7 @@ for idx, symbol in enumerate(tickers, 1):
             "d_end": d_end, "is_pos": is_pos, "start_y_pct": round(start_y_pct, 1),
             "ret_6mo": round(return_6mo_pct, 2),
             "importance_notes": " | ".join(importance_notes),
+            "month_ends": json.dumps(month_end_x_coords),
             "chart_closes": json.dumps(closes),
             "chart_dates": json.dumps(formatted_dates)
         }
@@ -293,7 +306,7 @@ for idx, symbol in enumerate(tickers, 1):
                 "status_class": status_class, "status_text": status_text, "price": round(last_price, 2), "earn_move": earn_move_badge,
                 "pct": round(pct_range, 1), "vol_ratio": vol_ratio, "svg_points": svg_points, "p_max": p_max, "p_mid": p_mid, "p_min": p_min,
                 "d_start": d_start, "d_mid": d_mid, "d_end": d_end, "is_pos": is_pos, "start_y_pct": round(start_y_pct, 1), "ret_6mo": round(return_6mo_pct, 2),
-                "importance_notes": " | ".join(importance_notes),
+                "importance_notes": " | ".join(importance_notes), "month_ends": json.dumps(month_end_x_coords),
                 "chart_closes": json.dumps(closes), "chart_dates": json.dumps(formatted_dates)
             })
         else:
@@ -302,7 +315,7 @@ for idx, symbol in enumerate(tickers, 1):
                 "status_class": "badge-unconfirmed", "status_text": "Unconfirmed Est.", "price": round(last_price, 2), "earn_move": '<span style="color:var(--text-muted);">-</span>',
                 "pct": round(pct_range, 1), "vol_ratio": vol_ratio, "svg_points": svg_points, "p_max": p_max, "p_mid": p_mid, "p_min": p_min,
                 "d_start": d_start, "d_mid": d_mid, "d_end": d_end, "is_pos": is_pos, "start_y_pct": round(start_y_pct, 1), "ret_6mo": round(return_6mo_pct, 2),
-                "importance_notes": " | ".join(importance_notes),
+                "importance_notes": " | ".join(importance_notes), "month_ends": json.dumps(month_end_x_coords),
                 "chart_closes": json.dumps(closes), "chart_dates": json.dumps(formatted_dates)
             })
         time.sleep(0.2)
@@ -329,7 +342,7 @@ for idx, symbol in enumerate(tickers, 1):
                 "p_max": p_max, "p_mid": p_mid, "p_min": p_min,
                 "d_start": d_start, "d_mid": d_mid, "d_end": d_end, "is_pos": is_pos,
                 "start_y_pct": round(start_y_pct, 1), "ret_6mo": round(return_6mo_pct, 2),
-                "importance_notes": " | ".join(importance_notes),
+                "importance_notes": " | ".join(importance_notes), "month_ends": json.dumps(month_end_x_coords),
                 "chart_closes": json.dumps(closes),
                 "chart_dates": json.dumps(formatted_dates)
             })
@@ -406,7 +419,8 @@ def build_watchlist_rows(items):
         
         closes_json = item['chart_closes'].replace('"', '&quot;')
         dates_json = item['chart_dates'].replace('"', '&quot;')
-        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}'"
+        month_json = item['month_ends'].replace('"', '&quot;')
+        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
         
         rows += f"""<tr class="watchlist-row">
             <td class="col-ticker clickable-cell" onclick="showSidePopup(event, {popup_args})"><span class="ticker-popup-link"><strong>${item['ticker']}</strong></span></td>
@@ -439,7 +453,8 @@ def build_earnings_rows(items):
         m_class, m_label = get_month_info(item['date'])
         closes_json = item['chart_closes'].replace('"', '&quot;')
         dates_json = item['chart_dates'].replace('"', '&quot;')
-        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}'"
+        month_json = item['month_ends'].replace('"', '&quot;')
+        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
         
         rows += f"""<tr class="earnings-row">
             <td class="col-earn-ticker clickable-cell" onclick="showSidePopup(event, {popup_args})"><span class="ticker-popup-link"><strong>${item['ticker']}</strong></span></td>
@@ -466,7 +481,8 @@ def build_movers_rows(items):
         vol_badge = f'<span class="vol-badge" title="Volume is {item["vol_ratio"]}x normal volume">⚡{item["vol_ratio"]}x Vol</span>' if item['vol_ratio'] >= 1.5 else f'<span style="color:var(--text-muted); font-size:0.65rem;">{item["vol_ratio"]}x Vol</span>'
         closes_json = item['chart_closes'].replace('"', '&quot;')
         dates_json = item['chart_dates'].replace('"', '&quot;')
-        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}'"
+        month_json = item['month_ends'].replace('"', '&quot;')
+        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
         
         rows += f"""<tr class="movers-row">
             <td class="col-movers-ticker clickable-cell" onclick="showSidePopup(event, {popup_args})"><strong>${item['ticker']}</strong> {vol_badge}</td>
@@ -495,7 +511,8 @@ def build_master_rows(items):
     for item in items:
         closes_json = item['chart_closes'].replace('"', '&quot;')
         dates_json = item['chart_dates'].replace('"', '&quot;')
-        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}'"
+        month_json = item['month_ends'].replace('"', '&quot;')
+        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
         
         rows += f"""
         <tr class="master-row">
@@ -509,7 +526,6 @@ def build_master_rows(items):
     return rows
 
 def build_industry_grouped_grid(items):
-    # Group items by industry
     industry_dict = {}
     for item in items:
         ind = item['industry']
@@ -523,9 +539,19 @@ def build_industry_grouped_grid(items):
         for item in stock_items:
             closes_json = item['chart_closes'].replace('"', '&quot;')
             dates_json = item['chart_dates'].replace('"', '&quot;')
+            month_json = item['month_ends'].replace('"', '&quot;')
             ret_class = "badge-pos" if item['ret_6mo'] > 0 else ("badge-neg" if item['ret_6mo'] < 0 else "badge-neutral")
             ret_str = f"{item['ret_6mo']:+.2f}% 6M"
             
+            # Build month end vertical dotted lines HTML for SVG
+            month_lines_svg = ""
+            try:
+                m_list = json.loads(item['month_ends'])
+                for mx in m_list:
+                    month_lines_svg += f'<line x1="{mx}" y1="0" x2="{mx}" y2="110" stroke="rgba(255,255,255,0.22)" stroke-dasharray="1,3"/>'
+            except Exception:
+                pass
+
             cards_html += f"""
             <div class="bottom-card">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
@@ -539,6 +565,10 @@ def build_industry_grouped_grid(items):
                 </div>
                 <div class="inline-chart-wrap" style="position:relative; width:100%; height:110px; background:var(--bg-dark); border-radius:4px; border:1px solid var(--border-color); overflow:hidden;">
                     <svg class="inline-svg" data-closes="{closes_json}" data-dates="{dates_json}" data-min="{item['p_min']}" data-max="{item['p_max']}" viewBox="0 0 320 110" width="100%" height="100%" preserveAspectRatio="none" style="display:block; cursor: crosshair; touch-action: none;">
+                        <line x1="0" y1="27.5" x2="320" y2="27.5" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
+                        <line x1="0" y1="55.0" x2="320" y2="55.0" stroke="rgba(255,255,255,0.18)" stroke-dasharray="2,2"/>
+                        <line x1="0" y1="82.5" x2="320" y2="82.5" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
+                        {month_lines_svg}
                         <line class="inline-line-x" x1="0" y1="0" x2="0" y2="110" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
                         <line class="inline-line-y" x1="0" y1="0" x2="320" y2="0" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
                         <polyline fill="none" stroke="{'#22c55e' if item['is_pos'] == 'true' else '#ef4444'}" stroke-width="2" points="{item['svg_points']}"/>
@@ -593,7 +623,6 @@ h1{{font-size:1.2rem;color:var(--accent-cyan);}}
 .dual-grid-wrapper{{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;}}
 .grid-column{{flex:1;background-color:var(--bg-card);border-radius:6px;border:1px solid var(--border-color);padding:3px;overflow-x:auto;}}
 
-/* Two-Column Grid for Industry Grouped Section */
 .two-column-grid {{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -655,7 +684,6 @@ tr:nth-child(even){{background-color:var(--bg-row-alt);}}
 .col-master-cap{{width:95px;text-align:right;}}
 .col-master-gauge{{width:75px;text-align:center;}}
 
-/* Floating Side Popup Card CSS */
 #sideSparklinePopup {{
     display: none;
     position: absolute;
@@ -1054,4 +1082,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: Industry-grouped 2-column grid ready!")
+print("\n🎉 ALL TASKS COMPLETE: MRVL moved, month-end dotted verticals & 25/50/75% horizontals complete!")
