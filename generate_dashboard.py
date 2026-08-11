@@ -8,7 +8,7 @@ API_KEY = "d9rihopr01qoo7o4k3igd9rihopr01qoo7o4k3j0"
 CUSTOM_INDUSTRY_MAP = {
     "REGN": "Biotech And Healthcare", "ISRG": "Biotech And Healthcare", "LLY": "Biotech And Healthcare", "VRTX": "Biotech And Healthcare",
     "JPM": "Financial Services", "V": "Financial Services", "BLK": "Financial Services", "COIN": "Financial Services", "GS": "Financial Services",
-    "BE": "Engineering And Chips", "ETN": "Engineering And Chips", "GEV": "Engineering And Chips", "GLW": "Engineering And Chips", "CAT": "Engineering And Chips", "ANET": "Engineering And Chips", "VRT": "Engineering And Chips",
+    "BE": "Engineering And Chips", "ETN": "Engineering And Chips", "GEV": "Engineering And Chips", "GLW": "Engineering And Chips", "CAT": "Engineering And Chips", "ANET": "Engineering And Chips", "VRT": "Engineering And Chips", "MRVL": "Engineering And Chips",
     "TSM": "Semiconductors",
     "AAPL": "Big Guys", "AMZN": "Big Guys", "MSFT": "Big Guys", "GOOGL": "Big Guys",
     "COST": "Consumer", "SPOT": "Consumer", "NFLX": "Consumer"
@@ -21,7 +21,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard with Permanent Daily Archiving)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - 4-Column Bottom Chart Layout)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -45,14 +45,14 @@ def safe_api_get(url, retries=3, delay=2, extra_headers=None):
     return {}
 
 def get_historical_data_yahoo(symbol, current_price):
-    ret_10d, ret_30d, ret_3mo = 0.0, 0.0, 0.0
-    p_10d, p_30d, p_3mo = 0.0, 0.0, 0.0
+    ret_10d, ret_30d, ret_6mo = 0.0, 0.0, 0.0
+    p_10d, p_30d, p_6mo = 0.0, 0.0, 0.0
     vol_ratio = 1.0
     closes = []
     timestamps = []
     formatted_dates = []
     try:
-        yf_url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?range=3mo&interval=1d"
+        yf_url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?range=6mo&interval=1d"
         res = safe_api_get(yf_url, retries=2, delay=1, extra_headers=headers)
         result = res.get('chart', {}).get('result', [])
         if result:
@@ -76,8 +76,8 @@ def get_historical_data_yahoo(symbol, current_price):
                 p_30d = closes[-31] if len(closes) >= 31 else closes[0]
                 ret_30d = ((current_price - p_30d) / p_30d) * 100
             if len(closes) > 0:
-                p_3mo = closes[0]
-                ret_3mo = ((current_price - p_3mo) / p_3mo) * 100
+                p_6mo = closes[0]
+                ret_6mo = ((current_price - p_6mo) / p_6mo) * 100
             
             if len(volumes) >= 5:
                 today_vol = volumes[-1]
@@ -86,16 +86,16 @@ def get_historical_data_yahoo(symbol, current_price):
                     vol_ratio = round(today_vol / avg_vol, 1)
     except Exception:
         pass
-    return ret_10d, p_10d, ret_30d, p_30d, ret_3mo, vol_ratio, closes, timestamps, formatted_dates
+    return ret_10d, p_10d, ret_30d, p_30d, ret_6mo, vol_ratio, closes, timestamps, formatted_dates
 
-def get_earnings_move_yahoo(symbol, earn_date_str, hour_timing):
+def get_earnings_move_yahoo(symbol, earn_date_str, hour_timing, est_today):
     if not earn_date_str or earn_date_str == 'N/A':
         return 0.0, False
     try:
         earn_date = datetime.datetime.strptime(earn_date_str, "%Y-%m-%d").date()
-        if earn_date > datetime.date.today():
+        if earn_date > est_today:
             return 0.0, False
-        yf_url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?range=3mo&interval=1d"
+        yf_url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?range=6mo&interval=1d"
         res = safe_api_get(yf_url, retries=2, delay=1, extra_headers=headers)
         result = res.get('chart', {}).get('result', [])
         if result:
@@ -165,34 +165,53 @@ for idx, symbol in enumerate(tickers, 1):
 
         pct_range = max(0, min(100, ((last_price - low52) / (high52 - low52)) * 100)) if high52 > low52 else 50
 
-        return_10d_pct, price_10d, return_30d_pct, price_30d, return_3mo_pct, vol_ratio, closes, timestamps, formatted_dates = get_historical_data_yahoo(symbol, last_price)
+        return_10d_pct, price_10d, return_30d_pct, price_30d, return_6mo_pct, vol_ratio, closes, timestamps, formatted_dates = get_historical_data_yahoo(symbol, last_price)
 
         svg_points = ""
         p_max, p_mid, p_min = last_price, last_price, last_price
         d_start, d_mid, d_end = "Start", "Mid", "End"
         is_pos = "false"
         start_y_pct = 50.0
+        importance_notes = []
+        month_end_x_coords = []
         
         if closes and len(closes) > 1:
             recent_closes = closes
             recent_ts = timestamps if len(timestamps) >= len(recent_closes) else []
+            
+            width, height = 320, 110
+            min_c = min(recent_closes)
+            max_c = max(recent_closes)
+            min_idx = recent_closes.index(min_c)
+            max_idx = recent_closes.index(max_c)
             
             if recent_ts:
                 try:
                     d_start = datetime.datetime.fromtimestamp(recent_ts[0]).strftime("%b %d")
                     d_mid = datetime.datetime.fromtimestamp(recent_ts[len(recent_ts) // 2]).strftime("%b %d")
                     d_end = datetime.datetime.fromtimestamp(recent_ts[-1]).strftime("%b %d")
+                    
+                    prev_month = None
+                    for idx_t, ts in enumerate(recent_ts):
+                        dt = datetime.datetime.fromtimestamp(ts)
+                        curr_month = dt.month
+                        if prev_month is not None and curr_month != prev_month:
+                            x_pos = (idx_t / (len(recent_closes) - 1)) * width
+                            month_end_x_coords.append(round(x_pos, 1))
+                        prev_month = curr_month
                 except Exception:
                     pass
 
             if recent_closes[-1] > recent_closes[0]:
                 is_pos = "true"
 
-            min_c = min(recent_closes)
-            max_c = max(recent_closes)
-            c_range = (max_c - min_c) if max_c != min_c else 1.0
-            width, height = 320, 130
+            if recent_ts and len(recent_ts) > min_idx and len(recent_ts) > max_idx:
+                low_date = datetime.datetime.fromtimestamp(recent_ts[min_idx]).strftime("%b %d")
+                high_date = datetime.datetime.fromtimestamp(recent_ts[max_idx]).strftime("%b %d")
+                importance_notes.append(f"📉 Trough: ${min_c:,.2f} ({low_date})")
+                importance_notes.append(f"📈 Peak: ${max_c:,.2f} ({high_date})")
             
+            c_range = (max_c - min_c) if max_c != min_c else 1.0
             start_val = recent_closes[0]
             start_y_pct = ((start_val - min_c) / c_range) * 100
 
@@ -205,6 +224,8 @@ for idx, symbol in enumerate(tickers, 1):
             p_max = round(max_c, 2)
             p_mid = round((max_c + min_c) / 2, 2)
             p_min = round(min_c, 2)
+            
+            importance_notes.append(f"⚡ 6M: {return_6mo_pct:+.2f}%")
 
         stock_item = {
             "ticker": symbol, "name": comp_name, "industry": comp_industry,
@@ -214,7 +235,9 @@ for idx, symbol in enumerate(tickers, 1):
             "vol_ratio": vol_ratio, "svg_points": svg_points, "p_max": p_max,
             "p_mid": p_mid, "p_min": p_min, "d_start": d_start, "d_mid": d_mid,
             "d_end": d_end, "is_pos": is_pos, "start_y_pct": round(start_y_pct, 1),
-            "ret_3mo": round(return_3mo_pct, 2),
+            "ret_6mo": round(return_6mo_pct, 2),
+            "importance_notes": " | ".join(importance_notes),
+            "month_ends": json.dumps(month_end_x_coords),
             "chart_closes": json.dumps(closes),
             "chart_dates": json.dumps(formatted_dates)
         }
@@ -235,7 +258,7 @@ for idx, symbol in enumerate(tickers, 1):
             hour_raw = next_earn.get('hour', '').upper()
             timing = "Before Open" if hour_raw == "BMO" else ("After Close" if hour_raw == "AMC" else "TBD")
 
-            earn_move, has_moved = get_earnings_move_yahoo(symbol, earn_date_str, hour_raw)
+            earn_move, has_moved = get_earnings_move_yahoo(symbol, earn_date_str, hour_raw, today)
             earn_move_badge = f'<span class="return-badge {"badge-pos" if earn_move > 0 else ("badge-neg" if earn_move < 0 else "badge-neutral")}">{f"+{earn_move:.2f}%" if earn_move > 0 else f"{earn_move:.2f}%"}</span>' if has_moved else '<span style="color:var(--text-muted);">-</span>'
 
             if eps_act is not None or (earn_date_str != 'N/A' and datetime.datetime.strptime(earn_date_str, "%Y-%m-%d").date() < today):
@@ -270,7 +293,8 @@ for idx, symbol in enumerate(tickers, 1):
                 "ticker": symbol, "name": comp_name, "industry": comp_industry, "date": earn_date_str, "eps_est": eps_str, "timing": timing,
                 "status_class": status_class, "status_text": status_text, "price": round(last_price, 2), "earn_move": earn_move_badge,
                 "pct": round(pct_range, 1), "vol_ratio": vol_ratio, "svg_points": svg_points, "p_max": p_max, "p_mid": p_mid, "p_min": p_min,
-                "d_start": d_start, "d_mid": d_mid, "d_end": d_end, "is_pos": is_pos, "start_y_pct": round(start_y_pct, 1), "ret_3mo": round(return_3mo_pct, 2),
+                "d_start": d_start, "d_mid": d_mid, "d_end": d_end, "is_pos": is_pos, "start_y_pct": round(start_y_pct, 1), "ret_6mo": round(return_6mo_pct, 2),
+                "importance_notes": " | ".join(importance_notes), "month_ends": json.dumps(month_end_x_coords),
                 "chart_closes": json.dumps(closes), "chart_dates": json.dumps(formatted_dates)
             })
         else:
@@ -278,7 +302,8 @@ for idx, symbol in enumerate(tickers, 1):
                 "ticker": symbol, "name": comp_name, "industry": comp_industry, "date": "TBD / Next Qtr", "eps_est": "N/A", "timing": "TBD",
                 "status_class": "badge-unconfirmed", "status_text": "Unconfirmed Est.", "price": round(last_price, 2), "earn_move": '<span style="color:var(--text-muted);">-</span>',
                 "pct": round(pct_range, 1), "vol_ratio": vol_ratio, "svg_points": svg_points, "p_max": p_max, "p_mid": p_mid, "p_min": p_min,
-                "d_start": d_start, "d_mid": d_mid, "d_end": d_end, "is_pos": is_pos, "start_y_pct": round(start_y_pct, 1), "ret_3mo": round(return_3mo_pct, 2),
+                "d_start": d_start, "d_mid": d_mid, "d_end": d_end, "is_pos": is_pos, "start_y_pct": round(start_y_pct, 1), "ret_6mo": round(return_6mo_pct, 2),
+                "importance_notes": " | ".join(importance_notes), "month_ends": json.dumps(month_end_x_coords),
                 "chart_closes": json.dumps(closes), "chart_dates": json.dumps(formatted_dates)
             })
         time.sleep(0.2)
@@ -304,7 +329,8 @@ for idx, symbol in enumerate(tickers, 1):
                 "pct": round(pct_range, 1), "svg_points": svg_points,
                 "p_max": p_max, "p_mid": p_mid, "p_min": p_min,
                 "d_start": d_start, "d_mid": d_mid, "d_end": d_end, "is_pos": is_pos,
-                "start_y_pct": round(start_y_pct, 1), "ret_3mo": round(return_3mo_pct, 2),
+                "start_y_pct": round(start_y_pct, 1), "ret_6mo": round(return_6mo_pct, 2),
+                "importance_notes": " | ".join(importance_notes), "month_ends": json.dumps(month_end_x_coords),
                 "chart_closes": json.dumps(closes),
                 "chart_dates": json.dumps(formatted_dates)
             })
@@ -381,7 +407,8 @@ def build_watchlist_rows(items):
         
         closes_json = item['chart_closes'].replace('"', '&quot;')
         dates_json = item['chart_dates'].replace('"', '&quot;')
-        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_3mo']}, '{closes_json}', '{dates_json}'"
+        month_json = item['month_ends'].replace('"', '&quot;')
+        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
         
         rows += f"""<tr class="watchlist-row">
             <td class="col-ticker clickable-cell" onclick="showSidePopup(event, {popup_args})"><span class="ticker-popup-link"><strong>${item['ticker']}</strong></span></td>
@@ -414,7 +441,8 @@ def build_earnings_rows(items):
         m_class, m_label = get_month_info(item['date'])
         closes_json = item['chart_closes'].replace('"', '&quot;')
         dates_json = item['chart_dates'].replace('"', '&quot;')
-        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_3mo']}, '{closes_json}', '{dates_json}'"
+        month_json = item['month_ends'].replace('"', '&quot;')
+        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
         
         rows += f"""<tr class="earnings-row">
             <td class="col-earn-ticker clickable-cell" onclick="showSidePopup(event, {popup_args})"><span class="ticker-popup-link"><strong>${item['ticker']}</strong></span></td>
@@ -441,7 +469,8 @@ def build_movers_rows(items):
         vol_badge = f'<span class="vol-badge" title="Volume is {item["vol_ratio"]}x normal volume">⚡{item["vol_ratio"]}x Vol</span>' if item['vol_ratio'] >= 1.5 else f'<span style="color:var(--text-muted); font-size:0.65rem;">{item["vol_ratio"]}x Vol</span>'
         closes_json = item['chart_closes'].replace('"', '&quot;')
         dates_json = item['chart_dates'].replace('"', '&quot;')
-        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_3mo']}, '{closes_json}', '{dates_json}'"
+        month_json = item['month_ends'].replace('"', '&quot;')
+        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
         
         rows += f"""<tr class="movers-row">
             <td class="col-movers-ticker clickable-cell" onclick="showSidePopup(event, {popup_args})"><strong>${item['ticker']}</strong> {vol_badge}</td>
@@ -470,7 +499,8 @@ def build_master_rows(items):
     for item in items:
         closes_json = item['chart_closes'].replace('"', '&quot;')
         dates_json = item['chart_dates'].replace('"', '&quot;')
-        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_3mo']}, '{closes_json}', '{dates_json}'"
+        month_json = item['month_ends'].replace('"', '&quot;')
+        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
         
         rows += f"""
         <tr class="master-row">
@@ -482,6 +512,69 @@ def build_master_rows(items):
             <td class="col-master-gauge clickable-cell" onclick="showSidePopup(event, {popup_args})" style="color:var(--accent-cyan);font-weight:bold;"><span class="gauge-number">{item['pct']}%</span></td>
         </tr>"""
     return rows
+
+def build_industry_grouped_grid(items):
+    industry_dict = {}
+    for item in items:
+        ind = item['industry']
+        if ind not in industry_dict:
+            industry_dict[ind] = []
+        industry_dict[ind].append(item)
+    
+    sections_html = ""
+    for ind, stock_items in sorted(industry_dict.items()):
+        cards_html = ""
+        for item in stock_items:
+            closes_json = item['chart_closes'].replace('"', '&quot;')
+            dates_json = item['chart_dates'].replace('"', '&quot;')
+            ret_class = "badge-pos" if item['ret_6mo'] > 0 else ("badge-neg" if item['ret_6mo'] < 0 else "badge-neutral")
+            ret_str = f"{item['ret_6mo']:+.2f}% 6M"
+            
+            month_lines_svg = ""
+            try:
+                m_list = json.loads(item['month_ends'])
+                for mx in m_list:
+                    month_lines_svg += f'<line x1="{mx}" y1="0" x2="{mx}" y2="110" stroke="rgba(255,255,255,0.45)" stroke-dasharray="2,3"/>'
+            except Exception:
+                pass
+
+            cards_html += f"""
+            <div class="bottom-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                    <span style="color:var(--accent-cyan); font-weight:bold; font-size:0.8rem;">${item['ticker']}</span>
+                    <span class="return-badge {ret_class}" style="font-size:0.62rem; padding:1px 5px;">{ret_str}</span>
+                </div>
+                <div style="font-size:0.65rem; color:var(--text-muted); margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="{item['name']}">{item['name']}</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; font-family:monospace; font-size:0.7rem; margin-bottom:4px;">
+                    <span>Price: <strong>${item['price']:,.2f}</strong></span>
+                    <span style="color:var(--accent-yellow);">52W Pos: <strong>{item['pct']}%</strong></span>
+                </div>
+                <div class="inline-chart-wrap" style="position:relative; width:100%; height:110px; background:var(--bg-dark); border-radius:4px; border:1px solid var(--border-color); overflow:hidden;">
+                    <svg class="inline-svg" data-closes="{closes_json}" data-dates="{dates_json}" data-min="{item['p_min']}" data-max="{item['p_max']}" viewBox="0 0 320 110" width="100%" height="100%" preserveAspectRatio="none" style="display:block; cursor: crosshair; touch-action: none;">
+                        <line x1="0" y1="27.5" x2="320" y2="27.5" stroke="rgba(255,255,255,0.3)" stroke-dasharray="2,2"/>
+                        <line x1="0" y1="55.0" x2="320" y2="55.0" stroke="rgba(255,255,255,0.45)" stroke-dasharray="2,2"/>
+                        <line x1="0" y1="82.5" x2="320" y2="82.5" stroke="rgba(255,255,255,0.3)" stroke-dasharray="2,2"/>
+                        {month_lines_svg}
+                        <line class="inline-line-x" x1="0" y1="0" x2="0" y2="110" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
+                        <line class="inline-line-y" x1="0" y1="0" x2="320" y2="0" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
+                        <polyline fill="none" stroke="{'#22c55e' if item['is_pos'] == 'true' else '#ef4444'}" stroke-width="2" points="{item['svg_points']}"/>
+                        <circle class="inline-dot" cx="0" cy="0" r="3.5" fill="var(--accent-cyan)" stroke="#fff" stroke-width="1" style="display: none;"/>
+                    </svg>
+                    <div class="inline-hover-tip" style="position:absolute; bottom:2px; left:4px; font-size:0.58rem; color:var(--accent-yellow); font-family:monospace; font-weight:bold; background:rgba(21,9,36,0.85); padding:1px 4px; border-radius:3px; pointer-events:none;">Hover/Tap chart</div>
+                </div>
+                <div style="font-size:0.6rem; color:var(--text-muted); margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="{item['importance_notes']}">
+                    {item['importance_notes']}
+                </div>
+            </div>
+            """
+        
+        sections_html += f"""
+        <div style="margin-bottom: 14px;">
+            <div style="font-size: 0.9rem; color: var(--accent-cyan); font-weight: bold; margin-bottom: 6px; border-bottom: 1px solid var(--border-color); padding-bottom: 3px;">🏭 {ind}</div>
+            <div class="four-column-grid">{cards_html}</div>
+        </div>
+        """
+    return sections_html
 
 table_header_html = """<thead><tr class="watchlist-row"><th class="col-ticker">Ticker</th><th class="col-bar" style="text-align:center;">Range Bar (33% & 66% Grids)<div class="axis-labels"><span>0%</span><span style="color:#a78bfa;">33%</span><span style="color:#a78bfa;">66%</span><span>100%</span></div></th><th class="col-low52" style="text-align:right;">52W Low</th><th class="col-price" style="text-align:right;">Price</th><th class="col-high52" style="text-align:right;">52W High</th><th class="col-mini-gauge" style="text-align:center;">52W Pos</th></tr></thead>"""
 earnings_header_html = """<thead><tr class="earnings-row"><th class="col-earn-ticker">Ticker</th><th class="col-earn-price" style="text-align:right;">Price</th><th class="col-earn-date">Date</th><th class="col-earn-status">Status</th><th class="col-earn-eps">EPS</th><th class="col-earn-move">Earnings Move ⚡</th></tr></thead>"""
@@ -515,6 +608,25 @@ h1{{font-size:1.2rem;color:var(--accent-cyan);}}
 .line-grid{{width:1px;height:10px;border-right:1px dashed var(--text-muted);display:inline-block;margin:0 1px;}}
 .dual-grid-wrapper{{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;}}
 .grid-column{{flex:1;background-color:var(--bg-card);border-radius:6px;border:1px solid var(--border-color);padding:3px;overflow-x:auto;}}
+
+.four-column-grid {{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}}
+.bottom-card {{
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 8px;
+}}
+@media (max-width: 1400px) {{
+    .four-column-grid {{ grid-template-columns: repeat(2, 1fr); }}
+}}
+@media (max-width: 800px) {{
+    .four-column-grid {{ grid-template-columns: 1fr; }}
+}}
+
 table{{width:100%;border-collapse:collapse;text-align:left;table-layout:fixed;}}
 th{{background-color:#281545;padding:4px 6px;color:var(--text-muted);font-weight:600;border-bottom:1px solid var(--border-color);font-size:0.72rem;overflow:hidden;text-overflow:ellipsis;}}
 td{{padding:4px 6px;border-bottom:1px solid var(--border-color);vertical-align:middle;white-space:nowrap;font-size:0.72rem;overflow:hidden;text-overflow:ellipsis;}}
@@ -561,7 +673,6 @@ tr:nth-child(even){{background-color:var(--bg-row-alt);}}
 .col-master-cap{{width:95px;text-align:right;}}
 .col-master-gauge{{width:75px;text-align:center;}}
 
-/* Floating Side Popup Card CSS */
 #sideSparklinePopup {{
     display: none;
     position: absolute;
@@ -674,6 +785,9 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
     </div>
 </div>
 
+<div class="section-title" style="margin-top: 14px;">🏭 Industry-Grouped 6-Month History & Highlights (4-Column Grid)</div>
+{build_industry_grouped_grid(data_list)}
+
 </div>
 
 <div id="sideSparklinePopup" onclick="event.stopPropagation()">
@@ -686,11 +800,11 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
         <div id="popReturnBanner" style="font-size: 0.72rem; font-weight: bold; padding: 2px 8px; border-radius: 4px;"></div>
     </div>
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-        <div id="popHoverTip" style="font-size: 0.68rem; color: var(--accent-yellow); font-family: monospace; font-weight: bold; background: rgba(250,204,21,0.1); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(250,204,21,0.3);">Hover chart for price</div>
+        <div id="popHoverTip" style="font-size: 0.68rem; color: var(--accent-yellow); font-family: monospace; font-weight: bold; background: rgba(250,204,21,0.1); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(250,204,21,0.3);">Hover or Tap chart for price & date</div>
     </div>
     <div style="display: flex; align-items: center; gap: 8px;">
         <div style="display: flex; flex-direction: column;">
-            <svg id="popSvg" viewBox="0 0 320 130" width="320" height="130" style="background:var(--bg-dark); border-radius:6px; border:1px solid var(--border-color); cursor: crosshair;">
+            <svg id="popSvg" viewBox="0 0 320 130" width="320" height="130" style="background:var(--bg-dark); border-radius:6px; border:1px solid var(--border-color); cursor: crosshair; touch-action: none;">
                 <line x1="0" y1="32.5" x2="320" y2="32.5" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
                 <line x1="0" y1="65" x2="320" y2="65" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
                 <line x1="0" y1="97.5" x2="320" y2="97.5" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
@@ -698,7 +812,8 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
                 <line x1="213.3" y1="0" x2="213.3" y2="130" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
                 <line id="popBaseLine" x1="0" y1="65" x2="320" y2="65" stroke="rgba(255,255,255,0.5)" stroke-dasharray="3,3" stroke-width="1.2"/>
                 <polyline id="popPolyline" fill="none" stroke-width="2" points=""/>
-                <line id="hoverLine" x1="0" y1="0" x2="0" y2="130" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
+                <line id="hoverLineX" x1="0" y1="0" x2="0" y2="130" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
+                <line id="hoverLineY" x1="0" y1="0" x2="320" y2="0" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
                 <circle id="hoverDot" cx="0" cy="0" r="4" fill="var(--accent-cyan)" stroke="#fff" stroke-width="1" style="display: none;"/>
             </svg>
             <div style="display: flex; justify-content: space-between; font-size: 0.62rem; color: var(--text-muted); font-weight: 600; margin-top: 3px; padding: 0 2px;">
@@ -713,39 +828,41 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
             <span id="labelMin"></span>
         </div>
     </div>
+    <div id="popImportance" style="font-size: 0.68rem; color: var(--text-main); margin-top: 6px; padding: 4px; background: rgba(56,189,248,0.1); border-radius: 4px; border: 1px solid rgba(56,189,248,0.3);"></div>
     <div style="margin-top: 6px; text-align: center;">
         <a id="popYahooLink" href="#" target="_blank" style="color:var(--accent-cyan); text-decoration:underline; font-size:0.68rem; font-weight:bold;">Yahoo Finance ↗</a>
     </div>
 </div>
 
 <script>
-let currentCloses = [];
-let currentDates = [];
-let currentMin = 0;
-let currentMax = 0;
+let popCloses = [];
+let popDates = [];
+let popMin = 0;
+let popMax = 0;
 
-function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints, pMax, pMid, pMin, dStart, dMid, dEnd, isPos, startYPct, ret3mo, closesInput, datesInput) {{
+function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints, pMax, pMid, pMin, dStart, dMid, dEnd, isPos, startYPct, ret6mo, closesInput, datesInput, importanceNotes) {{
     event.stopPropagation();
     const popup = document.getElementById('sideSparklinePopup');
     
     try {{
-        currentCloses = typeof closesInput === 'string' ? JSON.parse(closesInput) : closesInput;
-        currentDates = typeof datesInput === 'string' ? JSON.parse(datesInput) : datesInput;
+        popCloses = typeof closesInput === 'string' ? JSON.parse(closesInput) : closesInput;
+        popDates = typeof datesInput === 'string' ? JSON.parse(datesInput) : datesInput;
     }} catch (e) {{
-        currentCloses = [];
-        currentDates = [];
+        popCloses = [];
+        popDates = [];
     }}
     
-    currentMin = parseFloat(pMin);
-    currentMax = parseFloat(pMax);
+    popMin = parseFloat(pMin);
+    popMax = parseFloat(pMax);
     
     document.getElementById('popTicker').innerText = '$' + ticker + ' (' + name + ')';
     document.getElementById('popInfo').innerHTML = 'Ind: <b>' + industry + '</b><br>Price: <b>$' + price + '</b> | 52W: <b>' + pct + '%</b>';
-    document.getElementById('popHoverTip').innerText = 'Hover chart for price';
+    document.getElementById('popHoverTip').innerText = 'Hover or Tap chart for price & date';
+    document.getElementById('popImportance').innerHTML = '<b>Importance Highlights:</b><br>' + importanceNotes;
     
     const banner = document.getElementById('popReturnBanner');
-    const retNum = parseFloat(ret3mo);
-    const retStr = (retNum > 0 ? '+' : '') + retNum.toFixed(2) + '% 3M';
+    const retNum = parseFloat(ret6mo);
+    const retStr = (retNum > 0 ? '+' : '') + retNum.toFixed(2) + '% 6M';
     banner.innerText = retStr;
     if (retNum > 0) {{
         banner.style.backgroundColor = 'rgba(74,222,128,0.2)';
@@ -796,51 +913,120 @@ function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints
     popup.style.left = leftPos + 'px';
 }}
 
-// SVG Hover Event Handlers for Proportional Chart
 document.addEventListener("DOMContentLoaded", function() {{
     const svg = document.getElementById('popSvg');
-    const hoverLine = document.getElementById('hoverLine');
+    const hoverLineX = document.getElementById('hoverLineX');
+    const hoverLineY = document.getElementById('hoverLineY');
     const hoverDot = document.getElementById('hoverDot');
     const hoverTip = document.getElementById('popHoverTip');
 
     if (svg) {{
-        svg.addEventListener('mousemove', function(e) {{
-            if (!currentCloses || currentCloses.length === 0) return;
+        function updatePopCrosshair(clientX) {{
+            if (!popCloses || popCloses.length === 0) return;
             const rect = svg.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
+            const mouseX = Math.max(0, Math.min(clientX - rect.left, rect.width));
             const svgWidth = 320;
             const svgHeight = 130;
 
-            let xPct = Math.max(0, Math.min(1, mouseX / svgWidth));
-            let index = Math.round(xPct * (currentCloses.length - 1));
-            
+            const xRatio = mouseX / rect.width;
+            let index = Math.round(xRatio * (popCloses.length - 1));
             if (index < 0) index = 0;
-            if (index >= currentCloses.length) index = currentCloses.length - 1;
+            if (index >= popCloses.length) index = popCloses.length - 1;
 
-            const val = currentCloses[index];
-            const dateStr = currentDates[index] || 'Recent';
+            const val = popCloses[index];
+            const dateStr = popDates[index] || 'Recent';
 
-            const xCoord = (index / (currentCloses.length - 1)) * svgWidth;
-            const cRange = (currentMax !== currentMin) ? (currentMax - currentMin) : 1.0;
-            const yCoord = svgHeight - ((val - currentMin) / cRange) * (svgHeight - 20) - 10;
+            const xCoord = (index / (popCloses.length - 1)) * svgWidth;
+            const cRange = (popMax !== popMin) ? (popMax - popMin) : 1.0;
+            const yCoord = svgHeight - ((val - popMin) / cRange) * (svgHeight - 20) - 10;
 
-            hoverLine.setAttribute('x1', xCoord);
-            hoverLine.setAttribute('x2', xCoord);
-            hoverLine.style.display = 'block';
+            hoverLineX.setAttribute('x1', xCoord);
+            hoverLineX.setAttribute('x2', xCoord);
+            hoverLineX.style.display = 'block';
+
+            hoverLineY.setAttribute('y1', yCoord);
+            hoverLineY.setAttribute('y2', yCoord);
+            hoverLineY.style.display = 'block';
 
             hoverDot.setAttribute('cx', xCoord);
             hoverDot.setAttribute('cy', yCoord);
             hoverDot.style.display = 'block';
 
             hoverTip.innerText = dateStr + ' : $' + val.toFixed(2);
-        }});
+        }}
 
+        svg.addEventListener('mousemove', function(e) {{ updatePopCrosshair(e.clientX); }});
         svg.addEventListener('mouseleave', function() {{
-            hoverLine.style.display = 'none';
+            hoverLineX.style.display = 'none';
+            hoverLineY.style.display = 'none';
             hoverDot.style.display = 'none';
-            hoverTip.innerText = 'Hover chart for price';
+            hoverTip.innerText = 'Hover or Tap chart for price & date';
         }});
+        svg.addEventListener('touchstart', function(e) {{ if (e.touches.length > 0) updatePopCrosshair(e.touches[0].clientX); }}, {{passive: true}});
+        svg.addEventListener('touchmove', function(e) {{ if (e.touches.length > 0) updatePopCrosshair(e.touches[0].clientX); }}, {{passive: true}});
     }}
+
+    const inlineSvgs = document.querySelectorAll('.inline-svg');
+    inlineSvgs.forEach(svgEl => {{
+        let closes = [];
+        let dates = [];
+        let sMin = parseFloat(svgEl.getAttribute('data-min'));
+        let sMax = parseFloat(svgEl.getAttribute('data-max'));
+        try {{
+            closes = JSON.parse(svgEl.getAttribute('data-closes'));
+            dates = JSON.parse(svgEl.getAttribute('data-dates'));
+        }} catch(e) {{}}
+
+        const lineX = svgEl.querySelector('.inline-line-x');
+        const lineY = svgEl.querySelector('.inline-line-y');
+        const dot = svgEl.querySelector('.inline-dot');
+        const wrap = svgEl.closest('.inline-chart-wrap');
+        const tip = wrap.querySelector('.inline-hover-tip');
+
+        function updateInline(clientX) {{
+            if (!closes || closes.length === 0) return;
+            const rect = svgEl.getBoundingClientRect();
+            const mouseX = Math.max(0, Math.min(clientX - rect.left, rect.width));
+            const svgWidth = 320;
+            const svgHeight = 110;
+
+            const xRatio = mouseX / rect.width;
+            let index = Math.round(xRatio * (closes.length - 1));
+            if (index < 0) index = 0;
+            if (index >= closes.length) index = closes.length - 1;
+
+            const val = closes[index];
+            const dateStr = dates[index] || 'Recent';
+
+            const xCoord = (index / (closes.length - 1)) * svgWidth;
+            const cRange = (sMax !== sMin) ? (sMax - sMin) : 1.0;
+            const yCoord = svgHeight - ((val - sMin) / cRange) * (svgHeight - 20) - 10;
+
+            lineX.setAttribute('x1', xCoord);
+            lineX.setAttribute('x2', xCoord);
+            lineX.style.display = 'block';
+
+            lineY.setAttribute('y1', yCoord);
+            lineY.setAttribute('y2', yCoord);
+            lineY.style.display = 'block';
+
+            dot.setAttribute('cx', xCoord);
+            dot.setAttribute('cy', yCoord);
+            dot.style.display = 'block';
+
+            tip.innerText = dateStr + ' : $' + val.toFixed(2);
+        }}
+
+        svgEl.addEventListener('mousemove', function(e) {{ updateInline(e.clientX); }});
+        svgEl.addEventListener('mouseleave', function() {{
+            lineX.style.display = 'none';
+            lineY.style.display = 'none';
+            dot.style.display = 'none';
+            tip.innerText = 'Hover/Tap chart';
+        }});
+        svgEl.addEventListener('touchstart', function(e) {{ if (e.touches.length > 0) updateInline(e.touches[0].clientX); }}, {{passive: true}});
+        svgEl.addEventListener('touchmove', function(e) {{ if (e.touches.length > 0) updateInline(e.touches[0].clientX); }}, {{passive: true}});
+    }});
 }});
 
 function closeSidePopup() {{
@@ -864,26 +1050,19 @@ output_path = os.path.join(os.getcwd(), output_filename)
 with open(output_path, "w", encoding="utf-8") as f:
     f.write(html_content)
 
-# Additionally, maintain an 'index.html' so GitHub Pages serves the latest dashboard immediately by default
-index_output_path = os.path.join(os.getcwd(), "index.html")
-with open(index_output_path, "w", encoding="utf-8") as f:
-    f.write(html_content)
+print(f"\n🌐 Dashboard successfully generated and saved to: {output_filename}")
+print(f"⏱️ Timestamp included: {generation_timestamp_str}")
 
-print(f"\n🌐 Dashboard successfully generated and saved as: {output_filename}")
-print(f"📁 Permanent daily archive created alongside index.html.")
-
-# Auto-commit and push to GitHub (preserving all past daily files)
 try:
-    print("\n🔄 Syncing and pushing permanent archives to GitHub...")
+    print("\n🔄 Syncing and pushing dashboard to GitHub...")
     subprocess.run(["git", "add", output_path], check=True)
-    subprocess.run(["git", "add", index_output_path], check=True)
     subprocess.run(["git", "add", __file__], check=True)
-    commit_message = f"Add daily archived stock dashboard for {today.strftime('%b %d, %Y')}"
+    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')}"
     subprocess.run(["git", "commit", "-m", commit_message], check=True)
     subprocess.run(["git", "push", "origin", "main"], check=True)
-    print("🚀 Successfully pushed daily archives to GitHub!")
+    print("🚀 Successfully pushed files to GitHub!")
 except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: Permanent daily file archiving enabled, saved, and browser launched successfully!")
+print("\n🎉 ALL TASKS COMPLETE: 4-column bottom chart layout successfully applied!")
