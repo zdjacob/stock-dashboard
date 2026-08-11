@@ -21,7 +21,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard with Inline Interactive 6M Cards)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard with Industry-Grouped 2-Column Grid)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -508,41 +508,57 @@ def build_master_rows(items):
         </tr>"""
     return rows
 
-def build_four_column_cards(items):
-    cards_html = ""
+def build_industry_grouped_grid(items):
+    # Group items by industry
+    industry_dict = {}
     for item in items:
-        closes_json = item['chart_closes'].replace('"', '&quot;')
-        dates_json = item['chart_dates'].replace('"', '&quot;')
+        ind = item['industry']
+        if ind not in industry_dict:
+            industry_dict[ind] = []
+        industry_dict[ind].append(item)
+    
+    sections_html = ""
+    for ind, stock_items in sorted(industry_dict.items()):
+        cards_html = ""
+        for item in stock_items:
+            closes_json = item['chart_closes'].replace('"', '&quot;')
+            dates_json = item['chart_dates'].replace('"', '&quot;')
+            ret_class = "badge-pos" if item['ret_6mo'] > 0 else ("badge-neg" if item['ret_6mo'] < 0 else "badge-neutral")
+            ret_str = f"{item['ret_6mo']:+.2f}% 6M"
+            
+            cards_html += f"""
+            <div class="bottom-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                    <span style="color:var(--accent-cyan); font-weight:bold; font-size:0.8rem;">${item['ticker']}</span>
+                    <span class="return-badge {ret_class}" style="font-size:0.62rem; padding:1px 5px;">{ret_str}</span>
+                </div>
+                <div style="font-size:0.65rem; color:var(--text-muted); margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="{item['name']}">{item['name']}</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; font-family:monospace; font-size:0.7rem; margin-bottom:4px;">
+                    <span>Price: <strong>${item['price']:,.2f}</strong></span>
+                    <span style="color:var(--accent-yellow);">52W Pos: <strong>{item['pct']}%</strong></span>
+                </div>
+                <div class="inline-chart-wrap" style="position:relative; width:100%; height:110px; background:var(--bg-dark); border-radius:4px; border:1px solid var(--border-color); overflow:hidden;">
+                    <svg class="inline-svg" data-closes="{closes_json}" data-dates="{dates_json}" data-min="{item['p_min']}" data-max="{item['p_max']}" viewBox="0 0 320 110" width="100%" height="100%" preserveAspectRatio="none" style="display:block; cursor: crosshair; touch-action: none;">
+                        <line class="inline-line-x" x1="0" y1="0" x2="0" y2="110" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
+                        <line class="inline-line-y" x1="0" y1="0" x2="320" y2="0" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
+                        <polyline fill="none" stroke="{'#22c55e' if item['is_pos'] == 'true' else '#ef4444'}" stroke-width="2" points="{item['svg_points']}"/>
+                        <circle class="inline-dot" cx="0" cy="0" r="3.5" fill="var(--accent-cyan)" stroke="#fff" stroke-width="1" style="display: none;"/>
+                    </svg>
+                    <div class="inline-hover-tip" style="position:absolute; bottom:2px; left:4px; font-size:0.58rem; color:var(--accent-yellow); font-family:monospace; font-weight:bold; background:rgba(21,9,36,0.85); padding:1px 4px; border-radius:3px; pointer-events:none;">Hover/Tap chart</div>
+                </div>
+                <div style="font-size:0.6rem; color:var(--text-muted); margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="{item['importance_notes']}">
+                    {item['importance_notes']}
+                </div>
+            </div>
+            """
         
-        ret_class = "badge-pos" if item['ret_6mo'] > 0 else ("badge-neg" if item['ret_6mo'] < 0 else "badge-neutral")
-        ret_str = f"{item['ret_6mo']:+.2f}% 6M"
-        
-        cards_html += f"""
-        <div class="bottom-card">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-                <span style="color:var(--accent-cyan); font-weight:bold; font-size:0.8rem;">${item['ticker']}</span>
-                <span class="return-badge {ret_class}" style="font-size:0.62rem; padding:1px 5px;">{ret_str}</span>
-            </div>
-            <div style="font-size:0.65rem; color:var(--text-muted); margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="{item['name']}">{item['name']}</div>
-            <div style="display:flex; justify-content:space-between; align-items:center; font-family:monospace; font-size:0.7rem; margin-bottom:4px;">
-                <span>Price: <strong>${item['price']:,.2f}</strong></span>
-                <span style="color:var(--accent-yellow);">52W Pos: <strong>{item['pct']}%</strong></span>
-            </div>
-            <div class="inline-chart-wrap" style="position:relative; width:100%; height:110px; background:var(--bg-dark); border-radius:4px; border:1px solid var(--border-color); overflow:hidden;">
-                <svg class="inline-svg" data-closes="{closes_json}" data-dates="{dates_json}" data-min="{item['p_min']}" data-max="{item['p_max']}" viewBox="0 0 320 110" width="100%" height="100%" preserveAspectRatio="none" style="display:block; cursor: crosshair; touch-action: none;">
-                    <line class="inline-line-x" x1="0" y1="0" x2="0" y2="110" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
-                    <line class="inline-line-y" x1="0" y1="0" x2="320" y2="0" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
-                    <polyline fill="none" stroke="{'#22c55e' if item['is_pos'] == 'true' else '#ef4444'}" stroke-width="2" points="{item['svg_points']}"/>
-                    <circle class="inline-dot" cx="0" cy="0" r="3.5" fill="var(--accent-cyan)" stroke="#fff" stroke-width="1" style="display: none;"/>
-                </svg>
-                <div class="inline-hover-tip" style="position:absolute; bottom:2px; left:4px; font-size:0.58rem; color:var(--accent-yellow); font-family:monospace; font-weight:bold; background:rgba(21,9,36,0.85); padding:1px 4px; border-radius:3px; pointer-events:none;">Hover/Tap chart</div>
-            </div>
-            <div style="font-size:0.6rem; color:var(--text-muted); margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="{item['importance_notes']}">
-                {item['importance_notes']}
-            </div>
+        sections_html += f"""
+        <div style="margin-bottom: 14px;">
+            <div style="font-size: 0.9rem; color: var(--accent-cyan); font-weight: bold; margin-bottom: 6px; border-bottom: 1px solid var(--border-color); padding-bottom: 3px;">🏭 {ind}</div>
+            <div class="two-column-grid">{cards_html}</div>
         </div>
         """
-    return cards_html
+    return sections_html
 
 table_header_html = """<thead><tr class="watchlist-row"><th class="col-ticker">Ticker</th><th class="col-bar" style="text-align:center;">Range Bar (33% & 66% Grids)<div class="axis-labels"><span>0%</span><span style="color:#a78bfa;">33%</span><span style="color:#a78bfa;">66%</span><span>100%</span></div></th><th class="col-low52" style="text-align:right;">52W Low</th><th class="col-price" style="text-align:right;">Price</th><th class="col-high52" style="text-align:right;">52W High</th><th class="col-mini-gauge" style="text-align:center;">52W Pos</th></tr></thead>"""
 earnings_header_html = """<thead><tr class="earnings-row"><th class="col-earn-ticker">Ticker</th><th class="col-earn-price" style="text-align:right;">Price</th><th class="col-earn-date">Date</th><th class="col-earn-status">Status</th><th class="col-earn-eps">EPS</th><th class="col-earn-move">Earnings Move ⚡</th></tr></thead>"""
@@ -577,12 +593,11 @@ h1{{font-size:1.2rem;color:var(--accent-cyan);}}
 .dual-grid-wrapper{{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;}}
 .grid-column{{flex:1;background-color:var(--bg-card);border-radius:6px;border:1px solid var(--border-color);padding:3px;overflow-x:auto;}}
 
-/* 4-Column Grid for Bottom Section */
-.four-column-grid {{
+/* Two-Column Grid for Industry Grouped Section */
+.two-column-grid {{
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
-    margin-bottom: 12px;
 }}
 .bottom-card {{
     background-color: var(--bg-card);
@@ -590,11 +605,8 @@ h1{{font-size:1.2rem;color:var(--accent-cyan);}}
     border-radius: 6px;
     padding: 8px;
 }}
-@media (max-width: 1400px) {{
-    .four-column-grid {{ grid-template-columns: repeat(2, 1fr); }}
-}}
-@media (max-width: 768px) {{
-    .four-column-grid {{ grid-template-columns: 1fr; }}
+@media (max-width: 900px) {{
+    .two-column-grid {{ grid-template-columns: 1fr; }}
 }}
 
 table{{width:100%;border-collapse:collapse;text-align:left;table-layout:fixed;}}
@@ -690,7 +702,6 @@ tr:nth-child(even){{background-color:var(--bg-row-alt);}}
 
 mid_news = (len(news_list) + 1) // 2
 news_left, news_right = news_list[:mid_news], news_list[mid_news:]
-four_col_items = data_list[:12] if len(data_list) >= 12 else data_list
 
 html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Jacob's Stock Dashboard - {today_est.strftime('%b %d, %Y')}</title><style>{condensed_css}</style></head>
 <body><div class="container"><header>
@@ -757,10 +768,8 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
     </div>
 </div>
 
-<div class="section-title" style="margin-top: 14px;">📈 6-Month History & Importance Highlights (4-Column Grid)</div>
-<div class="four-column-grid">
-    {build_four_column_cards(four_col_items)}
-</div>
+<div class="section-title" style="margin-top: 14px;">🏭 Industry-Grouped 6-Month History & Highlights (2-Column Grid)</div>
+{build_industry_grouped_grid(data_list)}
 
 </div>
 
@@ -941,7 +950,7 @@ document.addEventListener("DOMContentLoaded", function() {{
         svg.addEventListener('touchmove', function(e) {{ if (e.touches.length > 0) updatePopCrosshair(e.touches[0].clientX); }}, {{passive: true}});
     }}
 
-    // Setup Inline 4-Column Card Interactive Charts
+    // Setup Inline Industry-Grouped Interactive Charts
     const inlineSvgs = document.querySelectorAll('.inline-svg');
     inlineSvgs.forEach(svgEl => {{
         let closes = [];
@@ -1045,4 +1054,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: Inline 6M Cards without popup sparkline complete!")
+print("\n🎉 ALL TASKS COMPLETE: Industry-grouped 2-column grid ready!")
