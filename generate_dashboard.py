@@ -7,7 +7,7 @@ API_KEY = "d9rihopr01qoo7o4k3igd9rihopr01qoo7o4k3j0"
 
 CUSTOM_INDUSTRY_MAP = {
     "REGN": "Biotech And Healthcare", "ISRG": "Biotech And Healthcare", "LLY": "Biotech And Healthcare", "VRTX": "Biotech And Healthcare",
-    "JPM": "Financial Services", "V": "Financial Services", "BLK": "Financial Services", "COIN": "Financial Services", "GS": "Financial Services",
+    "JPM": "Financial Services", "V": "Financial Services", "BLK": "Financial Services", "COIN": "FinancialServices", "GS": "Financial Services",
     "BE": "Engineering And Chips", "ETN": "Engineering And Chips", "GEV": "Engineering And Chips", "GLW": "Engineering And Chips", "CAT": "Engineering And Chips", "ANET": "Engineering And Chips", "VRT": "Engineering And Chips", "MRVL": "Engineering And Chips",
     "TSM": "Semiconductors",
     "AAPL": "Big Guys", "AMZN": "Big Guys", "MSFT": "Big Guys", "GOOGL": "Big Guys",
@@ -21,7 +21,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Synchronized Group Crosshairs & 4-Column Layout)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Lighter Dividers, Multi-Timeframe Returns & Center-Top Hover)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -45,8 +45,8 @@ def safe_api_get(url, retries=3, delay=2, extra_headers=None):
     return {}
 
 def get_historical_data_yahoo(symbol, current_price):
-    ret_10d, ret_30d, ret_6mo = 0.0, 0.0, 0.0
-    p_10d, p_30d, p_6mo = 0.0, 0.0, 0.0
+    ret_1m, ret_3m, ret_6mo = 0.0, 0.0, 0.0
+    p_1m, p_3m, p_6mo = 0.0, 0.0, 0.0
     vol_ratio = 1.0
     closes = []
     timestamps = []
@@ -69,12 +69,21 @@ def get_historical_data_yahoo(symbol, current_price):
                     except Exception:
                         formatted_dates.append("N/A")
             
-            if len(closes) >= 10:
-                p_10d = closes[-11] if len(closes) >= 11 else closes[0]
-                ret_10d = ((current_price - p_10d) / p_10d) * 100
-            if len(closes) >= 30:
-                p_30d = closes[-31] if len(closes) >= 31 else closes[0]
-                ret_30d = ((current_price - p_30d) / p_30d) * 100
+            # Approximate 1 month (~21 trading days) & 3 months (~63 trading days)
+            if len(closes) >= 21:
+                p_1m = closes[-21]
+                ret_1m = ((current_price - p_1m) / p_1m) * 100
+            elif len(closes) > 0:
+                p_1m = closes[0]
+                ret_1m = ((current_price - p_1m) / p_1m) * 100
+
+            if len(closes) >= 63:
+                p_3m = closes[-63]
+                ret_3m = ((current_price - p_3m) / p_3m) * 100
+            elif len(closes) > 0:
+                p_3m = closes[0]
+                ret_3m = ((current_price - p_3m) / p_3m) * 100
+
             if len(closes) > 0:
                 p_6mo = closes[0]
                 ret_6mo = ((current_price - p_6mo) / p_6mo) * 100
@@ -86,7 +95,7 @@ def get_historical_data_yahoo(symbol, current_price):
                     vol_ratio = round(today_vol / avg_vol, 1)
     except Exception:
         pass
-    return ret_10d, p_10d, ret_30d, p_30d, ret_6mo, vol_ratio, closes, timestamps, formatted_dates
+    return ret_1m, ret_3m, ret_6mo, vol_ratio, closes, timestamps, formatted_dates
 
 def get_earnings_move_yahoo(symbol, earn_date_str, hour_timing, est_today):
     if not earn_date_str or earn_date_str == 'N/A':
@@ -165,7 +174,7 @@ for idx, symbol in enumerate(tickers, 1):
 
         pct_range = max(0, min(100, ((last_price - low52) / (high52 - low52)) * 100)) if high52 > low52 else 50
 
-        return_10d_pct, price_10d, return_30d_pct, price_30d, return_6mo_pct, vol_ratio, closes, timestamps, formatted_dates = get_historical_data_yahoo(symbol, last_price)
+        return_1m_pct, return_3m_pct, return_6mo_pct, vol_ratio, closes, timestamps, formatted_dates = get_historical_data_yahoo(symbol, last_price)
 
         svg_points = ""
         p_max, p_mid, p_min = last_price, last_price, last_price
@@ -235,6 +244,8 @@ for idx, symbol in enumerate(tickers, 1):
             "vol_ratio": vol_ratio, "svg_points": svg_points, "p_max": p_max,
             "p_mid": p_mid, "p_min": p_min, "d_start": d_start, "d_mid": d_mid,
             "d_end": d_end, "is_pos": is_pos, "start_y_pct": round(start_y_pct, 1),
+            "ret_1m": round(return_1m_pct, 2),
+            "ret_3m": round(return_3m_pct, 2),
             "ret_6mo": round(return_6mo_pct, 2),
             "importance_notes": " | ".join(importance_notes),
             "month_ends": json.dumps(month_end_x_coords),
@@ -320,11 +331,13 @@ for idx, symbol in enumerate(tickers, 1):
             })
         time.sleep(0.2)
 
-        if abs(daily_return_pct) >= 3.0 or abs(return_10d_pct) >= 5.0 or abs(return_30d_pct) >= 8.0 or vol_ratio >= 1.5:
+        return_10d_pct = 0.0 # Placeholder for conditional mover check if needed
+        return_30d_pct = 0.0
+        if abs(daily_return_pct) >= 3.0 or vol_ratio >= 1.5:
             movers_list.append({
                 "ticker": symbol, "price": round(last_price, 2), "daily_return": round(daily_return_pct, 2),
-                "return_10d": round(return_10d_pct, 2), "price_10d": round(price_10d, 2),
-                "return_30d": round(return_30d_pct, 2), "price_30d": round(price_30d, 2),
+                "return_10d": 0.0, "price_10d": round(last_price, 2),
+                "return_30d": 0.0, "price_30d": round(last_price, 2),
                 "vol_ratio": vol_ratio, "name": comp_name, "industry": comp_industry,
                 "pct": round(pct_range, 1), "svg_points": svg_points,
                 "p_max": p_max, "p_mid": p_mid, "p_min": p_min,
@@ -358,19 +371,10 @@ else:
 
 if movers_list:
     r1d_vals = [m['daily_return'] for m in movers_list]
-    r10d_vals = [m['return_10d'] for m in movers_list]
-    r30d_vals = [m['return_30d'] for m in movers_list]
-
     mean_1d, std_1d = statistics.mean(r1d_vals), (statistics.stdev(r1d_vals) if len(r1d_vals) > 1 and statistics.stdev(r1d_vals) > 0 else 1.0)
-    mean_10d, std_10d = statistics.mean(r10d_vals), (statistics.stdev(r10d_vals) if len(r10d_vals) > 1 and statistics.stdev(r10d_vals) > 0 else 1.0)
-    mean_30d, std_30d = statistics.mean(r30d_vals), (statistics.stdev(r30d_vals) if len(r30d_vals) > 1 and statistics.stdev(r30d_vals) > 0 else 1.0)
-
     for m in movers_list:
         z_1d = (m['daily_return'] - mean_1d) / std_1d
-        z_10d = (m['return_10d'] - mean_10d) / std_10d
-        z_30d = (m['return_30d'] - mean_30d) / std_30d
-        m['composite_score'] = round((0.50 * z_1d) + (0.30 * z_10d) + (0.20 * z_30d), 3)
-
+        m['composite_score'] = round(z_1d, 3)
     movers_list.sort(key=lambda x: x['composite_score'], reverse=True)
 
 data_list.sort(key=lambda x: x['pct'], reverse=True)
@@ -523,48 +527,54 @@ def build_industry_grouped_grid(items):
     
     sections_html = ""
     for ind, stock_items in sorted(industry_dict.items()):
-        # Create a safe CSS class identifier slug for group synchronization
         group_slug = "".join([c for c in ind if c.isalnum()])
         cards_html = ""
         for item in stock_items:
             closes_json = item['chart_closes'].replace('"', '&quot;')
             dates_json = item['chart_dates'].replace('"', '&quot;')
-            ret_class = "badge-pos" if item['ret_6mo'] > 0 else ("badge-neg" if item['ret_6mo'] < 0 else "badge-neutral")
-            ret_str = f"{item['ret_6mo']:+.2f}% 6M"
+            
+            r1m_class = "badge-pos" if item['ret_1m'] > 0 else ("badge-neg" if item['ret_1m'] < 0 else "badge-neutral")
+            r3m_class = "badge-pos" if item['ret_3m'] > 0 else ("badge-neg" if item['ret_3m'] < 0 else "badge-neutral")
+            r6m_class = "badge-pos" if item['ret_6mo'] > 0 else ("badge-neg" if item['ret_6mo'] < 0 else "badge-neutral")
             
             month_lines_svg = ""
             try:
                 m_list = json.loads(item['month_ends'])
                 for mx in m_list:
-                    month_lines_svg += f'<line x1="{mx}" y1="0" x2="{mx}" y2="110" stroke="rgba(255,255,255,0.45)" stroke-dasharray="2,3"/>'
+                    # Lighter month-end lines
+                    month_lines_svg += f'<line x1="{mx}" y1="0" x2="{mx}" y2="110" stroke="rgba(255,255,255,0.18)" stroke-dasharray="2,3"/>'
             except Exception:
                 pass
 
             cards_html += f"""
             <div class="bottom-card">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
                     <span style="color:var(--accent-cyan); font-weight:bold; font-size:0.8rem;">${item['ticker']}</span>
-                    <span class="return-badge {ret_class}" style="font-size:0.62rem; padding:1px 5px;">{ret_str}</span>
+                    <div style="display:flex; gap:3px;">
+                        <span class="return-badge {r1m_class}" style="font-size:0.55rem; padding:1px 3px;" title="1 Month Return">{item['ret_1m']:+.1f}% 1M</span>
+                        <span class="return-badge {r3m_class}" style="font-size:0.55rem; padding:1px 3px;" title="3 Month Return">{item['ret_3m']:+.1f}% 3M</span>
+                        <span class="return-badge {r6m_class}" style="font-size:0.55rem; padding:1px 3px;" title="6 Month Return">{item['ret_6mo']:+.1f}% 6M</span>
+                    </div>
                 </div>
-                <div style="font-size:0.65rem; color:var(--text-muted); margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="{item['name']}">{item['name']}</div>
-                <div style="display:flex; justify-content:space-between; align-items:center; font-family:monospace; font-size:0.7rem; margin-bottom:4px;">
+                <div style="font-size:0.65rem; color:var(--text-muted); margin-bottom:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="{item['name']}">{item['name']}</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; font-family:monospace; font-size:0.7rem; margin-bottom:3px;">
                     <span>Price: <strong>${item['price']:,.2f}</strong></span>
                     <span style="color:var(--accent-yellow);">52W Pos: <strong>{item['pct']}%</strong></span>
                 </div>
                 <div class="inline-chart-wrap" style="position:relative; width:100%; height:110px; background:var(--bg-dark); border-radius:4px; border:1px solid var(--border-color); overflow:hidden;">
+                    <div class="inline-hover-tip" style="position:absolute; top:2px; left:50%; transform:translateX(-50%); font-size:0.62rem; color:var(--accent-yellow); font-family:monospace; font-weight:bold; background:rgba(21,9,36,0.85); padding:1px 6px; border-radius:3px; border:1px solid rgba(250,204,21,0.25); pointer-events:none; z-index:5;">Hover/Tap chart</div>
                     <svg class="inline-svg sync-group-{group_slug}" data-closes="{closes_json}" data-dates="{dates_json}" data-min="{item['p_min']}" data-max="{item['p_max']}" viewBox="0 0 320 110" width="100%" height="100%" preserveAspectRatio="none" style="display:block; cursor: crosshair; touch-action: none;">
-                        <line x1="0" y1="27.5" x2="320" y2="27.5" stroke="rgba(255,255,255,0.3)" stroke-dasharray="2,2"/>
-                        <line x1="0" y1="55.0" x2="320" y2="55.0" stroke="rgba(255,255,255,0.45)" stroke-dasharray="2,2"/>
-                        <line x1="0" y1="82.5" x2="320" y2="82.5" stroke="rgba(255,255,255,0.3)" stroke-dasharray="2,2"/>
+                        <line x1="0" y1="27.5" x2="320" y2="27.5" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
+                        <line x1="0" y1="55.0" x2="320" y2="55.0" stroke="rgba(255,255,255,0.18)" stroke-dasharray="2,2"/>
+                        <line x1="0" y1="82.5" x2="320" y2="82.5" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
                         {month_lines_svg}
                         <line class="inline-line-x" x1="0" y1="0" x2="0" y2="110" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
                         <line class="inline-line-y" x1="0" y1="0" x2="320" y2="0" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
                         <polyline fill="none" stroke="{'#22c55e' if item['is_pos'] == 'true' else '#ef4444'}" stroke-width="2" points="{item['svg_points']}"/>
                         <circle class="inline-dot" cx="0" cy="0" r="3.5" fill="var(--accent-cyan)" stroke="#fff" stroke-width="1" style="display: none;"/>
                     </svg>
-                    <div class="inline-hover-tip" style="position:absolute; bottom:2px; left:4px; font-size:0.58rem; color:var(--accent-yellow); font-family:monospace; font-weight:bold; background:rgba(21,9,36,0.85); padding:1px 4px; border-radius:3px; pointer-events:none;">Hover/Tap chart</div>
                 </div>
-                <div style="font-size:0.6rem; color:var(--text-muted); margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="{item['importance_notes']}">
+                <div style="font-size:0.6rem; color:var(--text-muted); margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="{item['importance_notes']}">
                     {item['importance_notes']}
                 </div>
             </div>
@@ -704,7 +714,7 @@ tr:nth-child(even){{background-color:var(--bg-row-alt);}}
 .badge-next-month{{background-color:rgba(250,204,21,0.25);color:#facc15;border:1px solid rgba(250,204,21,0.5);padding:1px 5px;border-radius:3px;font-weight:bold;font-size:0.68rem;}}
 .badge-month-after{{background-color:rgba(74,222,128,0.25);color:#4ade80;border:1px solid rgba(74,222,128,0.5);padding:1px 5px;border-radius:3px;font-weight:bold;font-size:0.68rem;}}
 .badge-upcoming{{background-color:rgba(244,63,94,0.25);color:#fb7185;border:1px solid rgba(244,63,94,0.5);padding:1px 5px;border-radius:3px;font-weight:bold;font-size:0.68rem;}}
-.return-badge{{padding:1px 4px;border-radius:3px;font-size:0.68rem;font-weight:600;display:inline-block;min-width:58px;text-align:center;}}
+.return-badge{{padding:1px 4px;border-radius:3px;font-size:0.68rem;font-weight:600;display:inline-block;min-width:45px;text-align:center;}}
 .badge-pos{{background-color:rgba(74,222,128,0.18);color:var(--accent-green);border:1px solid rgba(74,222,128,0.3);}}
 .badge-strong-pos{{background-color:rgba(74,222,128,0.35);color:#22c55e;border:1px solid #4ade80;font-weight:bold;}}
 .badge-neg{{background-color:rgba(248,113,113,0.18);color:var(--accent-red);border:1px solid rgba(248,113,113,0.3);}}
@@ -970,8 +980,6 @@ document.addEventListener("DOMContentLoaded", function() {{
 
     // Synchronized Group Crosshairs Setup for Bottom Industry Charts
     const allInlineSvgs = document.querySelectorAll('.inline-svg');
-    
-    // Group SVGs by their class group prefix (sync-group-*)
     const groupMap = {{}};
     allInlineSvgs.forEach(svgEl => {{
         const classList = Array.from(svgEl.classList);
@@ -995,9 +1003,6 @@ document.addEventListener("DOMContentLoaded", function() {{
                 dates = JSON.parse(svgEl.getAttribute('data-dates'));
             }} catch(e) {{}}
 
-            const lineX = svgEl.querySelector('.inline-line-x');
-            const lineY = svgEl.querySelector('.inline-line-y');
-            const dot = svgEl.querySelector('.inline-dot');
             const wrap = svgEl.closest('.inline-chart-wrap');
             const tip = wrap.querySelector('.inline-hover-tip');
 
@@ -1010,7 +1015,6 @@ document.addEventListener("DOMContentLoaded", function() {{
                 if (index < 0) index = 0;
                 if (index >= closes.length) index = closes.length - 1;
 
-                // Broadcast synchronized state to all other charts in this group
                 groupSvgs.forEach(otherSvg => {{
                     let oCloses = [];
                     let oDates = [];
@@ -1021,13 +1025,12 @@ document.addEventListener("DOMContentLoaded", function() {{
                         oDates = JSON.parse(otherSvg.getAttribute('data-dates'));
                     }} catch(e) {{}}
 
-                    const oLineX = otherSvg.querySelector('.inline-line-line-x') || otherSvg.querySelector('.inline-line-x');
+                    const oLineX = otherSvg.querySelector('.inline-line-x');
                     const oLineY = otherSvg.querySelector('.inline-line-y');
                     const oDot = otherSvg.querySelector('.inline-dot');
                     const oWrap = otherSvg.closest('.inline-chart-wrap');
                     const oTip = oWrap.querySelector('.inline-hover-tip');
 
-                    // Map relative index proportionally if lengths vary slightly, or use exact index
                     let mappedIdx = Math.min(index, oCloses.length - 1);
                     const oVal = oCloses[mappedIdx];
                     const oDateStr = oDates[mappedIdx] || 'Recent';
@@ -1105,4 +1108,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: Synchronized group crosshairs, 4-column layout, and visible grid lines applied successfully!")
+print("\n🎉 ALL TASKS COMPLETE: Lighter dividers, multi-timeframe returns, and center-top hover tooltips applied successfully!")
