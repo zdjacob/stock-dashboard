@@ -21,7 +21,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - 4-Column Bottom Chart Layout)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Synchronized Group Crosshairs & 4-Column Layout)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -523,6 +523,8 @@ def build_industry_grouped_grid(items):
     
     sections_html = ""
     for ind, stock_items in sorted(industry_dict.items()):
+        # Create a safe CSS class identifier slug for group synchronization
+        group_slug = "".join([c for c in ind if c.isalnum()])
         cards_html = ""
         for item in stock_items:
             closes_json = item['chart_closes'].replace('"', '&quot;')
@@ -550,7 +552,7 @@ def build_industry_grouped_grid(items):
                     <span style="color:var(--accent-yellow);">52W Pos: <strong>{item['pct']}%</strong></span>
                 </div>
                 <div class="inline-chart-wrap" style="position:relative; width:100%; height:110px; background:var(--bg-dark); border-radius:4px; border:1px solid var(--border-color); overflow:hidden;">
-                    <svg class="inline-svg" data-closes="{closes_json}" data-dates="{dates_json}" data-min="{item['p_min']}" data-max="{item['p_max']}" viewBox="0 0 320 110" width="100%" height="100%" preserveAspectRatio="none" style="display:block; cursor: crosshair; touch-action: none;">
+                    <svg class="inline-svg sync-group-{group_slug}" data-closes="{closes_json}" data-dates="{dates_json}" data-min="{item['p_min']}" data-max="{item['p_max']}" viewBox="0 0 320 110" width="100%" height="100%" preserveAspectRatio="none" style="display:block; cursor: crosshair; touch-action: none;">
                         <line x1="0" y1="27.5" x2="320" y2="27.5" stroke="rgba(255,255,255,0.3)" stroke-dasharray="2,2"/>
                         <line x1="0" y1="55.0" x2="320" y2="55.0" stroke="rgba(255,255,255,0.45)" stroke-dasharray="2,2"/>
                         <line x1="0" y1="82.5" x2="320" y2="82.5" stroke="rgba(255,255,255,0.3)" stroke-dasharray="2,2"/>
@@ -570,7 +572,7 @@ def build_industry_grouped_grid(items):
         
         sections_html += f"""
         <div style="margin-bottom: 14px;">
-            <div style="font-size: 0.9rem; color: var(--accent-cyan); font-weight: bold; margin-bottom: 6px; border-bottom: 1px solid var(--border-color); padding-bottom: 3px;">🏭 {ind}</div>
+            <div style="font-size: 0.9rem; color: var(--accent-cyan); font-weight: bold; margin-bottom: 6px; border-bottom: 1px solid var(--border-color); padding-bottom: 3px;">🏭 {ind} (Synchronized Group)</div>
             <div class="four-column-grid">{cards_html}</div>
         </div>
         """
@@ -785,7 +787,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
     </div>
 </div>
 
-<div class="section-title" style="margin-top: 14px;">🏭 Industry-Grouped 6-Month History & Highlights (4-Column Grid)</div>
+<div class="section-title" style="margin-top: 14px;">🏭 Industry-Grouped 6-Month History & Highlights (Synchronized Group Crosshairs)</div>
 {build_industry_grouped_grid(data_list)}
 
 </div>
@@ -966,66 +968,104 @@ document.addEventListener("DOMContentLoaded", function() {{
         svg.addEventListener('touchmove', function(e) {{ if (e.touches.length > 0) updatePopCrosshair(e.touches[0].clientX); }}, {{passive: true}});
     }}
 
-    const inlineSvgs = document.querySelectorAll('.inline-svg');
-    inlineSvgs.forEach(svgEl => {{
-        let closes = [];
-        let dates = [];
-        let sMin = parseFloat(svgEl.getAttribute('data-min'));
-        let sMax = parseFloat(svgEl.getAttribute('data-max'));
-        try {{
-            closes = JSON.parse(svgEl.getAttribute('data-closes'));
-            dates = JSON.parse(svgEl.getAttribute('data-dates'));
-        }} catch(e) {{}}
-
-        const lineX = svgEl.querySelector('.inline-line-x');
-        const lineY = svgEl.querySelector('.inline-line-y');
-        const dot = svgEl.querySelector('.inline-dot');
-        const wrap = svgEl.closest('.inline-chart-wrap');
-        const tip = wrap.querySelector('.inline-hover-tip');
-
-        function updateInline(clientX) {{
-            if (!closes || closes.length === 0) return;
-            const rect = svgEl.getBoundingClientRect();
-            const mouseX = Math.max(0, Math.min(clientX - rect.left, rect.width));
-            const svgWidth = 320;
-            const svgHeight = 110;
-
-            const xRatio = mouseX / rect.width;
-            let index = Math.round(xRatio * (closes.length - 1));
-            if (index < 0) index = 0;
-            if (index >= closes.length) index = closes.length - 1;
-
-            const val = closes[index];
-            const dateStr = dates[index] || 'Recent';
-
-            const xCoord = (index / (closes.length - 1)) * svgWidth;
-            const cRange = (sMax !== sMin) ? (sMax - sMin) : 1.0;
-            const yCoord = svgHeight - ((val - sMin) / cRange) * (svgHeight - 20) - 10;
-
-            lineX.setAttribute('x1', xCoord);
-            lineX.setAttribute('x2', xCoord);
-            lineX.style.display = 'block';
-
-            lineY.setAttribute('y1', yCoord);
-            lineY.setAttribute('y2', yCoord);
-            lineY.style.display = 'block';
-
-            dot.setAttribute('cx', xCoord);
-            dot.setAttribute('cy', yCoord);
-            dot.style.display = 'block';
-
-            tip.innerText = dateStr + ' : $' + val.toFixed(2);
+    // Synchronized Group Crosshairs Setup for Bottom Industry Charts
+    const allInlineSvgs = document.querySelectorAll('.inline-svg');
+    
+    // Group SVGs by their class group prefix (sync-group-*)
+    const groupMap = {{}};
+    allInlineSvgs.forEach(svgEl => {{
+        const classList = Array.from(svgEl.classList);
+        const groupClass = classList.find(c => c.startsWith('sync-group-'));
+        if (groupClass) {{
+            if (!groupMap[groupClass]) groupMap[groupClass] = [];
+            groupMap[groupClass].push(svgEl);
         }}
+    }});
 
-        svgEl.addEventListener('mousemove', function(e) {{ updateInline(e.clientX); }});
-        svgEl.addEventListener('mouseleave', function() {{
-            lineX.style.display = 'none';
-            lineY.style.display = 'none';
-            dot.style.display = 'none';
-            tip.innerText = 'Hover/Tap chart';
+    Object.keys(groupMap).forEach(groupKey => {{
+        const groupSvgs = groupMap[groupKey];
+
+        groupSvgs.forEach(svgEl => {{
+            let closes = [];
+            let dates = [];
+            let sMin = parseFloat(svgEl.getAttribute('data-min'));
+            let sMax = parseFloat(svgEl.getAttribute('data-max'));
+            try {{
+                closes = JSON.parse(svgEl.getAttribute('data-closes'));
+                dates = JSON.parse(svgEl.getAttribute('data-dates'));
+            }} catch(e) {{}}
+
+            const lineX = svgEl.querySelector('.inline-line-x');
+            const lineY = svgEl.querySelector('.inline-line-y');
+            const dot = svgEl.querySelector('.inline-dot');
+            const wrap = svgEl.closest('.inline-chart-wrap');
+            const tip = wrap.querySelector('.inline-hover-tip');
+
+            function applySync(clientX) {{
+                if (!closes || closes.length === 0) return;
+                const rect = svgEl.getBoundingClientRect();
+                const mouseX = Math.max(0, Math.min(clientX - rect.left, rect.width));
+                const xRatio = mouseX / rect.width;
+                let index = Math.round(xRatio * (closes.length - 1));
+                if (index < 0) index = 0;
+                if (index >= closes.length) index = closes.length - 1;
+
+                // Broadcast synchronized state to all other charts in this group
+                groupSvgs.forEach(otherSvg => {{
+                    let oCloses = [];
+                    let oDates = [];
+                    let oMin = parseFloat(otherSvg.getAttribute('data-min'));
+                    let oMax = parseFloat(otherSvg.getAttribute('data-max'));
+                    try {{
+                        oCloses = JSON.parse(otherSvg.getAttribute('data-closes'));
+                        oDates = JSON.parse(otherSvg.getAttribute('data-dates'));
+                    }} catch(e) {{}}
+
+                    const oLineX = otherSvg.querySelector('.inline-line-line-x') || otherSvg.querySelector('.inline-line-x');
+                    const oLineY = otherSvg.querySelector('.inline-line-y');
+                    const oDot = otherSvg.querySelector('.inline-dot');
+                    const oWrap = otherSvg.closest('.inline-chart-wrap');
+                    const oTip = oWrap.querySelector('.inline-hover-tip');
+
+                    // Map relative index proportionally if lengths vary slightly, or use exact index
+                    let mappedIdx = Math.min(index, oCloses.length - 1);
+                    const oVal = oCloses[mappedIdx];
+                    const oDateStr = oDates[mappedIdx] || 'Recent';
+
+                    const svgWidth = 320;
+                    const svgHeight = 110;
+                    const xCoord = (mappedIdx / (oCloses.length - 1)) * svgWidth;
+                    const cRange = (oMax !== oMin) ? (oMax - oMin) : 1.0;
+                    const yCoord = svgHeight - ((oVal - oMin) / cRange) * (svgHeight - 20) - 10;
+
+                    oLineX.setAttribute('x1', xCoord);
+                    oLineX.setAttribute('x2', xCoord);
+                    oLineX.style.display = 'block';
+
+                    oLineY.setAttribute('y1', yCoord);
+                    oLineY.setAttribute('y2', yCoord);
+                    oLineY.style.display = 'block';
+
+                    oDot.setAttribute('cx', xCoord);
+                    oDot.setAttribute('cy', yCoord);
+                    oDot.style.display = 'block';
+
+                    oTip.innerText = oDateStr + ' : $' + oVal.toFixed(2);
+                }});
+            }}
+
+            svgEl.addEventListener('mousemove', function(e) {{ applySync(e.clientX); }});
+            svgEl.addEventListener('mouseleave', function() {{
+                groupSvgs.forEach(otherSvg => {{
+                    otherSvg.querySelector('.inline-line-x').style.display = 'none';
+                    otherSvg.querySelector('.inline-line-y').style.display = 'none';
+                    otherSvg.querySelector('.inline-dot').style.display = 'none';
+                    otherSvg.closest('.inline-chart-wrap').querySelector('.inline-hover-tip').innerText = 'Hover/Tap chart';
+                }});
+            }});
+            svgEl.addEventListener('touchstart', function(e) {{ if (e.touches.length > 0) applySync(e.touches[0].clientX); }}, {{passive: true}});
+            svgEl.addEventListener('touchmove', function(e) {{ if (e.touches.length > 0) applySync(e.touches[0].clientX); }}, {{passive: true}});
         }});
-        svgEl.addEventListener('touchstart', function(e) {{ if (e.touches.length > 0) updateInline(e.touches[0].clientX); }}, {{passive: true}});
-        svgEl.addEventListener('touchmove', function(e) {{ if (e.touches.length > 0) updateInline(e.touches[0].clientX); }}, {{passive: true}});
     }});
 }});
 
@@ -1065,4 +1105,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: 4-column bottom chart layout successfully applied!")
+print("\n🎉 ALL TASKS COMPLETE: Synchronized group crosshairs, 4-column layout, and visible grid lines applied successfully!")
