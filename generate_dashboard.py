@@ -21,7 +21,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard with MRVL in Engineering & Month-End / 25-50-75% Grids)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Restored Sparkline Popups & Industry Grid)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -200,13 +200,11 @@ for idx, symbol in enumerate(tickers, 1):
                     d_mid = datetime.datetime.fromtimestamp(recent_ts[len(recent_ts) // 2]).strftime("%b %d")
                     d_end = datetime.datetime.fromtimestamp(recent_ts[-1]).strftime("%b %d")
                     
-                    # Detect month-end index transitions for vertical dotted grid lines
                     prev_month = None
                     for idx_t, ts in enumerate(recent_ts):
                         dt = datetime.datetime.fromtimestamp(ts)
                         curr_month = dt.month
                         if prev_month is not None and curr_month != prev_month:
-                            # Month boundary transition
                             x_pos = (idx_t / (len(recent_closes) - 1)) * width
                             month_end_x_coords.append(round(x_pos, 1))
                         prev_month = curr_month
@@ -223,7 +221,6 @@ for idx, symbol in enumerate(tickers, 1):
                 importance_notes.append(f"📈 Peak: ${max_c:,.2f} ({high_date})")
             
             c_range = (max_c - min_c) if max_c != min_c else 1.0
-            
             start_val = recent_closes[0]
             start_y_pct = ((start_val - min_c) / c_range) * 100
 
@@ -539,11 +536,9 @@ def build_industry_grouped_grid(items):
         for item in stock_items:
             closes_json = item['chart_closes'].replace('"', '&quot;')
             dates_json = item['chart_dates'].replace('"', '&quot;')
-            month_json = item['month_ends'].replace('"', '&quot;')
             ret_class = "badge-pos" if item['ret_6mo'] > 0 else ("badge-neg" if item['ret_6mo'] < 0 else "badge-neutral")
             ret_str = f"{item['ret_6mo']:+.2f}% 6M"
             
-            # Build month end vertical dotted lines HTML for SVG
             month_lines_svg = ""
             try:
                 m_list = json.loads(item['month_ends'])
@@ -868,7 +863,7 @@ function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints
     
     document.getElementById('popTicker').innerText = '$' + ticker + ' (' + name + ')';
     document.getElementById('popInfo').innerHTML = 'Ind: <b>' + industry + '</b><br>Price: <b>$' + price + '</b> | 52W: <b>' + pct + '%</b>';
-    document.getElementById('popHoverTip').innerText = 'Hover chart for price & date';
+    document.getElementById('popHoverTip').innerText = 'Hover or Tap chart for price & date';
     document.getElementById('popImportance').innerHTML = '<b>Importance Highlights:</b><br>' + importanceNotes;
     
     const banner = document.getElementById('popReturnBanner');
@@ -924,7 +919,7 @@ function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints
     popup.style.left = leftPos + 'px';
 }}
 
-// Setup Modal Popup Crosshair
+// Setup Modal Popup Crosshair & Touch Support
 document.addEventListener("DOMContentLoaded", function() {{
     const svg = document.getElementById('popSvg');
     const hoverLineX = document.getElementById('hoverLineX');
@@ -972,7 +967,7 @@ document.addEventListener("DOMContentLoaded", function() {{
             hoverLineX.style.display = 'none';
             hoverLineY.style.display = 'none';
             hoverDot.style.display = 'none';
-            hoverTip.innerText = 'Hover chart for price & date';
+            hoverTip.innerText = 'Hover or Tap chart for price & date';
         }});
         svg.addEventListener('touchstart', function(e) {{ if (e.touches.length > 0) updatePopCrosshair(e.touches[0].clientX); }}, {{passive: true}});
         svg.addEventListener('touchmove', function(e) {{ if (e.touches.length > 0) updatePopCrosshair(e.touches[0].clientX); }}, {{passive: true}});
@@ -1082,4 +1077,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: MRVL moved, month-end dotted verticals & 25/50/75% horizontals complete!")
+print("\n🎉 ALL TASKS COMPLETE: Sparkline popups restored on upper tables, industry grid with month-end verticals & 25-50-75% horizontals complete!")
