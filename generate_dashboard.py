@@ -21,7 +21,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Restored Sparkline Popups & Industry Grid)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Enhanced Visible Chart Grid Lines)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -539,11 +539,12 @@ def build_industry_grouped_grid(items):
             ret_class = "badge-pos" if item['ret_6mo'] > 0 else ("badge-neg" if item['ret_6mo'] < 0 else "badge-neutral")
             ret_str = f"{item['ret_6mo']:+.2f}% 6M"
             
+            # Brighter/Lighter month-end vertical dotted grid lines for maximum visibility
             month_lines_svg = ""
             try:
                 m_list = json.loads(item['month_ends'])
                 for mx in m_list:
-                    month_lines_svg += f'<line x1="{mx}" y1="0" x2="{mx}" y2="110" stroke="rgba(255,255,255,0.22)" stroke-dasharray="1,3"/>'
+                    month_lines_svg += f'<line x1="{mx}" y1="0" x2="{mx}" y2="110" stroke="rgba(255,255,255,0.45)" stroke-dasharray="2,3"/>'
             except Exception:
                 pass
 
@@ -560,9 +561,9 @@ def build_industry_grouped_grid(items):
                 </div>
                 <div class="inline-chart-wrap" style="position:relative; width:100%; height:110px; background:var(--bg-dark); border-radius:4px; border:1px solid var(--border-color); overflow:hidden;">
                     <svg class="inline-svg" data-closes="{closes_json}" data-dates="{dates_json}" data-min="{item['p_min']}" data-max="{item['p_max']}" viewBox="0 0 320 110" width="100%" height="100%" preserveAspectRatio="none" style="display:block; cursor: crosshair; touch-action: none;">
-                        <line x1="0" y1="27.5" x2="320" y2="27.5" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
-                        <line x1="0" y1="55.0" x2="320" y2="55.0" stroke="rgba(255,255,255,0.18)" stroke-dasharray="2,2"/>
-                        <line x1="0" y1="82.5" x2="320" y2="82.5" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
+                        <line x1="0" y1="27.5" x2="320" y2="27.5" stroke="rgba(255,255,255,0.3)" stroke-dasharray="2,2"/>
+                        <line x1="0" y1="55.0" x2="320" y2="55.0" stroke="rgba(255,255,255,0.45)" stroke-dasharray="2,2"/>
+                        <line x1="0" y1="82.5" x2="320" y2="82.5" stroke="rgba(255,255,255,0.3)" stroke-dasharray="2,2"/>
                         {month_lines_svg}
                         <line class="inline-line-x" x1="0" y1="0" x2="0" y2="110" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
                         <line class="inline-line-y" x1="0" y1="0" x2="320" y2="0" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
@@ -919,7 +920,7 @@ function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints
     popup.style.left = leftPos + 'px';
 }}
 
-// Setup Modal Popup Crosshair & Touch Support
+# Setup Modal Popup Crosshair & Touch Support
 document.addEventListener("DOMContentLoaded", function() {{
     const svg = document.getElementById('popSvg');
     const hoverLineX = document.getElementById('hoverLineX');
@@ -973,7 +974,7 @@ document.addEventListener("DOMContentLoaded", function() {{
         svg.addEventListener('touchmove', function(e) {{ if (e.touches.length > 0) updatePopCrosshair(e.touches[0].clientX); }}, {{passive: true}});
     }}
 
-    // Setup Inline Industry-Grouped Interactive Charts
+    # Setup Inline Industry-Grouped Interactive Charts
     const inlineSvgs = document.querySelectorAll('.inline-svg');
     inlineSvgs.forEach(svgEl => {{
         let closes = [];
@@ -1077,4 +1078,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: Sparkline popups restored on upper tables, industry grid with month-end verticals & 25-50-75% horizontals complete!")
+print("\n🎉 ALL TASKS COMPLETE: Lighter, more visible chart grid lines applied successfully!")
