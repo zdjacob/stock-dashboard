@@ -21,7 +21,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - PC Optimized & Fully Feature-Packed)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - 4-Column Bottom Chart Layout)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -571,7 +571,7 @@ def build_industry_grouped_grid(items):
         sections_html += f"""
         <div style="margin-bottom: 14px;">
             <div style="font-size: 0.9rem; color: var(--accent-cyan); font-weight: bold; margin-bottom: 6px; border-bottom: 1px solid var(--border-color); padding-bottom: 3px;">🏭 {ind}</div>
-            <div class="two-column-grid">{cards_html}</div>
+            <div class="four-column-grid">{cards_html}</div>
         </div>
         """
     return sections_html
@@ -609,9 +609,9 @@ h1{{font-size:1.2rem;color:var(--accent-cyan);}}
 .dual-grid-wrapper{{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;}}
 .grid-column{{flex:1;background-color:var(--bg-card);border-radius:6px;border:1px solid var(--border-color);padding:3px;overflow-x:auto;}}
 
-.two-column-grid {{
+.four-column-grid {{
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 10px;
 }}
 .bottom-card {{
@@ -620,8 +620,11 @@ h1{{font-size:1.2rem;color:var(--accent-cyan);}}
     border-radius: 6px;
     padding: 8px;
 }}
-@media (max-width: 900px) {{
-    .two-column-grid {{ grid-template-columns: 1fr; }}
+@media (max-width: 1400px) {{
+    .four-column-grid {{ grid-template-columns: repeat(2, 1fr); }}
+}}
+@media (max-width: 800px) {{
+    .four-column-grid {{ grid-template-columns: 1fr; }}
 }}
 
 table{{width:100%;border-collapse:collapse;text-align:left;table-layout:fixed;}}
@@ -782,7 +785,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
     </div>
 </div>
 
-<div class="section-title" style="margin-top: 14px;">🏭 Industry-Grouped 6-Month History & Highlights (2-Column Grid)</div>
+<div class="section-title" style="margin-top: 14px;">🏭 Industry-Grouped 6-Month History & Highlights (4-Column Grid)</div>
 {build_industry_grouped_grid(data_list)}
 
 </div>
@@ -1062,4 +1065,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: PC-optimized script successfully updated, saved, and executed!")
+print("\n🎉 ALL TASKS COMPLETE: 4-column bottom chart layout successfully applied!")
