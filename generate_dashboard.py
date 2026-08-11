@@ -21,7 +21,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard with Permanent Daily Archiving)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard with Permanent Archiving & Interactivity)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -864,26 +864,25 @@ output_path = os.path.join(os.getcwd(), output_filename)
 with open(output_path, "w", encoding="utf-8") as f:
     f.write(html_content)
 
-# Additionally, maintain an 'index.html' so GitHub Pages serves the latest dashboard immediately by default
+# Update index.html for live GitHub Pages root access
 index_output_path = os.path.join(os.getcwd(), "index.html")
 with open(index_output_path, "w", encoding="utf-8") as f:
     f.write(html_content)
 
 print(f"\n🌐 Dashboard successfully generated and saved as: {output_filename}")
-print(f"📁 Permanent daily archive created alongside index.html.")
 
-# Auto-commit and push to GitHub (preserving all past daily files)
+# Auto-commit and push permanent daily archives to GitHub
 try:
-    print("\n🔄 Syncing and pushing permanent archives to GitHub...")
+    print("\n🔄 Syncing and pushing archives to GitHub...")
     subprocess.run(["git", "add", output_path], check=True)
     subprocess.run(["git", "add", index_output_path], check=True)
     subprocess.run(["git", "add", __file__], check=True)
     commit_message = f"Add daily archived stock dashboard for {today.strftime('%b %d, %Y')}"
     subprocess.run(["git", "commit", "-m", commit_message], check=True)
     subprocess.run(["git", "push", "origin", "main"], check=True)
-    print("🚀 Successfully pushed daily archives to GitHub!")
+    print("🚀 Successfully pushed files and archives to GitHub!")
 except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: Permanent daily file archiving enabled, saved, and browser launched successfully!")
+print("\n🎉 ALL TASKS COMPLETE: Dashboard generated, archived, and pushed successfully!")
