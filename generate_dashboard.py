@@ -21,7 +21,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Fixed Return Calculations)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Hover Return from Point till End of Chart)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -71,7 +71,6 @@ def get_historical_data_yahoo(symbol, current_price):
                     except Exception:
                         formatted_dates.append("N/A")
             
-            # 10 Trading Days Approx
             if len(closes) >= 10:
                 p_10d = closes[-11] if len(closes) >= 11 else closes[0]
                 ret_10d = ((current_price - p_10d) / p_10d) * 100
@@ -79,7 +78,6 @@ def get_historical_data_yahoo(symbol, current_price):
                 p_10d = closes[0]
                 ret_10d = ((current_price - p_10d) / p_10d) * 100
 
-            # 30 Trading Days (~1 Month)
             if len(closes) >= 21:
                 p_30d = closes[-21]
                 ret_30d = ((current_price - p_30d) / p_30d) * 100
@@ -87,7 +85,6 @@ def get_historical_data_yahoo(symbol, current_price):
                 p_30d = closes[0]
                 ret_30d = ((current_price - p_30d) / p_30d) * 100
 
-            # 63 Trading Days (~3 Months)
             if len(closes) >= 63:
                 p_3m = closes[-63]
                 ret_3m = ((current_price - p_3m) / p_3m) * 100
@@ -95,7 +92,6 @@ def get_historical_data_yahoo(symbol, current_price):
                 p_3m = closes[0]
                 ret_3m = ((current_price - p_3m) / p_3m) * 100
 
-            # 6 Months
             if len(closes) > 0:
                 p_6mo = closes[0]
                 ret_6mo = ((current_price - p_6mo) / p_6mo) * 100
@@ -566,21 +562,23 @@ def build_industry_grouped_grid(items):
 
             cards_html += f"""
             <div class="bottom-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px; font-family:monospace; font-size:0.75rem; background:rgba(56,189,248,0.08); padding:2px 5px; border-radius:4px; border:1px solid rgba(56,189,248,0.2);">
+                    <span style="color:var(--accent-cyan); font-weight:bold;">${item['ticker']}</span>
+                    <span class="card-hover-display" style="color:var(--accent-yellow); font-weight:bold;">Hover chart</span>
+                </div>
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
-                    <span style="color:var(--accent-cyan); font-weight:bold; font-size:0.8rem;">${item['ticker']}</span>
+                    <span style="font-size:0.65rem; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="{item['name']}">{item['name']}</span>
                     <div style="display:flex; gap:3px;">
                         <span class="return-badge {r1m_class}" style="font-size:0.55rem; padding:1px 3px;" title="1 Month Return">{item['ret_1m']:+.1f}% 1M</span>
                         <span class="return-badge {r3m_class}" style="font-size:0.55rem; padding:1px 3px;" title="3 Month Return">{item['ret_3m']:+.1f}% 3M</span>
                         <span class="return-badge {r6m_class}" style="font-size:0.55rem; padding:1px 3px;" title="6 Month Return">{item['ret_6mo']:+.1f}% 6M</span>
                     </div>
                 </div>
-                <div style="font-size:0.65rem; color:var(--text-muted); margin-bottom:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="{item['name']}">{item['name']}</div>
                 <div style="display:flex; justify-content:space-between; align-items:center; font-family:monospace; font-size:0.7rem; margin-bottom:3px;">
                     <span>Price: <strong>${item['price']:,.2f}</strong></span>
                     <span style="color:var(--accent-yellow);">52W Pos: <strong>{item['pct']}%</strong></span>
                 </div>
                 <div class="inline-chart-wrap" style="position:relative; width:100%; height:110px; background:var(--bg-dark); border-radius:4px; border:1px solid var(--border-color); overflow:hidden;">
-                    <div class="inline-hover-tip" style="position:absolute; top:2px; left:50%; transform:translateX(-50%); font-size:0.62rem; color:var(--accent-yellow); font-family:monospace; font-weight:bold; background:rgba(21,9,36,0.85); padding:1px 6px; border-radius:3px; border:1px solid rgba(250,204,21,0.25); pointer-events:none; z-index:5;">Hover/Tap chart</div>
                     <svg class="inline-svg sync-group-{group_slug}" data-closes="{closes_json}" data-dates="{dates_json}" data-min="{item['p_min']}" data-max="{item['p_max']}" viewBox="0 0 320 110" width="100%" height="100%" preserveAspectRatio="none" style="display:block; cursor: crosshair; touch-action: none;">
                         <line x1="0" y1="27.5" x2="320" y2="27.5" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
                         <line x1="0" y1="55.0" x2="320" y2="55.0" stroke="rgba(255,255,255,0.18)" stroke-dasharray="2,2"/>
@@ -1021,8 +1019,8 @@ document.addEventListener("DOMContentLoaded", function() {{
                 dates = JSON.parse(svgEl.getAttribute('data-dates'));
             }} catch(e) {{}}
 
-            const wrap = svgEl.closest('.inline-chart-wrap');
-            const tip = wrap.querySelector('.inline-hover-tip');
+            const cardBox = svgEl.closest('.bottom-card');
+            const displayHeader = cardBox.querySelector('.card-hover-display');
 
             function applySync(clientX) {{
                 if (!closes || closes.length === 0) return;
@@ -1046,12 +1044,18 @@ document.addEventListener("DOMContentLoaded", function() {{
                     const oLineX = otherSvg.querySelector('.inline-line-x');
                     const oLineY = otherSvg.querySelector('.inline-line-y');
                     const oDot = otherSvg.querySelector('.inline-dot');
-                    const oWrap = otherSvg.closest('.inline-chart-wrap');
-                    const oTip = oWrap.querySelector('.inline-hover-tip');
+                    const oCardBox = otherSvg.closest('.bottom-card');
+                    const oDisplayHeader = oCardBox.querySelector('.card-hover-display');
 
                     let mappedIdx = Math.min(index, oCloses.length - 1);
                     const oVal = oCloses[mappedIdx];
                     const oDateStr = oDates[mappedIdx] || 'Recent';
+
+                    // Compute point-to-end return from hovered point till end of the chart (most recent price)
+                    let endVal = oCloses[oCloses.length - 1];
+                    let pctChange = oVal > 0 ? ((endVal - oVal) / oVal) * 100 : 0.0;
+                    let retSign = pctChange >= 0 ? '+' : '';
+                    let retStr = `${{retSign}}${{pctChange.toFixed(1)}}%`;
 
                     const svgWidth = 320;
                     const svgHeight = 110;
@@ -1071,7 +1075,7 @@ document.addEventListener("DOMContentLoaded", function() {{
                     oDot.setAttribute('cy', yCoord);
                     oDot.style.display = 'block';
 
-                    oTip.innerText = oDateStr + ' : $' + oVal.toFixed(2);
+                    oDisplayHeader.innerHTML = `${{oDateStr}} : <span style="color:var(--text-main);">${{oVal.toFixed(2)}}</span> (to end: <span style="color:${{pctChange >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'}};">${{retStr}}</span>)`;
                 }});
             }}
 
@@ -1081,7 +1085,7 @@ document.addEventListener("DOMContentLoaded", function() {{
                     otherSvg.querySelector('.inline-line-x').style.display = 'none';
                     otherSvg.querySelector('.inline-line-y').style.display = 'none';
                     otherSvg.querySelector('.inline-dot').style.display = 'none';
-                    otherSvg.closest('.inline-chart-wrap').querySelector('.inline-hover-tip').innerText = 'Hover/Tap chart';
+                    otherSvg.closest('.bottom-card').querySelector('.card-hover-display').innerText = 'Hover chart';
                 }});
             }});
             svgEl.addEventListener('touchstart', function(e) {{ if (e.touches.length > 0) applySync(e.touches[0].clientX); }}, {{passive: true}});
@@ -1126,4 +1130,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: 1M, 3M, and 6M returns fully corrected and active!")
+print("\n🎉 ALL TASKS COMPLETE: Hover point-to-end percentage return calculations active!")
