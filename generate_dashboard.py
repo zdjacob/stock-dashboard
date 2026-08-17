@@ -21,7 +21,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Hover Return from Point till End of Chart)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Color-Scaled Point-to-End Returns)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -564,7 +564,7 @@ def build_industry_grouped_grid(items):
             <div class="bottom-card">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px; font-family:monospace; font-size:0.75rem; background:rgba(56,189,248,0.08); padding:2px 5px; border-radius:4px; border:1px solid rgba(56,189,248,0.2);">
                     <span style="color:var(--accent-cyan); font-weight:bold;">${item['ticker']}</span>
-                    <span class="card-hover-display" style="color:var(--accent-yellow); font-weight:bold;">Hover chart</span>
+                    <span class="card-hover-display" style="color:var(--text-muted); font-weight:bold;">Hover chart</span>
                 </div>
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
                     <span style="font-size:0.65rem; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="{item['name']}">{item['name']}</span>
@@ -994,7 +994,7 @@ document.addEventListener("DOMContentLoaded", function() {{
         svg.addEventListener('touchmove', function(e) {{ if (e.touches.length > 0) updatePopCrosshair(e.touches[0].clientX); }}, {{passive: true}});
     }}
 
-    // Synchronized Group Crosshairs Setup for Bottom Industry Charts
+    // Synchronized Group Crosshairs Setup for Bottom Industry Charts with Color-Scaled Return Styling
     const allInlineSvgs = document.querySelectorAll('.inline-svg');
     const groupMap = {{}};
     allInlineSvgs.forEach(svgEl => {{
@@ -1051,11 +1051,15 @@ document.addEventListener("DOMContentLoaded", function() {{
                     const oVal = oCloses[mappedIdx];
                     const oDateStr = oDates[mappedIdx] || 'Recent';
 
-                    // Compute point-to-end return from hovered point till end of the chart (most recent price)
+                    // Compute point-to-end return from hovered point till end of the chart
                     let endVal = oCloses[oCloses.length - 1];
                     let pctChange = oVal > 0 ? ((endVal - oVal) / oVal) * 100 : 0.0;
                     let retSign = pctChange >= 0 ? '+' : '';
                     let retStr = `${{retSign}}${{pctChange.toFixed(1)}}%`;
+
+                    // Color scale mapping (Green for positive returns, Red for negative returns)
+                    let badgeClass = pctChange > 0 ? 'badge-pos' : (pctChange < 0 ? 'badge-neg' : 'badge-neutral');
+                    let colorStyle = pctChange > 0 ? 'color: var(--accent-green);' : (pctChange < 0 ? 'color: var(--accent-red);' : 'color: var(--text-main);');
 
                     const svgWidth = 320;
                     const svgHeight = 110;
@@ -1075,7 +1079,7 @@ document.addEventListener("DOMContentLoaded", function() {{
                     oDot.setAttribute('cy', yCoord);
                     oDot.style.display = 'block';
 
-                    oDisplayHeader.innerHTML = `${{oDateStr}} : <span style="color:var(--text-main);">${{oVal.toFixed(2)}}</span> (to end: <span style="color:${{pctChange >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'}};">${{retStr}}</span>)`;
+                    oDisplayHeader.innerHTML = `${{oDateStr}} : <span style="color:var(--text-main);">${{oVal.toFixed(2)}}</span> (<span class="return-badge ${{badgeClass}}" style="font-size:0.6rem; padding:0 3px; ${{colorStyle}}">${{retStr}}</span>)`;
                 }});
             }}
 
@@ -1085,7 +1089,9 @@ document.addEventListener("DOMContentLoaded", function() {{
                     otherSvg.querySelector('.inline-line-x').style.display = 'none';
                     otherSvg.querySelector('.inline-line-y').style.display = 'none';
                     otherSvg.querySelector('.inline-dot').style.display = 'none';
-                    otherSvg.closest('.bottom-card').querySelector('.card-hover-display').innerText = 'Hover chart';
+                    let headerEl = otherSvg.closest('.bottom-card').querySelector('.card-hover-display');
+                    headerEl.innerHTML = 'Hover chart';
+                    headerEl.style.color = 'var(--text-muted)';
                 }});
             }});
             svgEl.addEventListener('touchstart', function(e) {{ if (e.touches.length > 0) applySync(e.touches[0].clientX); }}, {{passive: true}});
@@ -1130,4 +1136,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: Hover point-to-end percentage return calculations active!")
+print("\n🎉 ALL TASKS COMPLETE: Color-scaled point-to-end return pills active on all industry group cards!")
