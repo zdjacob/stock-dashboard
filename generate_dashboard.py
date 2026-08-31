@@ -21,7 +21,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Higher Bottoms Table Added)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Higher Bottoms Table Removed)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -130,7 +130,7 @@ def get_earnings_move_yahoo(symbol, earn_date_str, hour_timing, est_today):
         pass
     return 0.0, False
 
-data_list, earnings_list, movers_list, master_list, news_list, higher_bottoms_list = [], [], [], [], [], []
+data_list, earnings_list, movers_list, master_list, news_list = [], [], [], [], []
 
 now = datetime.datetime.now()
 generation_timestamp_str = now.strftime("%b %d, %Y at %H:%M:%S")
@@ -263,16 +263,6 @@ for idx, symbol in enumerate(tickers, 1):
 
         data_list.append(stock_item)
         master_list.append(stock_item)
-
-        # Check for Higher Bottom in the Last Month (approx last 21 trading days)
-        if len(closes) >= 21:
-            last_month_closes = closes[-21:]
-            half_len = len(last_month_closes) // 2
-            first_half_min = min(last_month_closes[:half_len])
-            second_half_min = min(last_month_closes[half_len:])
-            if second_half_min > first_half_min:
-                higher_bottoms_list.append(stock_item)
-
         time.sleep(0.2)
 
         earn_url = f"https://finnhub.io/api/v1/calendar/earnings?from={past_week_str}&to={future_str}&symbol={symbol}&token={API_KEY}"
@@ -407,7 +397,6 @@ mid_idx = (len(data_list) + 1) // 2
 data_left, data_right = data_list[:mid_idx], data_list[mid_idx:]
 
 earnings_list.sort(key=lambda x: x['date'] if x['date'] != "TBD / Next Qtr" else "9999-99-99")
-higher_bottoms_list.sort(key=lambda x: x['ticker'])
 master_by_ticker = sorted(master_list, key=lambda x: x['ticker'])
 master_by_industry = sorted(master_list, key=lambda x: (x['industry'], x['ticker']))
 
@@ -508,25 +497,6 @@ def build_movers_rows(items):
             <td class="col-movers-combined clickable-cell" onclick="showSidePopup(event, {popup_args})"><div class="combined-cell">{get_return_badge_html(item['daily_return'], 2.0)}<span class="price-col">${item['price']:,.2f}</span></div></td>
             <td class="col-movers-combined clickable-cell" onclick="showSidePopup(event, {popup_args})"><div class="combined-cell">{get_return_badge_html(item['return_10d'], 5.0)}<span class="price-col">${item['price_10d']:,.2f}</span></div></td>
             <td class="col-movers-combined clickable-cell" onclick="showSidePopup(event, {popup_args})"><div class="combined-cell">{get_return_badge_html(item['return_30d'], 10.0)}<span class="price-col">${item['price_30d']:,.2f}</span></div></td>
-        </tr>"""
-    return rows
-
-def build_higher_bottoms_rows(items):
-    if not items:
-        return """<tr><td colspan="4" style="text-align:center; color:var(--text-muted); padding:10px;">No stocks matching higher bottoms found this month.</td></tr>"""
-    rows = ""
-    for item in items:
-        closes_json = item['chart_closes'].replace('"', '&quot;')
-        dates_json = item['chart_dates'].replace('"', '&quot;')
-        month_json = item['month_ends'].replace('"', '&quot;')
-        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
-        
-        rows += f"""
-        <tr class="master-row">
-            <td class="col-master-ticker clickable-cell" onclick="showSidePopup(event, {popup_args})"><span class="ticker-popup-link"><strong>${item['ticker']}</strong></span></td>
-            <td class="col-master-name clickable-cell" onclick="showSidePopup(event, {popup_args})">{item['name']}</td>
-            <td class="col-master-industry clickable-cell" onclick="showSidePopup(event, {popup_args})"><span class="badge-confirmed">{item['industry']}</span></td>
-            <td class="col-master-price price-col clickable-cell" onclick="showSidePopup(event, {popup_args})"><strong>${item['price']:,.2f}</strong></td>
         </tr>"""
     return rows
 
@@ -638,7 +608,6 @@ def build_industry_grouped_grid(items):
 table_header_html = """<thead><tr class="watchlist-row"><th class="col-ticker">Ticker</th><th class="col-bar" style="text-align:center;">Range Bar (33% & 66% Grids)<div class="axis-labels"><span>0%</span><span style="color:#a78bfa;">33%</span><span style="color:#a78bfa;">66%</span><span>100%</span></div></th><th class="col-low52" style="text-align:right;">52W Low</th><th class="col-price" style="text-align:right;">Price</th><th class="col-high52" style="text-align:right;">52W High</th><th class="col-mini-gauge" style="text-align:center;">52W Pos</th></tr></thead>"""
 earnings_header_html = """<thead><tr class="earnings-row"><th class="col-earn-ticker">Ticker</th><th class="col-earn-price" style="text-align:right;">Price</th><th class="col-earn-date">Date</th><th class="col-earn-status">Status</th><th class="col-earn-eps">EPS</th><th class="col-earn-move">Earnings Move ⚡</th></tr></thead>"""
 movers_header_html = """<thead><tr class="movers-row"><th class="col-movers-ticker">Ticker & Vol</th><th class="col-movers-score">Score ↓</th><th class="col-movers-combined">1D Return / Price</th><th class="col-movers-combined">10D Return / Price</th><th class="col-movers-combined">30D Return / Price</th></tr></thead>"""
-higher_bottoms_header_html = """<thead><tr class="master-row"><th class="col-master-ticker">Ticker</th><th class="col-master-name">Company Name</th><th class="col-master-industry">Industry</th><th class="col-master-price" style="text-align:right;">Price</th></tr></thead>"""
 news_header_html = """<thead><tr class="news-row"><th class="col-news-ticker">Ticker</th><th class="col-news-headline">Latest Article Headline</th><th class="col-news-source">Source</th><th class="col-news-date">Published</th></tr></thead>"""
 master_header_html = """<thead><tr class="master-row"><th class="col-master-ticker">Ticker</th><th class="col-master-name">Company Name</th><th class="col-master-industry">Industry</th><th class="col-master-price" style="text-align:right;">Price</th><th class="col-master-cap" style="text-align:right;">Market Cap</th><th class="col-master-gauge" style="text-align:center;">52W Pos</th></tr></thead>"""
 
@@ -780,9 +749,6 @@ tr:nth-child(even){{background-color:var(--bg-row-alt);}}
 mid_news = (len(news_list) + 1) // 2
 news_left, news_right = news_list[:mid_news], news_list[mid_news:]
 
-mid_hb = (len(higher_bottoms_list) + 1) // 2
-hb_left, hb_right = higher_bottoms_list[:mid_hb], higher_bottoms_list[mid_hb:]
-
 html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Jacob's Stock Dashboard - {today.strftime('%b %d, %Y')}</title><style>{condensed_css}</style></head>
 <body><div class="container"><header>
     <div><h1>📊 Jacob's Technical Watchlist & Market Dashboard</h1></div>
@@ -816,19 +782,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
     </div>
 </div>
 
-<!-- Section 2: Higher Bottoms (Last Month) Dual Grid -->
-<div class="dual-grid-wrapper">
-    <div class="grid-column">
-        <div class="section-title">📈 Higher Bottoms / Higher Lows (Grid 1)</div>
-        <table>{higher_bottoms_header_html}<tbody>{build_higher_bottoms_rows(hb_left)}</tbody></table>
-    </div>
-    <div class="grid-column">
-        <div class="section-title">📈 Higher Bottoms / Higher Lows (Grid 2)</div>
-        <table>{higher_bottoms_header_html}<tbody>{build_higher_bottoms_rows(hb_right)}</tbody></table>
-    </div>
-</div>
-
-<!-- Section 3: Significant Movers & Quarterly Results Schedule -->
+<!-- Section 2: Significant Movers & Quarterly Results Schedule -->
 <div class="dual-grid-wrapper">
     <div class="grid-column">
         <div class="section-title">🚀 Significant Movers & Volume Spikes</div>
@@ -840,7 +794,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
     </div>
 </div>
 
-<!-- Section 4: Critical Company News Grid -->
+<!-- Section 3: Critical Company News Grid -->
 <div class="dual-grid-wrapper">
     <div class="grid-column">
         <div class="section-title">📰 Critical Company News (Grid 1)</div>
@@ -852,7 +806,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
     </div>
 </div>
 
-<!-- Section 5: Side-by-Side Master Tables -->
+<!-- Section 4: Side-by-Side Master Tables -->
 <div class="dual-grid-wrapper" style="margin-top:6px;">
     <div class="grid-column">
         <div class="section-title">📋 Tracked Tickers (Click Any Cell for Sparkline)</div>
@@ -864,7 +818,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
     </div>
 </div>
 
-<!-- Section 6: Industry-Grouped 4-Column Grid with Synchronized Group Crosshairs -->
+<!-- Section 5: Industry-Grouped 4-Column Grid with Synchronized Group Crosshairs -->
 <div class="section-title" style="margin-top: 14px;">🏭 Industry-Grouped 6-Month History & Highlights (Synchronized Group Crosshairs)</div>
 {build_industry_grouped_grid(data_list)}
 
@@ -1187,4 +1141,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: Higher Bottoms table successfully added with popup chart support!")
+print("\n🎉 ALL TASKS COMPLETE: Higher Bottoms table successfully removed!")
