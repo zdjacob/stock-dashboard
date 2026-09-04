@@ -1142,7 +1142,7 @@ try:
     subprocess.run(["git", "add", output_path], check=True)
     subprocess.run(["git", "add", __file__], check=True)
     commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (NY Time)"
-    subprocess.run(["git", "commit", -m", commit_message], check=True)
+    subprocess.run(["git", "commit", "-m", commit_message], check=True)
     subprocess.run(["git", "push", "origin", "main"], check=True)
     print("🚀 Successfully pushed files to GitHub!")
 except Exception as e:
