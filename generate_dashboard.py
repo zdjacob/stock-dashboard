@@ -1,4 +1,5 @@
 import os, time, datetime, webbrowser, requests, statistics, json, subprocess
+from zoneinfo import ZoneInfo
 
 # ==========================================
 # 🔑 FINNHUB API KEY & CUSTOM INDUSTRY MAPPINGS
@@ -21,7 +22,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Live Price Chart Integration)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Live Price & NY Timezone Integration)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -75,7 +76,7 @@ def get_historical_data_yahoo(symbol, current_price):
             if closes and current_price and closes[-1] != current_price:
                 closes.append(current_price)
                 timestamps.append(int(time.time()))
-                formatted_dates.append(datetime.datetime.now().strftime("%b %d, %Y"))
+                formatted_dates.append(datetime.datetime.now(ZoneInfo("America/New_York")).strftime("%b %d, %Y"))
 
             if len(closes) >= 10:
                 p_10d = closes[-11] if len(closes) >= 11 else closes[0]
@@ -138,8 +139,9 @@ def get_earnings_move_yahoo(symbol, earn_date_str, hour_timing, est_today):
 
 data_list, earnings_list, movers_list, master_list, news_list = [], [], [], [], []
 
-now = datetime.datetime.now()
-generation_timestamp_str = now.strftime("%b %d, %Y at %H:%M:%S")
+# Use America/New_York timezone for local NY time display
+now = datetime.datetime.now(ZoneInfo("America/New_York"))
+generation_timestamp_str = now.strftime("%b %d, %Y at %H:%M:%S %Z")
 today = now.date()
 past_week_str = (today - datetime.timedelta(days=7)).strftime("%Y-%m-%d")
 today_str = today.strftime("%Y-%m-%d")
@@ -774,7 +776,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
         </div>
     </div>
 </header>
-<div class="legend-bar"><span style="color:var(--text-muted);font-weight:600;">Indicator Key:</span><div class="legend-item"><span class="dot-cyan"></span> Live Price</div><div class="legend-item"><span class="bar-orange"></span> Support Level</div><div class="legend-item"><span class="diamond-yellow"></span> 50-Day Moving Avg</div><div class="legend-item"><span class="square-red"></span> 200-Day Moving Avg</div><div class="legend-item"><span class="line-grid"></span> 33% / 66% Range Dividers</div></div>
+<div class="legend-bar"><span style="color:var(--text-muted);font-weight:600;>Indicator Key:</span><div class="legend-item"><span class="dot-cyan"></span> Live Price</div><div class="legend-item"><span class="bar-orange"></span> Support Level</div><div class="legend-item"><span class="diamond-yellow"></span> 50-Day Moving Avg</div><div class="legend-item"><span class="square-red"></span> 200-Day Moving Avg</div><div class="legend-item"><span class="line-grid"></span> 33% / 66% Range Dividers</div></div>
 
 <!-- Section 1: Technical Watchlist Dual Grid -->
 <div class="dual-grid-wrapper">
@@ -1139,12 +1141,12 @@ try:
     print("\n🔄 Syncing and pushing dashboard to GitHub...")
     subprocess.run(["git", "add", output_path], check=True)
     subprocess.run(["git", "add", __file__], check=True)
-    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')}"
-    subprocess.run(["git", "commit", "-m", commit_message], check=True)
+    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (NY Time)"
+    subprocess.run(["git", "commit", -m", commit_message], check=True)
     subprocess.run(["git", "push", "origin", "main"], check=True)
     print("🚀 Successfully pushed files to GitHub!")
 except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: Live real-time Finnhub price synced and appended to chart data arrays!")
+print("\n🎉 ALL TASKS COMPLETE: Script updated with Eastern/NY Timezone enforcement!")
