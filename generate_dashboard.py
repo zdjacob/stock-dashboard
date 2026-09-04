@@ -21,7 +21,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Higher Bottoms Table Removed)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Live Price Chart Integration)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -71,6 +71,12 @@ def get_historical_data_yahoo(symbol, current_price):
                     except Exception:
                         formatted_dates.append("N/A")
             
+            # Ensure latest live price is explicitly appended to closes for real-time chart synchronization
+            if closes and current_price and closes[-1] != current_price:
+                closes.append(current_price)
+                timestamps.append(int(time.time()))
+                formatted_dates.append(datetime.datetime.now().strftime("%b %d, %Y"))
+
             if len(closes) >= 10:
                 p_10d = closes[-11] if len(closes) >= 11 else closes[0]
                 ret_10d = ((current_price - p_10d) / p_10d) * 100
@@ -1141,4 +1147,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: Higher Bottoms table successfully removed!")
+print("\n🎉 ALL TASKS COMPLETE: Live real-time Finnhub price synced and appended to chart data arrays!")
