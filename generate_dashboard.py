@@ -22,7 +22,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Complete Corrected Script)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Complete Script with Group Peak Gradient)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -407,7 +407,7 @@ if hotness_pct >= 70:
 elif hotness_pct >= 50:
     hotness_status = "⚡ Strong Momentum"
 elif hotness_pct >= 30:
-    hotness_status = "⚖️️ Neutral / Balanced"
+    hotness_status = "⚖️ Neutral / Balanced"
 else:
     hotness_status = "❄️ Oversold / Bearish"
 
@@ -575,6 +575,20 @@ def build_master_rows(items):
         </tr>"""
     return rows
 
+def get_header_bg_color(val, min_val, max_val):
+    if max_val == min_val:
+        return "background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.3);"
+    
+    # Calculate ratio (0.0 = worst drawdown/dark red, 1.0 = closest to peak/bright green)
+    factor = max(0.0, min(1.0, (val - min_val) / (max_val - min_val)))
+    
+    # RGB Dark Red (#991b1b -> 153, 27, 27) to Bright Green (#16a34a -> 22, 163, 74)
+    r = int(153 + (22 - 153) * factor)
+    g = int(27 + (163 - 27) * factor)
+    b = int(27 + (74 - 27) * factor)
+    
+    return f"background: rgba({r}, {g}, {b}, 0.85); border: 1px solid rgba({r}, {g}, {b}, 1.0);"
+
 def build_industry_grouped_grid(items):
     industry_dict = {}
     for item in items:
@@ -586,6 +600,12 @@ def build_industry_grouped_grid(items):
     sections_html = ""
     for ind, stock_items in sorted(industry_dict.items()):
         group_slug = "".join([c for c in ind if c.isalnum()])
+        
+        # Determine group min/max peak-to-current returns for relative gradient scale
+        group_peak_rets = [s['ret_peak_curr'] for s in stock_items]
+        min_ret = min(group_peak_rets)
+        max_ret = max(group_peak_rets)
+
         cards_html = ""
         for item in stock_items:
             closes_json = item['chart_closes'].replace('"', '&quot;')
@@ -596,6 +616,9 @@ def build_industry_grouped_grid(items):
             r6m_class = "badge-pos" if item['ret_6mo'] > 0 else ("badge-neg" if item['ret_6mo'] < 0 else "badge-neutral")
             rpeak_class = "badge-pos" if item['ret_peak_curr'] > 0 else ("badge-neg" if item['ret_peak_curr'] < 0 else "badge-neutral")
             
+            # Compute header gradient background style based on relative rank in group
+            header_style = get_header_bg_color(item['ret_peak_curr'], min_ret, max_ret)
+
             month_lines_svg = ""
             try:
                 m_list = json.loads(item['month_ends'])
@@ -606,9 +629,9 @@ def build_industry_grouped_grid(items):
 
             cards_html += f"""
             <div class="bottom-card">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px; font-family:monospace; font-size:0.75rem; background:rgba(56,189,248,0.08); padding:2px 5px; border-radius:4px; border:1px solid rgba(56,189,248,0.2);">
-                    <span style="color:var(--accent-cyan); font-weight:bold;">${item['ticker']}</span>
-                    <span class="card-hover-display" style="color:var(--text-muted); font-weight:bold;">Hover chart</span>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; font-family:monospace; font-size:0.75rem; {header_style} padding:3px 6px; border-radius:4px;">
+                    <span style="color:#ffffff; font-weight:bold; text-shadow:0px 1px 2px rgba(0,0,0,0.8);">${item['ticker']}</span>
+                    <span class="card-hover-display" style="color:#f8fafc; font-weight:bold; font-size:0.65rem; text-shadow:0px 1px 2px rgba(0,0,0,0.8);">Hover chart</span>
                 </div>
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
                     <span style="font-size:0.65rem; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="{item['name']}">{item['name']}</span>
@@ -1214,7 +1237,7 @@ try:
     subprocess.run(["git", "config", "user.email", "github-actions[bot]@users.noreply.github.com"], check=True)
     subprocess.run(["git", "add", output_path], check=True)
     subprocess.run(["git", "add", __file__], check=True)
-    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (Hover and Popup Restored)"
+    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (Group Peak Gradient Added)"
     subprocess.run(["git", "commit", "-m", commit_message], check=True)
     subprocess.run(["git", "push", "origin", "main"], check=True)
     print("🚀 Successfully pushed files to GitHub!")
@@ -1222,4 +1245,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: Hover and popup functionality fully restored!")
+print("\n🎉 ALL TASKS COMPLETE: Group-level gradient headers and interactive features ready!")
