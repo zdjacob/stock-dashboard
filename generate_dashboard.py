@@ -22,7 +22,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Live Price & NY Timezone Integration)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Popup Chart Alignment Fix)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -72,7 +72,6 @@ def get_historical_data_yahoo(symbol, current_price):
                     except Exception:
                         formatted_dates.append("N/A")
             
-            # Ensure latest live price is explicitly appended to closes for real-time chart synchronization
             if closes and current_price and closes[-1] != current_price:
                 closes.append(current_price)
                 timestamps.append(int(time.time()))
@@ -139,7 +138,6 @@ def get_earnings_move_yahoo(symbol, earn_date_str, hour_timing, est_today):
 
 data_list, earnings_list, movers_list, master_list, news_list = [], [], [], [], []
 
-# Use America/New_York timezone for local NY time display
 now = datetime.datetime.now(ZoneInfo("America/New_York"))
 generation_timestamp_str = now.strftime("%b %d, %Y at %H:%M:%S %Z")
 today = now.date()
@@ -381,7 +379,7 @@ elif hotness_pct >= 50:
 elif hotness_pct >= 30:
     hotness_status = "⚖️ Neutral / Balanced"
 else:
-    hotness_status = "❄️ Oversold / Bearish"
+    hotness_status = "❄️️ Oversold / Bearish"
 
 if movers_list:
     r1d_vals = [m['daily_return'] for m in movers_list]
@@ -570,7 +568,6 @@ def build_industry_grouped_grid(items):
 
             cards_html += f"""
             <div class="bottom-card">
-                <!-- Outside Card Header: Price & Color-Scaled Point-to-End Return Display -->
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px; font-family:monospace; font-size:0.75rem; background:rgba(56,189,248,0.08); padding:2px 5px; border-radius:4px; border:1px solid rgba(56,189,248,0.2);">
                     <span style="color:var(--accent-cyan); font-weight:bold;">${item['ticker']}</span>
                     <span class="card-hover-display" style="color:var(--text-muted); font-weight:bold;">Hover chart</span>
@@ -776,7 +773,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
         </div>
     </div>
 </header>
-<div class="legend-bar"><span style="color:var(--text-muted);font-weight:600;>Indicator Key:</span><div class="legend-item"><span class="dot-cyan"></span> Live Price</div><div class="legend-item"><span class="bar-orange"></span> Support Level</div><div class="legend-item"><span class="diamond-yellow"></span> 50-Day Moving Avg</div><div class="legend-item"><span class="square-red"></span> 200-Day Moving Avg</div><div class="legend-item"><span class="line-grid"></span> 33% / 66% Range Dividers</div></div>
+<div class="legend-bar"><span style="color:var(--text-muted);font-weight:600;">Indicator Key:</span><div class="legend-item"><span class="dot-cyan"></span> Live Price</div><div class="legend-item"><span class="bar-orange"></span> Support Level</div><div class="legend-item"><span class="diamond-yellow"></span> 50-Day Moving Avg</div><div class="legend-item"><span class="square-red"></span> 200-Day Moving Avg</div><div class="legend-item"><span class="line-grid"></span> 33% / 66% Range Dividers</div></div>
 
 <!-- Section 1: Technical Watchlist Dual Grid -->
 <div class="dual-grid-wrapper">
@@ -847,15 +844,15 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
     </div>
     <div style="display: flex; align-items: center; gap: 8px;">
         <div style="display: flex; flex-direction: column;">
-            <svg id="popSvg" viewBox="0 0 320 130" width="320" height="130" style="background:var(--bg-dark); border-radius:6px; border:1px solid var(--border-color); cursor: crosshair; touch-action: none;">
-                <line x1="0" y1="32.5" x2="320" y2="32.5" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
-                <line x1="0" y1="65" x2="320" y2="65" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
-                <line x1="0" y1="97.5" x2="320" y2="97.5" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
-                <line x1="106.6" y1="0" x2="106.6" y2="130" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
-                <line x1="213.3" y1="0" x2="213.3" y2="130" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
-                <line id="popBaseLine" x1="0" y1="65" x2="320" y2="65" stroke="rgba(255,255,255,0.5)" stroke-dasharray="3,3" stroke-width="1.2"/>
+            <svg id="popSvg" viewBox="0 0 320 110" width="320" height="110" style="background:var(--bg-dark); border-radius:6px; border:1px solid var(--border-color); cursor: crosshair; touch-action: none;">
+                <line x1="0" y1="27.5" x2="320" y2="27.5" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
+                <line x1="0" y1="55" x2="320" y2="55" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
+                <line x1="0" y1="82.5" x2="320" y2="82.5" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
+                <line x1="106.6" y1="0" x2="106.6" y2="110" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
+                <line x1="213.3" y1="0" x2="213.3" y2="110" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
+                <line id="popBaseLine" x1="0" y1="55" x2="320" y2="55" stroke="rgba(255,255,255,0.5)" stroke-dasharray="3,3" stroke-width="1.2"/>
                 <polyline id="popPolyline" fill="none" stroke-width="2" points=""/>
-                <line id="hoverLineX" x1="0" y1="0" x2="0" y2="130" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
+                <line id="hoverLineX" x1="0" y1="0" x2="0" y2="110" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
                 <line id="hoverLineY" x1="0" y1="0" x2="320" y2="0" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
                 <circle id="hoverDot" cx="0" cy="0" r="4" fill="var(--accent-cyan)" stroke="#fff" stroke-width="1" style="display: none;"/>
             </svg>
@@ -865,7 +862,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
                 <span id="labelEnd"></span>
             </div>
         </div>
-        <div style="display: flex; flex-direction: column; justify-content: space-between; height: 130px; font-size: 0.65rem; font-family: monospace; color: var(--text-muted); font-weight: bold; margin-bottom: 14px;">
+        <div style="display: flex; flex-direction: column; justify-content: space-between; height: 110px; font-size: 0.65rem; font-family: monospace; color: var(--text-muted); font-weight: bold; margin-bottom: 14px;">
             <span id="labelMax"></span>
             <span id="labelMid"></span>
             <span id="labelMin"></span>
@@ -921,7 +918,7 @@ function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints
         banner.style.border = '1px solid rgba(100,116,139,0.4)';
     }}
     
-    const chartHeight = 130;
+    const chartHeight = 110;
     const lineY = chartHeight - (parseFloat(startYPct) / 100) * chartHeight;
     const baseLine = document.getElementById('popBaseLine');
     baseLine.setAttribute('y1', lineY);
@@ -969,7 +966,7 @@ document.addEventListener("DOMContentLoaded", function() {{
             const rect = svg.getBoundingClientRect();
             const mouseX = Math.max(0, Math.min(clientX - rect.left, rect.width));
             const svgWidth = 320;
-            const svgHeight = 130;
+            const svgHeight = 110;
 
             const xRatio = mouseX / rect.width;
             let index = Math.round(xRatio * (popCloses.length - 1));
@@ -1009,7 +1006,6 @@ document.addEventListener("DOMContentLoaded", function() {{
         svg.addEventListener('touchmove', function(e) {{ if (e.touches.length > 0) updatePopCrosshair(e.touches[0].clientX); }}, {{passive: true}});
     }}
 
-    // Synchronized Group Crosshairs Setup for Bottom Industry Charts with Color-Scaled Return Styling
     const allInlineSvgs = document.querySelectorAll('.inline-svg');
     const groupMap = {{}};
     allInlineSvgs.forEach(svgEl => {{
@@ -1141,7 +1137,7 @@ try:
     print("\n🔄 Syncing and pushing dashboard to GitHub...")
     subprocess.run(["git", "add", output_path], check=True)
     subprocess.run(["git", "add", __file__], check=True)
-    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (NY Time)"
+    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (Popup Chart Fix)"
     subprocess.run(["git", "commit", "-m", commit_message], check=True)
     subprocess.run(["git", "push", "origin", "main"], check=True)
     print("🚀 Successfully pushed files to GitHub!")
@@ -1149,4 +1145,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: Script updated with Eastern/NY Timezone enforcement!")
+print("\n🎉 ALL TASKS COMPLETE: Popup sparkline chart height aligned to 110px!")
