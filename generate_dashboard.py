@@ -782,7 +782,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
 <body><div class="container"><header>
     <div><h1>📊 Jacob's Technical Watchlist & Market Dashboard</h1></div>
     <div class="header-meta">
-        <div class="timestamp-banner">⏱️️ {generation_timestamp_str}</div>
+        <div class="timestamp-banner">⏱️ {generation_timestamp_str}</div>
         <div class="speed-dial-card">
             <div class="speed-dial-container">
                 <div class="speed-dial-arc"></div>
