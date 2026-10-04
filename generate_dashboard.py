@@ -22,7 +22,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Syntax Error Fixed)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - KeyError Fixed)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -341,7 +341,10 @@ for idx, symbol in enumerate(tickers, 1):
                 "ticker": symbol, "name": comp_name, "industry": comp_industry, "date": earn_date_str, "eps_est": eps_str, "timing": timing,
                 "status_class": status_class, "status_text": status_text, "price": round(last_price, 2), "earn_move": earn_move_badge,
                 "pct": round(pct_range, 1), "vol_ratio": vol_ratio, "svg_points": svg_points, "ma30_svg_points": ma30_svg_points, "p_max": p_max, "p_mid": p_mid, "p_min": p_min,
-                "d_start": d_start, "d_mid": d_mid, "d_end": d_end, "is_pos": is_pos, "start_y_pct": round(start_y_pct, 1), "ret_6mo": round(return_6mo_pct, 2),
+                "d_start": d_start, "d_mid": d_mid, "d_end": d_end, "is_pos": is_pos, "start_y_pct": round(start_y_pct, 1), 
+                "ret_1m": round(return_30d_pct, 2),
+                "ret_3m": round(return_3m_pct, 2),
+                "ret_6mo": round(return_6mo_pct, 2),
                 "ret_peak_curr": round(ret_peak_curr_pct, 2), "importance_notes": " | ".join(importance_notes), "month_ends": json.dumps(month_end_x_coords),
                 "chart_closes": json.dumps(closes), "chart_dates": json.dumps(formatted_dates)
             })
@@ -350,7 +353,10 @@ for idx, symbol in enumerate(tickers, 1):
                 "ticker": symbol, "name": comp_name, "industry": comp_industry, "date": "TBD / Next Qtr", "eps_est": "N/A", "timing": "TBD",
                 "status_class": "badge-unconfirmed", "status_text": "Unconfirmed Est.", "price": round(last_price, 2), "earn_move": '<span style="color:var(--text-muted);">-</span>',
                 "pct": round(pct_range, 1), "vol_ratio": vol_ratio, "svg_points": svg_points, "ma30_svg_points": ma30_svg_points, "p_max": p_max, "p_mid": p_mid, "p_min": p_min,
-                "d_start": d_start, "d_mid": d_mid, "d_end": d_end, "is_pos": is_pos, "start_y_pct": round(start_y_pct, 1), "ret_6mo": round(return_6mo_pct, 2),
+                "d_start": d_start, "d_mid": d_mid, "d_end": d_end, "is_pos": is_pos, "start_y_pct": round(start_y_pct, 1), 
+                "ret_1m": round(return_30d_pct, 2),
+                "ret_3m": round(return_3m_pct, 2),
+                "ret_6mo": round(return_6mo_pct, 2),
                 "ret_peak_curr": round(ret_peak_curr_pct, 2), "importance_notes": " | ".join(importance_notes), "month_ends": json.dumps(month_end_x_coords),
                 "chart_closes": json.dumps(closes), "chart_dates": json.dumps(formatted_dates)
             })
@@ -377,7 +383,10 @@ for idx, symbol in enumerate(tickers, 1):
                 "pct": round(pct_range, 1), "svg_points": svg_points, "ma30_svg_points": ma30_svg_points,
                 "p_max": p_max, "p_mid": p_mid, "p_min": p_min,
                 "d_start": d_start, "d_mid": d_mid, "d_end": d_end, "is_pos": is_pos,
-                "start_y_pct": round(start_y_pct, 1), "ret_6mo": round(return_6mo_pct, 2),
+                "start_y_pct": round(start_y_pct, 1), 
+                "ret_1m": round(return_30d_pct, 2),
+                "ret_3m": round(return_3m_pct, 2),
+                "ret_6mo": round(return_6mo_pct, 2),
                 "ret_peak_curr": round(ret_peak_curr_pct, 2),
                 "importance_notes": " | ".join(importance_notes), "month_ends": json.dumps(month_end_x_coords),
                 "chart_closes": json.dumps(closes),
@@ -1166,7 +1175,7 @@ try:
     subprocess.run(["git", "config", "user.email", "github-actions[bot]@users.noreply.github.com"], check=True)
     subprocess.run(["git", "add", output_path], check=True)
     subprocess.run(["git", "add", __file__], check=True)
-    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (Syntax Fix & Peak Returns)"
+    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (KeyError Fix & Peak Returns)"
     subprocess.run(["git", "commit", "-m", commit_message], check=True)
     subprocess.run(["git", "push", "origin", "main"], check=True)
     print("🚀 Successfully pushed files to GitHub!")
@@ -1174,4 +1183,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: Dashboard generated without errors!")
+print("\n🎉 ALL TASKS COMPLETE: KeyError resolved and dashboard successfully built!")
