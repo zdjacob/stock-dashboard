@@ -4,7 +4,7 @@ from zoneinfo import ZoneInfo
 # ==========================================
 # 🔑 FINNHUB API KEY & CUSTOM INDUSTRY MAPPINGS
 # ==========================================
-API_KEY = "d9rihopr01qoo7o4k3igd9rihopr01qoo7o4k3j0"
+API_KEY = os.getenv("FINNHUB_API_KEY", "d9rihopr01qoo7o4k3igd9rihopr01qoo7o4k3j0")
 
 CUSTOM_INDUSTRY_MAP = {
     "REGN": "Biotech And Healthcare", "ISRG": "Biotech And Healthcare", "LLY": "Biotech And Healthcare", "VRTX": "Biotech And Healthcare",
@@ -22,7 +22,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Popup Chart Alignment Fix)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - 30D MA Sparkline Integration)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -191,6 +191,7 @@ for idx, symbol in enumerate(tickers, 1):
         return_10d_pct, price_10d, return_30d_pct, price_30d, return_3m_pct, price_3m, return_6mo_pct, vol_ratio, closes, timestamps, formatted_dates = get_historical_data_yahoo(symbol, last_price)
 
         svg_points = ""
+        ma30_svg_points = ""
         p_max, p_mid, p_min = last_price, last_price, last_price
         d_start, d_mid, d_end = "Start", "Mid", "End"
         is_pos = "false"
@@ -202,6 +203,16 @@ for idx, symbol in enumerate(tickers, 1):
             recent_closes = closes
             recent_ts = timestamps if len(timestamps) >= len(recent_closes) else []
             
+            # Compute 30-day Moving Average array
+            ma30_values = []
+            window = 30
+            for i in range(len(recent_closes)):
+                if i < window - 1:
+                    subset = recent_closes[:i+1]
+                else:
+                    subset = recent_closes[i - window + 1 : i + 1]
+                ma30_values.append(statistics.mean(subset))
+
             width, height = 320, 110
             min_c = min(recent_closes)
             max_c = max(recent_closes)
@@ -239,11 +250,18 @@ for idx, symbol in enumerate(tickers, 1):
             start_y_pct = ((start_val - min_c) / c_range) * 100
 
             pts = []
+            ma_pts = []
             for i, val in enumerate(recent_closes):
                 x = (i / (len(recent_closes) - 1)) * width
                 y = height - ((val - min_c) / c_range) * (height - 20) - 10
                 pts.append(f"{x:.1f},{y:.1f}")
+                
+                ma_val = ma30_values[i]
+                y_ma = height - ((ma_val - min_c) / c_range) * (height - 20) - 10
+                ma_pts.append(f"{x:.1f},{y_ma:.1f}")
+
             svg_points = " ".join(pts)
+            ma30_svg_points = " ".join(ma_pts)
             p_max = round(max_c, 2)
             p_mid = round((max_c + min_c) / 2, 2)
             p_min = round(min_c, 2)
@@ -255,7 +273,7 @@ for idx, symbol in enumerate(tickers, 1):
             "last": round(last_price, 2), "price": round(last_price, 2), "supp": round(supp, 2),
             "ma50": round(ma50, 2), "ma200": round(ma200, 2), "low52": round(low52, 2),
             "high52": round(high52, 2), "pct": round(pct_range, 1), "mkt_cap": mkt_cap_str,
-            "vol_ratio": vol_ratio, "svg_points": svg_points, "p_max": p_max,
+            "vol_ratio": vol_ratio, "svg_points": svg_points, "ma30_svg_points": ma30_svg_points, "p_max": p_max,
             "p_mid": p_mid, "p_min": p_min, "d_start": d_start, "d_mid": d_mid,
             "d_end": d_end, "is_pos": is_pos, "start_y_pct": round(start_y_pct, 1),
             "ret_1m": round(return_30d_pct, 2),
@@ -317,7 +335,7 @@ for idx, symbol in enumerate(tickers, 1):
             earnings_list.append({
                 "ticker": symbol, "name": comp_name, "industry": comp_industry, "date": earn_date_str, "eps_est": eps_str, "timing": timing,
                 "status_class": status_class, "status_text": status_text, "price": round(last_price, 2), "earn_move": earn_move_badge,
-                "pct": round(pct_range, 1), "vol_ratio": vol_ratio, "svg_points": svg_points, "p_max": p_max, "p_mid": p_mid, "p_min": p_min,
+                "pct": round(pct_range, 1), "vol_ratio": vol_ratio, "svg_points": svg_points, "ma30_svg_points": ma30_svg_points, "p_max": p_max, "p_mid": p_mid, "p_min": p_min,
                 "d_start": d_start, "d_mid": d_mid, "d_end": d_end, "is_pos": is_pos, "start_y_pct": round(start_y_pct, 1), "ret_6mo": round(return_6mo_pct, 2),
                 "importance_notes": " | ".join(importance_notes), "month_ends": json.dumps(month_end_x_coords),
                 "chart_closes": json.dumps(closes), "chart_dates": json.dumps(formatted_dates)
@@ -326,7 +344,7 @@ for idx, symbol in enumerate(tickers, 1):
             earnings_list.append({
                 "ticker": symbol, "name": comp_name, "industry": comp_industry, "date": "TBD / Next Qtr", "eps_est": "N/A", "timing": "TBD",
                 "status_class": "badge-unconfirmed", "status_text": "Unconfirmed Est.", "price": round(last_price, 2), "earn_move": '<span style="color:var(--text-muted);">-</span>',
-                "pct": round(pct_range, 1), "vol_ratio": vol_ratio, "svg_points": svg_points, "p_max": p_max, "p_mid": p_mid, "p_min": p_min,
+                "pct": round(pct_range, 1), "vol_ratio": vol_ratio, "svg_points": svg_points, "ma30_svg_points": ma30_svg_points, "p_max": p_max, "p_mid": p_mid, "p_min": p_min,
                 "d_start": d_start, "d_mid": d_mid, "d_end": d_end, "is_pos": is_pos, "start_y_pct": round(start_y_pct, 1), "ret_6mo": round(return_6mo_pct, 2),
                 "importance_notes": " | ".join(importance_notes), "month_ends": json.dumps(month_end_x_coords),
                 "chart_closes": json.dumps(closes), "chart_dates": json.dumps(formatted_dates)
@@ -351,7 +369,7 @@ for idx, symbol in enumerate(tickers, 1):
                 "return_10d": round(return_10d_pct, 2), "price_10d": round(price_10d, 2),
                 "return_30d": round(return_30d_pct, 2), "price_30d": round(price_30d, 2),
                 "vol_ratio": vol_ratio, "name": comp_name, "industry": comp_industry,
-                "pct": round(pct_range, 1), "svg_points": svg_points,
+                "pct": round(pct_range, 1), "svg_points": svg_points, "ma30_svg_points": ma30_svg_points,
                 "p_max": p_max, "p_mid": p_mid, "p_min": p_min,
                 "d_start": d_start, "d_mid": d_mid, "d_end": d_end, "is_pos": is_pos,
                 "start_y_pct": round(start_y_pct, 1), "ret_6mo": round(return_6mo_pct, 2),
@@ -379,7 +397,7 @@ elif hotness_pct >= 50:
 elif hotness_pct >= 30:
     hotness_status = "⚖️ Neutral / Balanced"
 else:
-    hotness_status = "❄️️ Oversold / Bearish"
+    hotness_status = "❄️ Oversold / Bearish"
 
 if movers_list:
     r1d_vals = [m['daily_return'] for m in movers_list]
@@ -433,7 +451,7 @@ def build_watchlist_rows(items):
         closes_json = item['chart_closes'].replace('"', '&quot;')
         dates_json = item['chart_dates'].replace('"', '&quot;')
         month_json = item['month_ends'].replace('"', '&quot;')
-        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
+        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['ma30_svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
         
         rows += f"""<tr class="watchlist-row">
             <td class="col-ticker clickable-cell" onclick="showSidePopup(event, {popup_args})"><span class="ticker-popup-link"><strong>${item['ticker']}</strong></span></td>
@@ -467,7 +485,7 @@ def build_earnings_rows(items):
         closes_json = item['chart_closes'].replace('"', '&quot;')
         dates_json = item['chart_dates'].replace('"', '&quot;')
         month_json = item['month_ends'].replace('"', '&quot;')
-        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
+        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['ma30_svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
         
         rows += f"""<tr class="earnings-row">
             <td class="col-earn-ticker clickable-cell" onclick="showSidePopup(event, {popup_args})"><span class="ticker-popup-link"><strong>${item['ticker']}</strong></span></td>
@@ -495,7 +513,7 @@ def build_movers_rows(items):
         closes_json = item['chart_closes'].replace('"', '&quot;')
         dates_json = item['chart_dates'].replace('"', '&quot;')
         month_json = item['month_ends'].replace('"', '&quot;')
-        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
+        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['ma30_svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
         
         rows += f"""<tr class="movers-row">
             <td class="col-movers-ticker clickable-cell" onclick="showSidePopup(event, {popup_args})"><strong>${item['ticker']}</strong> {vol_badge}</td>
@@ -525,7 +543,7 @@ def build_master_rows(items):
         closes_json = item['chart_closes'].replace('"', '&quot;')
         dates_json = item['chart_dates'].replace('"', '&quot;')
         month_json = item['month_ends'].replace('"', '&quot;')
-        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
+        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['ma30_svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
         
         rows += f"""
         <tr class="master-row">
@@ -590,9 +608,11 @@ def build_industry_grouped_grid(items):
                         <line x1="0" y1="55.0" x2="320" y2="55.0" stroke="rgba(255,255,255,0.18)" stroke-dasharray="2,2"/>
                         <line x1="0" y1="82.5" x2="320" y2="82.5" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
                         {month_lines_svg}
+                        <!-- 30-Day Moving Average Polyline -->
+                        <polyline fill="none" stroke="rgba(250, 204, 21, 0.65)" stroke-width="1.5" stroke-dasharray="3,2" points="{item['ma30_svg_points']}"/>
+                        <polyline fill="none" stroke="{'#22c55e' if item['is_pos'] == 'true' else '#ef4444'}" stroke-width="2" points="{item['svg_points']}"/>
                         <line class="inline-line-x" x1="0" y1="0" x2="0" y2="110" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
                         <line class="inline-line-y" x1="0" y1="0" x2="320" y2="0" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
-                        <polyline fill="none" stroke="{'#22c55e' if item['is_pos'] == 'true' else '#ef4444'}" stroke-width="2" points="{item['svg_points']}"/>
                         <circle class="inline-dot" cx="0" cy="0" r="3.5" fill="var(--accent-cyan)" stroke="#fff" stroke-width="1" style="display: none;"/>
                     </svg>
                 </div>
@@ -638,6 +658,7 @@ h1{{font-size:1.2rem;color:var(--accent-cyan);}}
 .dot-cyan{{width:7px;height:7px;background-color:var(--accent-cyan);border-radius:50%;display:inline-block;}}
 .bar-orange{{width:3px;height:9px;background-color:var(--accent-orange);display:inline-block;}}
 .diamond-yellow{{width:6px;height:6px;background-color:var(--accent-yellow);transform:rotate(45deg);display:inline-block;}}
+.line-dashed-yellow{{width:12px;height:0px;border-top:2px dashed rgba(250,204,21,0.85);display:inline-block;}}
 .square-red{{width:6px;height:6px;background-color:var(--accent-red);display:inline-block;}}
 .line-grid{{width:1px;height:10px;border-right:1px dashed var(--text-muted);display:inline-block;margin:0 1px;}}
 .dual-grid-wrapper{{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;}}
@@ -773,7 +794,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
         </div>
     </div>
 </header>
-<div class="legend-bar"><span style="color:var(--text-muted);font-weight:600;">Indicator Key:</span><div class="legend-item"><span class="dot-cyan"></span> Live Price</div><div class="legend-item"><span class="bar-orange"></span> Support Level</div><div class="legend-item"><span class="diamond-yellow"></span> 50-Day Moving Avg</div><div class="legend-item"><span class="square-red"></span> 200-Day Moving Avg</div><div class="legend-item"><span class="line-grid"></span> 33% / 66% Range Dividers</div></div>
+<div class="legend-bar"><span style="color:var(--text-muted);font-weight:600;">Indicator Key:</span><div class="legend-item"><span class="dot-cyan"></span> Live Price</div><div class="legend-item"><span class="bar-orange"></span> Support Level</div><div class="legend-item"><span class="line-dashed-yellow"></span> 30D Moving Avg (Sparkline Overlay)</div><div class="legend-item"><span class="diamond-yellow"></span> 50-Day Moving Avg</div><div class="legend-item"><span class="square-red"></span> 200-Day Moving Avg</div><div class="legend-item"><span class="line-grid"></span> 33% / 66% Range Dividers</div></div>
 
 <!-- Section 1: Technical Watchlist Dual Grid -->
 <div class="dual-grid-wrapper">
@@ -851,6 +872,8 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
                 <line x1="106.6" y1="0" x2="106.6" y2="110" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
                 <line x1="213.3" y1="0" x2="213.3" y2="110" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
                 <line id="popBaseLine" x1="0" y1="55" x2="320" y2="55" stroke="rgba(255,255,255,0.5)" stroke-dasharray="3,3" stroke-width="1.2"/>
+                <!-- Popup 30D MA Overlay Polyline -->
+                <polyline id="popMAPolyline" fill="none" stroke="rgba(250, 204, 21, 0.65)" stroke-width="1.5" stroke-dasharray="3,2" points=""/>
                 <polyline id="popPolyline" fill="none" stroke-width="2" points=""/>
                 <line id="hoverLineX" x1="0" y1="0" x2="0" y2="110" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
                 <line id="hoverLineY" x1="0" y1="0" x2="320" y2="0" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
@@ -880,7 +903,7 @@ let popDates = [];
 let popMin = 0;
 let popMax = 0;
 
-function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints, pMax, pMid, pMin, dStart, dMid, dEnd, isPos, startYPct, ret6mo, closesInput, datesInput, importanceNotes) {{
+function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints, ma30SvgPoints, pMax, pMid, pMin, dStart, dMid, dEnd, isPos, startYPct, ret6mo, closesInput, datesInput, importanceNotes) {{
     event.stopPropagation();
     const popup = document.getElementById('sideSparklinePopup');
     
@@ -927,6 +950,11 @@ function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints
     const polyline = document.getElementById('popPolyline');
     polyline.setAttribute('points', svgPoints);
     polyline.setAttribute('stroke', isPos ? '#22c55e' : '#ef4444');
+
+    const maPolyline = document.getElementById('popMAPolyline');
+    if (maPolyline) {{
+        maPolyline.setAttribute('points', ma30SvgPoints);
+    }}
 
     document.getElementById('labelMax').innerText = '$' + pMax;
     document.getElementById('labelMid').innerText = '$' + pMid;
@@ -1135,9 +1163,11 @@ print(f"⏱️ Timestamp included: {generation_timestamp_str}")
 
 try:
     print("\n🔄 Syncing and pushing dashboard to GitHub...")
+    subprocess.run(["git", "config", "user.name", "github-actions[bot]"], check=True)
+    subprocess.run(["git", "config", "user.email", "github-actions[bot]@users.noreply.github.com"], check=True)
     subprocess.run(["git", "add", output_path], check=True)
     subprocess.run(["git", "add", __file__], check=True)
-    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (Popup Chart Fix)"
+    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (30D MA Sparkline Added)"
     subprocess.run(["git", "commit", "-m", commit_message], check=True)
     subprocess.run(["git", "push", "origin", "main"], check=True)
     print("🚀 Successfully pushed files to GitHub!")
@@ -1145,4 +1175,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: Popup sparkline chart height aligned to 110px!")
+print("\n🎉 ALL TASKS COMPLETE: 30-Day Moving Average overlay rendered across all sparkline charts!")
