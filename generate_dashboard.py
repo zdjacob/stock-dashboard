@@ -22,7 +22,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Fixed Popup & Hover)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Complete Corrected Script)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -407,7 +407,7 @@ if hotness_pct >= 70:
 elif hotness_pct >= 50:
     hotness_status = "⚡ Strong Momentum"
 elif hotness_pct >= 30:
-    hotness_status = "⚖️ Neutral / Balanced"
+    hotness_status = "⚖️️ Neutral / Balanced"
 else:
     hotness_status = "❄️ Oversold / Bearish"
 
@@ -959,12 +959,16 @@ function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints
     const chartHeight = 110;
     const lineY = chartHeight - (parseFloat(startYPct) / 100) * chartHeight;
     const baseLine = document.getElementById('popBaseLine');
-    baseLine.setAttribute('y1', lineY);
-    baseLine.setAttribute('y2', lineY);
+    if (baseLine) {{
+        baseLine.setAttribute('y1', lineY);
+        baseLine.setAttribute('y2', lineY);
+    }}
 
     const polyline = document.getElementById('popPolyline');
-    polyline.setAttribute('points', svgPoints);
-    polyline.setAttribute('stroke', isPos ? '#22c55e' : '#ef4444');
+    if (polyline) {{
+        polyline.setAttribute('points', svgPoints);
+        polyline.setAttribute('stroke', isPos ? '#22c55e' : '#ef4444');
+    }}
 
     const maPolyline = document.getElementById('popMAPolyline');
     if (maPolyline) {{
@@ -979,6 +983,13 @@ function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints
     document.getElementById('labelEnd').innerText = dEnd;
     document.getElementById('popYahooLink').href = 'https://finance.yahoo.com/quote/' + ticker;
     
+    const hoverLineX = document.getElementById('hoverLineX');
+    const hoverLineY = document.getElementById('hoverLineY');
+    const hoverDot = document.getElementById('hoverDot');
+    if (hoverLineX) hoverLineX.style.display = 'none';
+    if (hoverLineY) hoverLineY.style.display = 'none';
+    if (hoverDot) hoverDot.style.display = 'none';
+
     popup.style.display = 'block';
     
     const cellRect = event.currentTarget.getBoundingClientRect();
@@ -996,6 +1007,53 @@ function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints
     popup.style.left = leftPos + 'px';
 }}
 
+function updatePopCrosshair(clientX) {{
+    const svg = document.getElementById('popSvg');
+    const hoverLineX = document.getElementById('hoverLineX');
+    const hoverLineY = document.getElementById('hoverLineY');
+    const hoverDot = document.getElementById('hoverDot');
+    const hoverTip = document.getElementById('popHoverTip');
+
+    if (!svg || !popCloses || popCloses.length === 0) return;
+
+    const rect = svg.getBoundingClientRect();
+    if (rect.width === 0) return;
+
+    const mouseX = Math.max(0, Math.min(clientX - rect.left, rect.width));
+    const svgWidth = 320;
+    const svgHeight = 110;
+
+    const xRatio = mouseX / rect.width;
+    let index = Math.round(xRatio * (popCloses.length - 1));
+    if (index < 0) index = 0;
+    if (index >= popCloses.length) index = popCloses.length - 1;
+
+    const val = popCloses[index];
+    const dateStr = popDates[index] || 'Recent';
+    const currentPrice = popCloses[popCloses.length - 1];
+    const retToCurrent = val > 0 ? ((currentPrice - val) / val) * 100 : 0.0;
+    const retSign = retToCurrent >= 0 ? '+' : '';
+    const colorVar = retToCurrent >= 0 ? 'var(--accent-green)' : 'var(--accent-red)';
+
+    const xCoord = (index / (popCloses.length - 1)) * svgWidth;
+    const cRange = (popMax !== popMin) ? (popMax - popMin) : 1.0;
+    const yCoord = svgHeight - ((val - popMin) / cRange) * (svgHeight - 20) - 10;
+
+    hoverLineX.setAttribute('x1', xCoord);
+    hoverLineX.setAttribute('x2', xCoord);
+    hoverLineX.style.display = 'block';
+
+    hoverLineY.setAttribute('y1', yCoord);
+    hoverLineY.setAttribute('y2', yCoord);
+    hoverLineY.style.display = 'block';
+
+    hoverDot.setAttribute('cx', xCoord);
+    hoverDot.setAttribute('cy', yCoord);
+    hoverDot.style.display = 'block';
+
+    hoverTip.innerHTML = `${{dateStr}} : <b>$${{val.toFixed(2)}}</b> (Return to Current: <span style="color:${{colorVar}}">${{retSign}}${{retToCurrent.toFixed(2)}}%</span>)`;
+}}
+
 document.addEventListener("DOMContentLoaded", function() {{
     const svg = document.getElementById('popSvg');
     const hoverLineX = document.getElementById('hoverLineX');
@@ -1004,50 +1062,12 @@ document.addEventListener("DOMContentLoaded", function() {{
     const hoverTip = document.getElementById('popHoverTip');
 
     if (svg) {{
-        function updatePopCrosshair(clientX) {{
-            if (!popCloses || popCloses.length === 0) return;
-            const rect = svg.getBoundingClientRect();
-            const mouseX = Math.max(0, Math.min(clientX - rect.left, rect.width));
-            const svgWidth = 320;
-            const svgHeight = 110;
-
-            const xRatio = mouseX / rect.width;
-            let index = Math.round(xRatio * (popCloses.length - 1));
-            if (index < 0) index = 0;
-            if (index >= popCloses.length) index = popCloses.length - 1;
-
-            const val = popCloses[index];
-            const dateStr = popDates[index] || 'Recent';
-            const currentPrice = popCloses[popCloses.length - 1];
-            const retToCurrent = val > 0 ? ((currentPrice - val) / val) * 100 : 0.0;
-            const retSign = retToCurrent >= 0 ? '+' : '';
-            const colorVar = retToCurrent >= 0 ? 'var(--accent-green)' : 'var(--accent-red)';
-
-            const xCoord = (index / (popCloses.length - 1)) * svgWidth;
-            const cRange = (popMax !== popMin) ? (popMax - popMin) : 1.0;
-            const yCoord = svgHeight - ((val - popMin) / cRange) * (svgHeight - 20) - 10;
-
-            hoverLineX.setAttribute('x1', xCoord);
-            hoverLineX.setAttribute('x2', xCoord);
-            hoverLineX.style.display = 'block';
-
-            hoverLineY.setAttribute('y1', yCoord);
-            hoverLineY.setAttribute('y2', yCoord);
-            hoverLineY.style.display = 'block';
-
-            hoverDot.setAttribute('cx', xCoord);
-            hoverDot.setAttribute('cy', yCoord);
-            hoverDot.style.display = 'block';
-
-            hoverTip.innerHTML = dateStr + " : <b>$" + val.toFixed(2) + "</b> (Return to Current: <span style=\"color:" + colorVar + "\">" + retSign + retToCurrent.toFixed(2) + "%</span>)";
-        }}
-
         svg.addEventListener('mousemove', function(e) {{ updatePopCrosshair(e.clientX); }});
         svg.addEventListener('mouseleave', function() {{
-            hoverLineX.style.display = 'none';
-            hoverLineY.style.display = 'none';
-            hoverDot.style.display = 'none';
-            hoverTip.innerText = 'Hover or Tap chart for price & date';
+            if (hoverLineX) hoverLineX.style.display = 'none';
+            if (hoverLineY) hoverLineY.style.display = 'none';
+            if (hoverDot) hoverDot.style.display = 'none';
+            if (hoverTip) hoverTip.innerText = 'Hover or Tap chart for price & date';
         }});
         svg.addEventListener('touchstart', function(e) {{ if (e.touches.length > 0) updatePopCrosshair(e.touches[0].clientX); }}, {{passive: true}});
         svg.addEventListener('touchmove', function(e) {{ if (e.touches.length > 0) updatePopCrosshair(e.touches[0].clientX); }}, {{passive: true}});
@@ -1070,8 +1090,6 @@ document.addEventListener("DOMContentLoaded", function() {{
         groupSvgs.forEach(svgEl => {{
             let closes = [];
             let dates = [];
-            let sMin = parseFloat(svgEl.getAttribute('data-min'));
-            let sMax = parseFloat(svgEl.getAttribute('data-max'));
             try {{
                 closes = JSON.parse(svgEl.getAttribute('data-closes'));
                 dates = JSON.parse(svgEl.getAttribute('data-dates'));
@@ -1120,31 +1138,44 @@ document.addEventListener("DOMContentLoaded", function() {{
                     const cRange = (oMax !== oMin) ? (oMax - oMin) : 1.0;
                     const yCoord = svgHeight - ((oVal - oMin) / cRange) * (svgHeight - 20) - 10;
 
-                    oLineX.setAttribute('x1', xCoord);
-                    oLineX.setAttribute('x2', xCoord);
-                    oLineX.style.display = 'block';
+                    if (oLineX) {{
+                        oLineX.setAttribute('x1', xCoord);
+                        oLineX.setAttribute('x2', xCoord);
+                        oLineX.style.display = 'block';
+                    }}
 
-                    oLineY.setAttribute('y1', yCoord);
-                    oLineY.setAttribute('y2', yCoord);
-                    oLineY.style.display = 'block';
+                    if (oLineY) {{
+                        oLineY.setAttribute('y1', yCoord);
+                        oLineY.setAttribute('y2', yCoord);
+                        oLineY.style.display = 'block';
+                    }}
 
-                    oDot.setAttribute('cx', xCoord);
-                    oDot.setAttribute('cy', yCoord);
-                    oDot.style.display = 'block';
+                    if (oDot) {{
+                        oDot.setAttribute('cx', xCoord);
+                        oDot.setAttribute('cy', yCoord);
+                        oDot.style.display = 'block';
+                    }}
 
-                    oDisplayHeader.innerHTML = `${{oDateStr}} : <span style="color:var(--text-main);">${{oVal.toFixed(2)}}</span> (<span class="return-badge ${{badgeClass}}" style="font-size:0.6rem; padding:0 3px; ${{colorStyle}}">${{retStr}}</span>)`;
+                    if (oDisplayHeader) {{
+                        oDisplayHeader.innerHTML = `${{oDateStr}} : <span style="color:var(--text-main);">${{oVal.toFixed(2)}}</span> (<span class="return-badge ${{badgeClass}}" style="font-size:0.6rem; padding:0 3px; ${{colorStyle}}">${{retStr}}</span>)`;
+                    }}
                 }});
             }}
 
             svgEl.addEventListener('mousemove', function(e) {{ applySync(e.clientX); }});
             svgEl.addEventListener('mouseleave', function() {{
                 groupSvgs.forEach(otherSvg => {{
-                    otherSvg.querySelector('.inline-line-x').style.display = 'none';
-                    otherSvg.querySelector('.inline-line-y').style.display = 'none';
-                    otherSvg.querySelector('.inline-dot').style.display = 'none';
+                    const lx = otherSvg.querySelector('.inline-line-x');
+                    const ly = otherSvg.querySelector('.inline-line-y');
+                    const dot = otherSvg.querySelector('.inline-dot');
+                    if (lx) lx.style.display = 'none';
+                    if (ly) ly.style.display = 'none';
+                    if (dot) dot.style.display = 'none';
                     let headerEl = otherSvg.closest('.bottom-card').querySelector('.card-hover-display');
-                    headerEl.innerHTML = 'Hover chart';
-                    headerEl.style.color = 'var(--text-muted)';
+                    if (headerEl) {{
+                        headerEl.innerHTML = 'Hover chart';
+                        headerEl.style.color = 'var(--text-muted)';
+                    }}
                 }});
             }});
             svgEl.addEventListener('touchstart', function(e) {{ if (e.touches.length > 0) applySync(e.touches[0].clientX); }}, {{passive: true}});
@@ -1159,7 +1190,7 @@ function closeSidePopup() {{
 
 window.addEventListener('click', function(e) {{
     const popup = document.getElementById('sideSparklinePopup');
-    if (!popup.contains(e.target)) {{
+    if (popup && !popup.contains(e.target)) {{
         popup.style.display = 'none';
     }}
 }});
@@ -1183,7 +1214,7 @@ try:
     subprocess.run(["git", "config", "user.email", "github-actions[bot]@users.noreply.github.com"], check=True)
     subprocess.run(["git", "add", output_path], check=True)
     subprocess.run(["git", "add", __file__], check=True)
-    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (Popup & Hover Fixed)"
+    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (Hover and Popup Restored)"
     subprocess.run(["git", "commit", "-m", commit_message], check=True)
     subprocess.run(["git", "push", "origin", "main"], check=True)
     print("🚀 Successfully pushed files to GitHub!")
