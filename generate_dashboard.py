@@ -22,7 +22,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Complete Script with Group Peak Gradient)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Orange/Red Negative Gradient)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -407,7 +407,7 @@ if hotness_pct >= 70:
 elif hotness_pct >= 50:
     hotness_status = "⚡ Strong Momentum"
 elif hotness_pct >= 30:
-    hotness_status = "⚖️ Neutral / Balanced"
+    hotness_status = "⚖️️ Neutral / Balanced"
 else:
     hotness_status = "❄️ Oversold / Bearish"
 
@@ -579,13 +579,20 @@ def get_header_bg_color(val, min_val, max_val):
     if max_val == min_val:
         return "background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.3);"
     
-    # Calculate ratio (0.0 = worst drawdown/dark red, 1.0 = closest to peak/bright green)
-    factor = max(0.0, min(1.0, (val - min_val) / (max_val - min_val)))
+    # Positive return (at or above 0 drawdown) -> Bright Green
+    if val >= 0:
+        return "background: rgba(34, 197, 94, 0.85); border: 1px solid rgba(34, 197, 94, 1.0);"
     
-    # RGB Dark Red (#991b1b -> 153, 27, 27) to Bright Green (#16a34a -> 22, 163, 74)
-    r = int(153 + (22 - 153) * factor)
-    g = int(27 + (163 - 27) * factor)
-    b = int(27 + (74 - 27) * factor)
+    # Drawdown negative returns -> Orange to Dark Red Gradient
+    neg_min = min(0.0, min_val)
+    neg_max = max(-0.01, max_val if max_val < 0 else 0.0)
+    
+    factor = max(0.0, min(1.0, (val - neg_min) / (neg_max - neg_min) if neg_max != neg_min else 0.5))
+    
+    # Interpolate from Dark Red (#991b1b -> 153, 27, 27) to Warm Orange (#f97316 -> 249, 115, 22)
+    r = int(153 + (249 - 153) * factor)
+    g = int(27 + (115 - 27) * factor)
+    b = int(27 + (22 - 27) * factor)
     
     return f"background: rgba({r}, {g}, {b}, 0.85); border: 1px solid rgba({r}, {g}, {b}, 1.0);"
 
@@ -601,7 +608,6 @@ def build_industry_grouped_grid(items):
     for ind, stock_items in sorted(industry_dict.items()):
         group_slug = "".join([c for c in ind if c.isalnum()])
         
-        # Determine group min/max peak-to-current returns for relative gradient scale
         group_peak_rets = [s['ret_peak_curr'] for s in stock_items]
         min_ret = min(group_peak_rets)
         max_ret = max(group_peak_rets)
@@ -616,7 +622,6 @@ def build_industry_grouped_grid(items):
             r6m_class = "badge-pos" if item['ret_6mo'] > 0 else ("badge-neg" if item['ret_6mo'] < 0 else "badge-neutral")
             rpeak_class = "badge-pos" if item['ret_peak_curr'] > 0 else ("badge-neg" if item['ret_peak_curr'] < 0 else "badge-neutral")
             
-            # Compute header gradient background style based on relative rank in group
             header_style = get_header_bg_color(item['ret_peak_curr'], min_ret, max_ret)
 
             month_lines_svg = ""
@@ -803,8 +808,8 @@ tr:nth-child(even){{background-color:var(--bg-row-alt);}}
 .return-badge{{padding:1px 4px;border-radius:3px;font-size:0.68rem;font-weight:600;display:inline-block;min-width:45px;text-align:center;}}
 .badge-pos{{background-color:rgba(74,222,128,0.18);color:var(--accent-green);border:1px solid rgba(74,222,128,0.3);}}
 .badge-strong-pos{{background-color:rgba(74,222,128,0.35);color:#22c55e;border:1px solid #4ade80;font-weight:bold;}}
-.badge-neg{{background-color:rgba(248,113,113,0.18);color:var(--accent-red);border:1px solid rgba(248,113,113,0.3);}}
-.badge-strong-neg{{background-color:rgba(248,113,113,0.35);color:#ef4444;border:1px solid #f87171;font-weight:bold;}}
+.badge-neg{{background-color:rgba(251,146,60,0.25);color:var(--accent-orange);border:1px solid rgba(251,146,60,0.4);}}
+.badge-strong-neg{{background-color:rgba(239,68,68,0.3);color:#f87171;border:1px solid #ef4444;font-weight:bold;}}
 .badge-neutral{{background:transparent;color:var(--text-main);border:1px solid transparent;font-weight:normal;}}
 .price-col{{color:var(--text-muted);font-size:0.68rem;font-weight:500;font-family:monospace;text-align:right;}}
 .month-pill{{display:inline-block;padding:1px 4px;border-radius:3px;font-size:0.62rem;font-weight:bold;margin-right:3px;text-transform:uppercase;}}
@@ -1056,7 +1061,7 @@ function updatePopCrosshair(clientX) {{
     const currentPrice = popCloses[popCloses.length - 1];
     const retToCurrent = val > 0 ? ((currentPrice - val) / val) * 100 : 0.0;
     const retSign = retToCurrent >= 0 ? '+' : '';
-    const colorVar = retToCurrent >= 0 ? 'var(--accent-green)' : 'var(--accent-red)';
+    const colorVar = retToCurrent >= 0 ? 'var(--accent-green)' : 'var(--accent-orange)';
 
     const xCoord = (index / (popCloses.length - 1)) * svgWidth;
     const cRange = (popMax !== popMin) ? (popMax - popMin) : 1.0;
@@ -1153,7 +1158,7 @@ document.addEventListener("DOMContentLoaded", function() {{
                     let retStr = `${{retSign}}${{pctChange.toFixed(1)}}%`;
 
                     let badgeClass = pctChange > 0 ? 'badge-pos' : (pctChange < 0 ? 'badge-neg' : 'badge-neutral');
-                    let colorStyle = pctChange > 0 ? 'color: var(--accent-green);' : (pctChange < 0 ? 'color: var(--accent-red);' : 'color: var(--text-main);');
+                    let colorStyle = pctChange > 0 ? 'color: var(--accent-green);' : (pctChange < 0 ? 'color: var(--accent-orange);' : 'color: var(--text-main);');
 
                     const svgWidth = 320;
                     const svgHeight = 110;
@@ -1237,7 +1242,7 @@ try:
     subprocess.run(["git", "config", "user.email", "github-actions[bot]@users.noreply.github.com"], check=True)
     subprocess.run(["git", "add", output_path], check=True)
     subprocess.run(["git", "add", __file__], check=True)
-    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (Group Peak Gradient Added)"
+    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (Orange/Red Negative Shading Applied)"
     subprocess.run(["git", "commit", "-m", commit_message], check=True)
     subprocess.run(["git", "push", "origin", "main"], check=True)
     print("🚀 Successfully pushed files to GitHub!")
@@ -1245,4 +1250,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: Group-level gradient headers and interactive features ready!")
+print("\n🎉 ALL TASKS COMPLETE: Updated script generated!")
