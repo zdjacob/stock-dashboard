@@ -22,7 +22,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - 30D MA Sparkline Integration)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - KeyError Fixed)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -198,12 +198,12 @@ for idx, symbol in enumerate(tickers, 1):
         start_y_pct = 50.0
         importance_notes = []
         month_end_x_coords = []
+        ret_peak_curr_pct = 0.0
         
         if closes and len(closes) > 1:
             recent_closes = closes
             recent_ts = timestamps if len(timestamps) >= len(recent_closes) else []
             
-            # Compute 30-day Moving Average array
             ma30_values = []
             window = 30
             for i in range(len(recent_closes)):
@@ -219,6 +219,9 @@ for idx, symbol in enumerate(tickers, 1):
             min_idx = recent_closes.index(min_c)
             max_idx = recent_closes.index(max_c)
             
+            if max_c > 0:
+                ret_peak_curr_pct = ((last_price - max_c) / max_c) * 100.0
+
             if recent_ts:
                 try:
                     d_start = datetime.datetime.fromtimestamp(recent_ts[0]).strftime("%b %d")
@@ -266,6 +269,7 @@ for idx, symbol in enumerate(tickers, 1):
             p_mid = round((max_c + min_c) / 2, 2)
             p_min = round(min_c, 2)
             
+            importance_notes.append(f"⚡ Peak->Curr: {ret_peak_curr_pct:+.2f}%")
             importance_notes.append(f"⚡ 6M: {return_6mo_pct:+.2f}%")
 
         stock_item = {
@@ -279,6 +283,7 @@ for idx, symbol in enumerate(tickers, 1):
             "ret_1m": round(return_30d_pct, 2),
             "ret_3m": round(return_3m_pct, 2),
             "ret_6mo": round(return_6mo_pct, 2),
+            "ret_peak_curr": round(ret_peak_curr_pct, 2),
             "importance_notes": " | ".join(importance_notes),
             "month_ends": json.dumps(month_end_x_coords),
             "chart_closes": json.dumps(closes),
@@ -336,8 +341,11 @@ for idx, symbol in enumerate(tickers, 1):
                 "ticker": symbol, "name": comp_name, "industry": comp_industry, "date": earn_date_str, "eps_est": eps_str, "timing": timing,
                 "status_class": status_class, "status_text": status_text, "price": round(last_price, 2), "earn_move": earn_move_badge,
                 "pct": round(pct_range, 1), "vol_ratio": vol_ratio, "svg_points": svg_points, "ma30_svg_points": ma30_svg_points, "p_max": p_max, "p_mid": p_mid, "p_min": p_min,
-                "d_start": d_start, "d_mid": d_mid, "d_end": d_end, "is_pos": is_pos, "start_y_pct": round(start_y_pct, 1), "ret_6mo": round(return_6mo_pct, 2),
-                "importance_notes": " | ".join(importance_notes), "month_ends": json.dumps(month_end_x_coords),
+                "d_start": d_start, "d_mid": d_mid, "d_end": d_end, "is_pos": is_pos, "start_y_pct": round(start_y_pct, 1), 
+                "ret_1m": round(return_30d_pct, 2),
+                "ret_3m": round(return_3m_pct, 2),
+                "ret_6mo": round(return_6mo_pct, 2),
+                "ret_peak_curr": round(ret_peak_curr_pct, 2), "importance_notes": " | ".join(importance_notes), "month_ends": json.dumps(month_end_x_coords),
                 "chart_closes": json.dumps(closes), "chart_dates": json.dumps(formatted_dates)
             })
         else:
@@ -345,8 +353,11 @@ for idx, symbol in enumerate(tickers, 1):
                 "ticker": symbol, "name": comp_name, "industry": comp_industry, "date": "TBD / Next Qtr", "eps_est": "N/A", "timing": "TBD",
                 "status_class": "badge-unconfirmed", "status_text": "Unconfirmed Est.", "price": round(last_price, 2), "earn_move": '<span style="color:var(--text-muted);">-</span>',
                 "pct": round(pct_range, 1), "vol_ratio": vol_ratio, "svg_points": svg_points, "ma30_svg_points": ma30_svg_points, "p_max": p_max, "p_mid": p_mid, "p_min": p_min,
-                "d_start": d_start, "d_mid": d_mid, "d_end": d_end, "is_pos": is_pos, "start_y_pct": round(start_y_pct, 1), "ret_6mo": round(return_6mo_pct, 2),
-                "importance_notes": " | ".join(importance_notes), "month_ends": json.dumps(month_end_x_coords),
+                "d_start": d_start, "d_mid": d_mid, "d_end": d_end, "is_pos": is_pos, "start_y_pct": round(start_y_pct, 1), 
+                "ret_1m": round(return_30d_pct, 2),
+                "ret_3m": round(return_3m_pct, 2),
+                "ret_6mo": round(return_6mo_pct, 2),
+                "ret_peak_curr": round(ret_peak_curr_pct, 2), "importance_notes": " | ".join(importance_notes), "month_ends": json.dumps(month_end_x_coords),
                 "chart_closes": json.dumps(closes), "chart_dates": json.dumps(formatted_dates)
             })
         time.sleep(0.2)
@@ -372,7 +383,11 @@ for idx, symbol in enumerate(tickers, 1):
                 "pct": round(pct_range, 1), "svg_points": svg_points, "ma30_svg_points": ma30_svg_points,
                 "p_max": p_max, "p_mid": p_mid, "p_min": p_min,
                 "d_start": d_start, "d_mid": d_mid, "d_end": d_end, "is_pos": is_pos,
-                "start_y_pct": round(start_y_pct, 1), "ret_6mo": round(return_6mo_pct, 2),
+                "start_y_pct": round(start_y_pct, 1), 
+                "ret_1m": round(return_30d_pct, 2),
+                "ret_3m": round(return_3m_pct, 2),
+                "ret_6mo": round(return_6mo_pct, 2),
+                "ret_peak_curr": round(ret_peak_curr_pct, 2),
                 "importance_notes": " | ".join(importance_notes), "month_ends": json.dumps(month_end_x_coords),
                 "chart_closes": json.dumps(closes),
                 "chart_dates": json.dumps(formatted_dates)
@@ -382,9 +397,6 @@ for idx, symbol in enumerate(tickers, 1):
     except Exception as e:
         print(f"Error processing {symbol}: {e}")
 
-# ==========================================
-# 🧮 MARKET HOTNESS SPEED DIAL CALCULATION
-# ==========================================
 total_tracked = len(data_list)
 above_50_count = sum(1 for item in data_list if item['pct'] > 50.0)
 hotness_pct = (above_50_count / total_tracked * 100) if total_tracked > 0 else 0
@@ -429,7 +441,6 @@ def build_watchlist_rows(items):
     for item in items:
         calc_pct = lambda val: max(0, min(100, ((val - item['low52']) / (item['high52'] - item['low52'])) * 100)) if item['high52'] > item['low52'] else 50
         p_last, p_supp, p_ma50, p_ma200 = calc_pct(item['last']), calc_pct(item['supp']), calc_pct(item['ma50']), calc_pct(item['ma200'])
-        
         pct_val = max(0.0, min(100.0, item['pct']))
         
         if pct_val <= 40.0:
@@ -451,7 +462,7 @@ def build_watchlist_rows(items):
         closes_json = item['chart_closes'].replace('"', '&quot;')
         dates_json = item['chart_dates'].replace('"', '&quot;')
         month_json = item['month_ends'].replace('"', '&quot;')
-        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['ma30_svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
+        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['ma30_svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_1m']}, {item['ret_3m']}, {item['ret_6mo']}, {item['ret_peak_curr']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
         
         rows += f"""<tr class="watchlist-row">
             <td class="col-ticker clickable-cell" onclick="showSidePopup(event, {popup_args})"><span class="ticker-popup-link"><strong>${item['ticker']}</strong></span></td>
@@ -485,7 +496,7 @@ def build_earnings_rows(items):
         closes_json = item['chart_closes'].replace('"', '&quot;')
         dates_json = item['chart_dates'].replace('"', '&quot;')
         month_json = item['month_ends'].replace('"', '&quot;')
-        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['ma30_svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
+        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['ma30_svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_1m']}, {item['ret_3m']}, {item['ret_6mo']}, {item['ret_peak_curr']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
         
         rows += f"""<tr class="earnings-row">
             <td class="col-earn-ticker clickable-cell" onclick="showSidePopup(event, {popup_args})"><span class="ticker-popup-link"><strong>${item['ticker']}</strong></span></td>
@@ -513,7 +524,7 @@ def build_movers_rows(items):
         closes_json = item['chart_closes'].replace('"', '&quot;')
         dates_json = item['chart_dates'].replace('"', '&quot;')
         month_json = item['month_ends'].replace('"', '&quot;')
-        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['ma30_svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
+        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['ma30_svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_1m']}, {item['ret_3m']}, {item['ret_6mo']}, {item['ret_peak_curr']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
         
         rows += f"""<tr class="movers-row">
             <td class="col-movers-ticker clickable-cell" onclick="showSidePopup(event, {popup_args})"><strong>${item['ticker']}</strong> {vol_badge}</td>
@@ -543,7 +554,7 @@ def build_master_rows(items):
         closes_json = item['chart_closes'].replace('"', '&quot;')
         dates_json = item['chart_dates'].replace('"', '&quot;')
         month_json = item['month_ends'].replace('"', '&quot;')
-        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['ma30_svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_6mo']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
+        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['ma30_svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_1m']}, {item['ret_3m']}, {item['ret_6mo']}, {item['ret_peak_curr']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
         
         rows += f"""
         <tr class="master-row">
@@ -575,6 +586,7 @@ def build_industry_grouped_grid(items):
             r1m_class = "badge-pos" if item['ret_1m'] > 0 else ("badge-neg" if item['ret_1m'] < 0 else "badge-neutral")
             r3m_class = "badge-pos" if item['ret_3m'] > 0 else ("badge-neg" if item['ret_3m'] < 0 else "badge-neutral")
             r6m_class = "badge-pos" if item['ret_6mo'] > 0 else ("badge-neg" if item['ret_6mo'] < 0 else "badge-neutral")
+            rpeak_class = "badge-pos" if item['ret_peak_curr'] > 0 else ("badge-neg" if item['ret_peak_curr'] < 0 else "badge-neutral")
             
             month_lines_svg = ""
             try:
@@ -592,10 +604,11 @@ def build_industry_grouped_grid(items):
                 </div>
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
                     <span style="font-size:0.65rem; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="{item['name']}">{item['name']}</span>
-                    <div style="display:flex; gap:3px;">
+                    <div style="display:flex; gap:2px; flex-wrap:nowrap;">
                         <span class="return-badge {r1m_class}" style="font-size:0.55rem; padding:1px 3px;" title="1 Month Return">{item['ret_1m']:+.1f}% 1M</span>
                         <span class="return-badge {r3m_class}" style="font-size:0.55rem; padding:1px 3px;" title="3 Month Return">{item['ret_3m']:+.1f}% 3M</span>
                         <span class="return-badge {r6m_class}" style="font-size:0.55rem; padding:1px 3px;" title="6 Month Return">{item['ret_6mo']:+.1f}% 6M</span>
+                        <span class="return-badge {rpeak_class}" style="font-size:0.55rem; padding:1px 3px;" title="6M Highest Price to Current Return">{item['ret_peak_curr']:+.1f}% Peak</span>
                     </div>
                 </div>
                 <div style="display:flex; justify-content:space-between; align-items:center; font-family:monospace; font-size:0.7rem; margin-bottom:3px;">
@@ -608,7 +621,6 @@ def build_industry_grouped_grid(items):
                         <line x1="0" y1="55.0" x2="320" y2="55.0" stroke="rgba(255,255,255,0.18)" stroke-dasharray="2,2"/>
                         <line x1="0" y1="82.5" x2="320" y2="82.5" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
                         {month_lines_svg}
-                        <!-- 30-Day Moving Average Polyline -->
                         <polyline fill="none" stroke="rgba(250, 204, 21, 0.65)" stroke-width="1.5" stroke-dasharray="3,2" points="{item['ma30_svg_points']}"/>
                         <polyline fill="none" stroke="{'#22c55e' if item['is_pos'] == 'true' else '#ef4444'}" stroke-width="2" points="{item['svg_points']}"/>
                         <line class="inline-line-x" x1="0" y1="0" x2="0" y2="110" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
@@ -731,7 +743,7 @@ tr:nth-child(even){{background-color:var(--bg-row-alt);}}
 #sideSparklinePopup {{
     display: none;
     position: absolute;
-    width: 390px;
+    width: 420px;
     background: var(--bg-card);
     border: 1px solid var(--accent-cyan);
     border-radius: 8px;
@@ -856,12 +868,12 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
         <span id="popTicker" style="color: var(--accent-cyan); font-weight: bold; font-size: 0.9rem;"></span>
         <span style="cursor: pointer; font-size: 1rem; color: var(--text-muted);" onclick="closeSidePopup()">&times;</span>
     </div>
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; gap: 4px;">
         <div id="popInfo" style="font-size: 0.7rem; line-height: 1.3;"></div>
-        <div id="popReturnBanner" style="font-size: 0.72rem; font-weight: bold; padding: 2px 8px; border-radius: 4px;"></div>
+        <div id="popReturnsContainer" style="display: flex; gap: 3px; flex-wrap: wrap; justify-content: flex-end;"></div>
     </div>
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-        <div id="popHoverTip" style="font-size: 0.68rem; color: var(--accent-yellow); font-family: monospace; font-weight: bold; background: rgba(250,204,21,0.1); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(250,204,21,0.3);">Hover or Tap chart for price & date</div>
+        <div id="popHoverTip" style="font-size: 0.68rem; color: var(--accent-yellow); font-family: monospace; font-weight: bold; background: rgba(250,204,21,0.1); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(250,204,21,0.3); width: 100%; text-align: center;">Hover or Tap chart for price & date</div>
     </div>
     <div style="display: flex; align-items: center; gap: 8px;">
         <div style="display: flex; flex-direction: column;">
@@ -872,7 +884,6 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
                 <line x1="106.6" y1="0" x2="106.6" y2="110" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
                 <line x1="213.3" y1="0" x2="213.3" y2="110" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
                 <line id="popBaseLine" x1="0" y1="55" x2="320" y2="55" stroke="rgba(255,255,255,0.5)" stroke-dasharray="3,3" stroke-width="1.2"/>
-                <!-- Popup 30D MA Overlay Polyline -->
                 <polyline id="popMAPolyline" fill="none" stroke="rgba(250, 204, 21, 0.65)" stroke-width="1.5" stroke-dasharray="3,2" points=""/>
                 <polyline id="popPolyline" fill="none" stroke-width="2" points=""/>
                 <line id="hoverLineX" x1="0" y1="0" x2="0" y2="110" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
@@ -903,7 +914,14 @@ let popDates = [];
 let popMin = 0;
 let popMax = 0;
 
-function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints, ma30SvgPoints, pMax, pMid, pMin, dStart, dMid, dEnd, isPos, startYPct, ret6mo, closesInput, datesInput, importanceNotes) {{
+function formatBadgeHTML(val, label) {{
+    const num = parseFloat(val);
+    const sign = num > 0 ? '+' : '';
+    const cls = num > 0 ? 'badge-pos' : (num < 0 ? 'badge-neg' : 'badge-neutral');
+    return `<span class="return-badge ${{cls}}" style="font-size:0.58rem; padding:1px 4px;">${{sign}}${{num.toFixed(1)}}% ${{label}}</span>`;
+}}
+
+function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints, ma30SvgPoints, pMax, pMid, pMin, dStart, dMid, dEnd, isPos, startYPct, ret1m, ret3m, ret6mo, retPeakCurr, closesInput, datesInput, importanceNotes) {{
     event.stopPropagation();
     const popup = document.getElementById('sideSparklinePopup');
     
@@ -923,24 +941,13 @@ function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints
     document.getElementById('popHoverTip').innerText = 'Hover or Tap chart for price & date';
     document.getElementById('popImportance').innerHTML = '<b>Importance Highlights:</b><br>' + importanceNotes;
     
-    const banner = document.getElementById('popReturnBanner');
-    const retNum = parseFloat(ret6mo);
-    const retStr = (retNum > 0 ? '+' : '') + retNum.toFixed(2) + '% 6M';
-    banner.innerText = retStr;
-    if (retNum > 0) {{
-        banner.style.backgroundColor = 'rgba(74,222,128,0.2)';
-        banner.style.color = '#22c55e';
-        banner.style.border = '1px solid rgba(74,222,128,0.4)';
-    }} else if (retNum < 0) {{
-        banner.style.backgroundColor = 'rgba(248,113,113,0.2)';
-        banner.style.color = '#ef4444';
-        banner.style.border = '1px solid rgba(248,113,113,0.4)';
-    }} else {{
-        banner.style.backgroundColor = 'rgba(100,116,139,0.2)';
-        banner.style.color = '#94a3b8';
-        banner.style.border = '1px solid rgba(100,116,139,0.4)';
-    }}
-    
+    const retContainer = document.getElementById('popReturnsContainer');
+    retContainer.innerHTML = 
+        formatBadgeHTML(ret1m, '1M') + 
+        formatBadgeHTML(ret3m, '3M') + 
+        formatBadgeHTML(ret6mo, '6M') + 
+        formatBadgeHTML(retPeakCurr, 'Peak');
+
     const chartHeight = 110;
     const lineY = chartHeight - (parseFloat(startYPct) / 100) * chartHeight;
     const baseLine = document.getElementById('popBaseLine');
@@ -967,7 +974,7 @@ function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints
     popup.style.display = 'block';
     
     const cellRect = event.currentTarget.getBoundingClientRect();
-    const popupWidth = popup.offsetWidth || 390;
+    const popupWidth = popup.offsetWidth || 420;
     
     let leftPos = window.scrollX + cellRect.right + 12;
     if (leftPos + popupWidth > window.innerWidth + window.scrollX) {{
@@ -1003,6 +1010,10 @@ document.addEventListener("DOMContentLoaded", function() {{
 
             const val = popCloses[index];
             const dateStr = popDates[index] || 'Recent';
+            const currentPrice = popCloses[popCloses.length - 1];
+            const retToCurrent = val > 0 ? ((currentPrice - val) / val) * 100 : 0.0;
+            const retSign = retToCurrent >= 0 ? '+' : '';
+            const colorVar = retToCurrent >= 0 ? 'var(--accent-green)' : 'var(--accent-red)';
 
             const xCoord = (index / (popCloses.length - 1)) * svgWidth;
             const cRange = (popMax !== popMin) ? (popMax - popMin) : 1.0;
@@ -1020,7 +1031,7 @@ document.addEventListener("DOMContentLoaded", function() {{
             hoverDot.setAttribute('cy', yCoord);
             hoverDot.style.display = 'block';
 
-            hoverTip.innerText = dateStr + ' : $' + val.toFixed(2);
+            hoverTip.innerHTML = dateStr + " : <b>$" + val.toFixed(2) + "</b> (Return to Current: <span style=\"color:" + colorVar + "\">" + retSign + retToCurrent.toFixed(2) + "%</span>)";
         }}
 
         svg.addEventListener('mousemove', function(e) {{ updatePopCrosshair(e.clientX); }});
@@ -1057,9 +1068,6 @@ document.addEventListener("DOMContentLoaded", function() {{
                 closes = JSON.parse(svgEl.getAttribute('data-closes'));
                 dates = JSON.parse(svgEl.getAttribute('data-dates'));
             }} catch(e) {{}}
-
-            const cardBox = svgEl.closest('.bottom-card');
-            const displayHeader = cardBox.querySelector('.card-hover-display');
 
             function applySync(clientX) {{
                 if (!closes || closes.length === 0) return;
@@ -1167,7 +1175,7 @@ try:
     subprocess.run(["git", "config", "user.email", "github-actions[bot]@users.noreply.github.com"], check=True)
     subprocess.run(["git", "add", output_path], check=True)
     subprocess.run(["git", "add", __file__], check=True)
-    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (30D MA Sparkline Added)"
+    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (KeyError Fix & Peak Returns)"
     subprocess.run(["git", "commit", "-m", commit_message], check=True)
     subprocess.run(["git", "push", "origin", "main"], check=True)
     print("🚀 Successfully pushed files to GitHub!")
@@ -1175,4 +1183,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: 30-Day Moving Average overlay rendered across all sparkline charts!")
+print("\n🎉 ALL TASKS COMPLETE: KeyError resolved and dashboard successfully built!")
