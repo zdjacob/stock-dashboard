@@ -22,7 +22,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Peak-to-Current & Full Chart Standardization)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Syntax Error Fixed)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -219,7 +219,6 @@ for idx, symbol in enumerate(tickers, 1):
             min_idx = recent_closes.index(min_c)
             max_idx = recent_closes.index(max_c)
             
-            # Calculate return from 6M High (Peak) to Current Price
             if max_c > 0:
                 ret_peak_curr_pct = ((last_price - max_c) / max_c) * 100.0
 
@@ -783,7 +782,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
 <body><div class="container"><header>
     <div><h1>📊 Jacob's Technical Watchlist & Market Dashboard</h1></div>
     <div class="header-meta">
-        <div class="timestamp-banner">⏱️ {generation_timestamp_str}</div>
+        <div class="timestamp-banner">⏱️️ {generation_timestamp_str}</div>
         <div class="speed-dial-card">
             <div class="speed-dial-container">
                 <div class="speed-dial-arc"></div>
@@ -910,7 +909,7 @@ function formatBadgeHTML(val, label) {{
     const num = parseFloat(val);
     const sign = num > 0 ? '+' : '';
     const cls = num > 0 ? 'badge-pos' : (num < 0 ? 'badge-neg' : 'badge-neutral');
-    return `<span class="return-badge ${cls}" style="font-size:0.58rem; padding:1px 4px;">${sign}${num.toFixed(1)}% ${label}</span>`;
+    return `<span class="return-badge ${{cls}}" style="font-size:0.58rem; padding:1px 4px;">${{sign}}${{num.toFixed(1)}}% ${{label}}</span>`;
 }}
 
 function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints, ma30SvgPoints, pMax, pMid, pMin, dStart, dMid, dEnd, isPos, startYPct, ret1m, ret3m, ret6mo, retPeakCurr, closesInput, datesInput, importanceNotes) {{
@@ -1005,6 +1004,7 @@ document.addEventListener("DOMContentLoaded", function() {{
             const currentPrice = popCloses[popCloses.length - 1];
             const retToCurrent = val > 0 ? ((currentPrice - val) / val) * 100 : 0.0;
             const retSign = retToCurrent >= 0 ? '+' : '';
+            const colorVar = retToCurrent >= 0 ? 'var(--accent-green)' : 'var(--accent-red)';
 
             const xCoord = (index / (popCloses.length - 1)) * svgWidth;
             const cRange = (popMax !== popMin) ? (popMax - popMin) : 1.0;
@@ -1021,8 +1021,8 @@ document.addEventListener("DOMContentLoaded", function() {{
             hoverDot.setAttribute('cx', xCoord);
             hoverDot.setAttribute('cy', yCoord);
             hoverDot.style.display = 'block';
-            
-            hoverTip.innerHTML = f"{dateStr} : <b>${val.toFixed(2)}</b> (Return to Current: <span style=\"color:${(retToCurrent >= 0 ? 'var(--accent-green)' : 'var(--accent-red)')}\">${retSign}${retToCurrent.toFixed(2)}%</span>)";
+
+            hoverTip.innerHTML = dateStr + " : <b>$" + val.toFixed(2) + "</b> (Return to Current: <span style=\"color:" + colorVar + "\">" + retSign + retToCurrent.toFixed(2) + "%</span>)";
         }}
 
         svg.addEventListener('mousemove', function(e) {{ updatePopCrosshair(e.clientX); }});
@@ -1166,7 +1166,7 @@ try:
     subprocess.run(["git", "config", "user.email", "github-actions[bot]@users.noreply.github.com"], check=True)
     subprocess.run(["git", "add", output_path], check=True)
     subprocess.run(["git", "add", __file__], check=True)
-    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (Unified SVG Sparklines & Peak Returns Added)"
+    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (Syntax Fix & Peak Returns)"
     subprocess.run(["git", "commit", "-m", commit_message], check=True)
     subprocess.run(["git", "push", "origin", "main"], check=True)
     print("🚀 Successfully pushed files to GitHub!")
@@ -1174,4 +1174,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: All charts normalized with 1M, 3M, 6M, and 6M Peak-to-Current return metrics!")
+print("\n🎉 ALL TASKS COMPLETE: Dashboard generated without errors!")
