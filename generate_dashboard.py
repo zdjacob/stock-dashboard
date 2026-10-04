@@ -22,7 +22,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - KeyError Fixed)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Fixed Popup & Hover)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -462,7 +462,9 @@ def build_watchlist_rows(items):
         closes_json = item['chart_closes'].replace('"', '&quot;')
         dates_json = item['chart_dates'].replace('"', '&quot;')
         month_json = item['month_ends'].replace('"', '&quot;')
-        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['ma30_svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_1m']}, {item['ret_3m']}, {item['ret_6mo']}, {item['ret_peak_curr']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
+        clean_name = item['name'].replace("'", "\\'")
+        clean_notes = item['importance_notes'].replace("'", "\\'")
+        popup_args = f"'{item['ticker']}', '{clean_name}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['ma30_svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_1m']}, {item['ret_3m']}, {item['ret_6mo']}, {item['ret_peak_curr']}, '{closes_json}', '{dates_json}', '{clean_notes}', '{month_json}'"
         
         rows += f"""<tr class="watchlist-row">
             <td class="col-ticker clickable-cell" onclick="showSidePopup(event, {popup_args})"><span class="ticker-popup-link"><strong>${item['ticker']}</strong></span></td>
@@ -496,7 +498,9 @@ def build_earnings_rows(items):
         closes_json = item['chart_closes'].replace('"', '&quot;')
         dates_json = item['chart_dates'].replace('"', '&quot;')
         month_json = item['month_ends'].replace('"', '&quot;')
-        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['ma30_svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_1m']}, {item['ret_3m']}, {item['ret_6mo']}, {item['ret_peak_curr']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
+        clean_name = item['name'].replace("'", "\\'")
+        clean_notes = item['importance_notes'].replace("'", "\\'")
+        popup_args = f"'{item['ticker']}', '{clean_name}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['ma30_svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_1m']}, {item['ret_3m']}, {item['ret_6mo']}, {item['ret_peak_curr']}, '{closes_json}', '{dates_json}', '{clean_notes}', '{month_json}'"
         
         rows += f"""<tr class="earnings-row">
             <td class="col-earn-ticker clickable-cell" onclick="showSidePopup(event, {popup_args})"><span class="ticker-popup-link"><strong>${item['ticker']}</strong></span></td>
@@ -524,7 +528,9 @@ def build_movers_rows(items):
         closes_json = item['chart_closes'].replace('"', '&quot;')
         dates_json = item['chart_dates'].replace('"', '&quot;')
         month_json = item['month_ends'].replace('"', '&quot;')
-        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['ma30_svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_1m']}, {item['ret_3m']}, {item['ret_6mo']}, {item['ret_peak_curr']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
+        clean_name = item['name'].replace("'", "\\'")
+        clean_notes = item['importance_notes'].replace("'", "\\'")
+        popup_args = f"'{item['ticker']}', '{clean_name}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['ma30_svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_1m']}, {item['ret_3m']}, {item['ret_6mo']}, {item['ret_peak_curr']}, '{closes_json}', '{dates_json}', '{clean_notes}', '{month_json}'"
         
         rows += f"""<tr class="movers-row">
             <td class="col-movers-ticker clickable-cell" onclick="showSidePopup(event, {popup_args})"><strong>${item['ticker']}</strong> {vol_badge}</td>
@@ -554,7 +560,9 @@ def build_master_rows(items):
         closes_json = item['chart_closes'].replace('"', '&quot;')
         dates_json = item['chart_dates'].replace('"', '&quot;')
         month_json = item['month_ends'].replace('"', '&quot;')
-        popup_args = f"'{item['ticker']}', '{item['name']}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['ma30_svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_1m']}, {item['ret_3m']}, {item['ret_6mo']}, {item['ret_peak_curr']}, '{closes_json}', '{dates_json}', '{item['importance_notes']}', '{month_json}'"
+        clean_name = item['name'].replace("'", "\\'")
+        clean_notes = item['importance_notes'].replace("'", "\\'")
+        popup_args = f"'{item['ticker']}', '{clean_name}', '{item['industry']}', '{item['price']}', '{item['pct']}', '{item['vol_ratio']}', '{item['svg_points']}', '{item['ma30_svg_points']}', '{item['p_max']}', '{item['p_mid']}', '{item['p_min']}', '{item['d_start']}', '{item['d_mid']}', '{item['d_end']}', {item['is_pos']}, {item['start_y_pct']}, {item['ret_1m']}, {item['ret_3m']}, {item['ret_6mo']}, {item['ret_peak_curr']}, '{closes_json}', '{dates_json}', '{clean_notes}', '{month_json}'"
         
         rows += f"""
         <tr class="master-row">
@@ -921,7 +929,7 @@ function formatBadgeHTML(val, label) {{
     return `<span class="return-badge ${{cls}}" style="font-size:0.58rem; padding:1px 4px;">${{sign}}${{num.toFixed(1)}}% ${{label}}</span>`;
 }}
 
-function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints, ma30SvgPoints, pMax, pMid, pMin, dStart, dMid, dEnd, isPos, startYPct, ret1m, ret3m, ret6mo, retPeakCurr, closesInput, datesInput, importanceNotes) {{
+function showSidePopup(event, ticker, name, industry, price, pct, vol, svgPoints, ma30SvgPoints, pMax, pMid, pMin, dStart, dMid, dEnd, isPos, startYPct, ret1m, ret3m, ret6mo, retPeakCurr, closesInput, datesInput, importanceNotes, monthEnds) {{
     event.stopPropagation();
     const popup = document.getElementById('sideSparklinePopup');
     
@@ -1175,7 +1183,7 @@ try:
     subprocess.run(["git", "config", "user.email", "github-actions[bot]@users.noreply.github.com"], check=True)
     subprocess.run(["git", "add", output_path], check=True)
     subprocess.run(["git", "add", __file__], check=True)
-    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (KeyError Fix & Peak Returns)"
+    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (Popup & Hover Fixed)"
     subprocess.run(["git", "commit", "-m", commit_message], check=True)
     subprocess.run(["git", "push", "origin", "main"], check=True)
     print("🚀 Successfully pushed files to GitHub!")
@@ -1183,4 +1191,4 @@ except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
 webbrowser.open(f"file://{os.path.abspath(output_path)}")
-print("\n🎉 ALL TASKS COMPLETE: KeyError resolved and dashboard successfully built!")
+print("\n🎉 ALL TASKS COMPLETE: Hover and popup functionality fully restored!")
