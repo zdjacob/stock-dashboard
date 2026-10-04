@@ -1021,8 +1021,8 @@ document.addEventListener("DOMContentLoaded", function() {{
             hoverDot.setAttribute('cx', xCoord);
             hoverDot.setAttribute('cy', yCoord);
             hoverDot.style.display = 'block';
-
-            hoverTip.innerHTML = `${dateStr} : <b>$${val.toFixed(2)}</b> (Return to Current: <span style="color:${retToCurrent >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'}">${retSign}${retToCurrent.toFixed(2)}%</span>)`;
+            
+            hoverTip.innerHTML = f"{dateStr} : <b>${val.toFixed(2)}</b> (Return to Current: <span style=\"color:${(retToCurrent >= 0 ? 'var(--accent-green)' : 'var(--accent-red)')}\">${retSign}${retToCurrent.toFixed(2)}%</span>)";
         }}
 
         svg.addEventListener('mousemove', function(e) {{ updatePopCrosshair(e.clientX); }});
