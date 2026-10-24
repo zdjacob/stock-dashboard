@@ -1,3 +1,6 @@
+#####################################################################
+#### Original code base that is back end for the website.        ####
+#####################################################################
 import os, time, datetime, webbrowser, requests, statistics, json, subprocess, shutil
 from zoneinfo import ZoneInfo
 
@@ -22,7 +25,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Within 5% Peak Green Rule Applied)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Within 30 Days Exact Countdown Applied)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -321,14 +324,20 @@ for idx, symbol in enumerate(tickers, 1):
                     after_month = next_month + 1 if next_month < 12 else 1
                     after_year = next_year if next_month < 12 else next_year + 1
                     days_away = (earn_date_obj - today).days
+
                     if days_away < 0:
                         status_class, status_text = "badge-reported", "Reported"
+                    elif 0 <= days_away <= 30:
+                        if days_away == 0:
+                            status_class, status_text = "badge-upcoming", "Upcoming (Today)"
+                        elif days_away == 1:
+                            status_class, status_text = "badge-upcoming", "Upcoming (1 day left)"
+                        else:
+                            status_class, status_text = "badge-upcoming", f"Upcoming ({days_away} days left)"
                     elif earn_date_obj.year == next_year and earn_date_obj.month == next_month:
                         status_class, status_text = "badge-next-month", "Next Month"
                     elif earn_date_obj.year == after_year and earn_date_obj.month == after_month:
                         status_class, status_text = "badge-month-after", "Month After"
-                    elif 0 <= days_away <= 30:
-                        status_class, status_text = "badge-upcoming", f"Upcoming ({days_away}d)"
                     else:
                         status_class, status_text = "badge-unconfirmed", "Unconfirmed Est."
                 except Exception:
@@ -576,21 +585,17 @@ def build_master_rows(items):
     return rows
 
 def get_header_bg_color(val, min_val, max_val):
-    # Within 5% of peak (>= -5.0% drawdown) -> Bright Green
     if val >= -5.0:
         return "background: rgba(34, 197, 94, 0.85); border: 1px solid rgba(34, 197, 94, 1.0);"
     
-    # Handle single-item groups or groups where all stocks are below -5% and identical
     if min_val >= -5.0 or min_val == max_val:
         return "background: rgba(249, 115, 22, 0.85); border: 1px solid rgba(249, 115, 22, 1.0);"
 
-    # Drawdown scale for values below -5.0%
-    neg_min = min_val  # Worst drawdown (Dark Red)
-    neg_max = min(-5.0, max_val)  # Ceiling (-5.0% threshold)
+    neg_min = min_val
+    neg_max = min(-5.0, max_val)
     
     factor = max(0.0, min(1.0, (val - neg_min) / (neg_max - neg_min)))
     
-    # Interpolate from Dark Red (#991b1b -> 153, 27, 27) to Warm Orange (#f97316 -> 249, 115, 22)
     r = int(153 + (249 - 153) * factor)
     g = int(27 + (115 - 27) * factor)
     b = int(27 + (22 - 27) * factor)
@@ -1250,7 +1255,7 @@ try:
     subprocess.run(["git", "add", output_path], check=True)
     subprocess.run(["git", "add", index_path], check=True)
     subprocess.run(["git", "add", __file__], check=True)
-    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (Within 5% Peak Green Rule Applied)"
+    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (Exact 30-Day Countdown Applied)"
     subprocess.run(["git", "commit", "-m", commit_message], check=True)
     subprocess.run(["git", "push", "origin", "main"], check=True)
     print("🚀 Successfully pushed files to GitHub!")
