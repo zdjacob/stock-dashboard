@@ -25,7 +25,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Within 30 Days Exact Countdown Applied)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Exact Countdown Applied)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -329,11 +329,11 @@ for idx, symbol in enumerate(tickers, 1):
                         status_class, status_text = "badge-reported", "Reported"
                     elif 0 <= days_away <= 30:
                         if days_away == 0:
-                            status_class, status_text = "badge-upcoming", "Upcoming (Today)"
+                            status_class, status_text = "badge-upcoming", "Today"
                         elif days_away == 1:
-                            status_class, status_text = "badge-upcoming", "Upcoming (1 day left)"
+                            status_class, status_text = "badge-upcoming", "1 day left"
                         else:
-                            status_class, status_text = "badge-upcoming", f"Upcoming ({days_away} days left)"
+                            status_class, status_text = "badge-upcoming", f"{days_away} days left"
                     elif earn_date_obj.year == next_year and earn_date_obj.month == next_month:
                         status_class, status_text = "badge-next-month", "Next Month"
                     elif earn_date_obj.year == after_year and earn_date_obj.month == after_month:
@@ -1255,7 +1255,7 @@ try:
     subprocess.run(["git", "add", output_path], check=True)
     subprocess.run(["git", "add", index_path], check=True)
     subprocess.run(["git", "add", __file__], check=True)
-    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (Exact 30-Day Countdown Applied)"
+    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (Removed Upcoming Prefix)"
     subprocess.run(["git", "commit", "-m", commit_message], check=True)
     subprocess.run(["git", "push", "origin", "main"], check=True)
     print("🚀 Successfully pushed files to GitHub!")
