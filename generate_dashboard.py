@@ -1,4 +1,4 @@
-import os, time, datetime, webbrowser, requests, statistics, json, subprocess
+import os, time, datetime, webbrowser, requests, statistics, json, subprocess, shutil
 from zoneinfo import ZoneInfo
 
 # ==========================================
@@ -1230,11 +1230,17 @@ window.addEventListener('click', function(e) {{
 date_filename_str = today.strftime("%Y.%m.%d")
 output_filename = f"JacobsStockDashboard.{date_filename_str}.html"
 output_path = os.path.join(os.getcwd(), output_filename)
+index_path = os.path.join(os.getcwd(), "index.html")
 
+# Write dated output file
 with open(output_path, "w", encoding="utf-8") as f:
     f.write(html_content)
 
+# Mirror to index.html for deployment consistency
+shutil.copyfile(output_path, index_path)
+
 print(f"\n🌐 Dashboard successfully generated and saved to: {output_filename}")
+print(f"📄 Mirrored copy created at: index.html")
 print(f"⏱️ Timestamp included: {generation_timestamp_str}")
 
 try:
@@ -1242,6 +1248,7 @@ try:
     subprocess.run(["git", "config", "user.name", "github-actions[bot]"], check=True)
     subprocess.run(["git", "config", "user.email", "github-actions[bot]@users.noreply.github.com"], check=True)
     subprocess.run(["git", "add", output_path], check=True)
+    subprocess.run(["git", "add", index_path], check=True)
     subprocess.run(["git", "add", __file__], check=True)
     commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (Within 5% Peak Green Rule Applied)"
     subprocess.run(["git", "commit", "-m", commit_message], check=True)
@@ -1250,5 +1257,5 @@ try:
 except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
-webbrowser.open(f"file://{os.path.abspath(output_path)}")
+webbrowser.open(f"file://{os.abspath(output_path)}")
 print("\n🎉 ALL TASKS COMPLETE: Updated script generated!")
