@@ -1257,5 +1257,7 @@ try:
 except Exception as e:
     print(f"⚠️ Git auto-push skipped or failed: {e}")
 
-webbrowser.open(f"file://{os.abspath(output_path)}")
+if "GITHUB_ACTIONS" not in os.environ:
+    webbrowser.open(f"file://{os.path.abspath(output_path)}")
+
 print("\n🎉 ALL TASKS COMPLETE: Updated script generated!")
