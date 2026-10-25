@@ -899,7 +899,14 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
 </div>
 
 <!-- Section 5: Industry-Grouped 4-Column Grid with Synchronized Group Crosshairs -->
-<div class="section-title" style="margin-top: 14px;">🏭 Industry-Grouped 6-Month History & Highlights (Synchronized Group Crosshairs)</div>
+<div class="section-title" style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+    <span>🏭 Industry-Grouped 6-Month History & Highlights (Synchronized Group Crosshairs)</span>
+    <span style="font-size: 0.68rem; font-weight: normal; color: var(--text-muted); background: var(--bg-card); padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border-color);">
+        <span style="color: var(--accent-yellow); font-weight: bold;">-- -</span> Yellow Dotted Line: 30D Moving Avg &nbsp;|&nbsp; 
+        <span style="color: rgba(255,255,255,0.6);">┆</span> Monthly Boundaries &nbsp;|&nbsp; 
+        <span style="color: rgba(255,255,255,0.4);">┄</span> Price Grid Levels
+    </span>
+</div>
 {build_industry_grouped_grid(data_list)}
 
 </div>
@@ -1255,7 +1262,7 @@ try:
     subprocess.run(["git", "add", output_path], check=True)
     subprocess.run(["git", "add", index_path], check=True)
     subprocess.run(["git", "add", __file__], check=True)
-    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (Removed Upcoming Prefix)"
+    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (Updated Badges & Header Key)"
     subprocess.run(["git", "commit", "-m", commit_message], check=True)
     subprocess.run(["git", "push", "origin", "main"], check=True)
     print("🚀 Successfully pushed files to GitHub!")
