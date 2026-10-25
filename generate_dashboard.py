@@ -11,7 +11,7 @@ API_KEY = os.getenv("FINNHUB_API_KEY", "d9rihopr01qoo7o4k3igd9rihopr01qoo7o4k3j0
 
 CUSTOM_INDUSTRY_MAP = {
     "REGN": "Biotech And Healthcare", "ISRG": "Biotech And Healthcare", "LLY": "Biotech And Healthcare", "VRTX": "Biotech And Healthcare",
-    "JPM": "Financial Services", "V": "Financial Services", "BLK": "Financial Services", "COIN": "Financial Services", "GS": "Financial Services",
+    "JPM": "Financial Services", "V": "Financial Services", "BLK": "Financial Services", "COIN": "Financial Services", "GS": "Financial Services", "AXP": "Financial Services",
     "BE": "Engineering And Chips", "ETN": "Engineering And Chips", "GEV": "Engineering And Chips", "GLW": "Engineering And Chips", "CAT": "Engineering And Chips", "ANET": "Engineering And Chips", "VRT": "Engineering And Chips", "MRVL": "Engineering And Chips",
     "TSM": "Semiconductors",
     "AAPL": "Big Guys", "AMZN": "Big Guys", "MSFT": "Big Guys", "GOOGL": "Big Guys",
@@ -19,7 +19,7 @@ CUSTOM_INDUSTRY_MAP = {
 }
 
 tickers = [
-    "AAPL", "AMZN", "ANET", "AVGO", "AXON", "BA", "BE", "BLK", "CAT", "COIN",
+    "AAPL", "AMZN", "ANET", "AVGO", "AXON", "AXP", "BA", "BE", "BLK", "CAT", "COIN",
     "COST", "CRWD", "DDOG", "ETN", "GEV", "GLW", "GOOGL", "GS", "ISRG", "JPM",
     "LLY", "MRVL", "MSFT", "MU", "NFLX", "NVDA", "PLTR", "REGN", "SNOW", "SPOT",
     "TSM", "V", "VRT", "VRTX"
