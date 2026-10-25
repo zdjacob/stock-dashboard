@@ -25,7 +25,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - High Contrast Badges & Legends)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - High Contrast Badges & Legend with Baseline)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -638,6 +638,9 @@ def build_industry_grouped_grid(items):
             
             header_style = get_header_bg_color(item['ret_peak_curr'], min_ret, max_ret)
 
+            # Compute Y-coordinate for starting price horizontal baseline (height = 110px)
+            start_y_coord = round(110.0 - (item['start_y_pct'] / 100.0) * 110.0, 1)
+
             month_lines_svg = ""
             try:
                 m_list = json.loads(item['month_ends'])
@@ -671,6 +674,8 @@ def build_industry_grouped_grid(items):
                         <line x1="0" y1="55.0" x2="320" y2="55.0" stroke="rgba(255,255,255,0.18)" stroke-dasharray="2,2"/>
                         <line x1="0" y1="82.5" x2="320" y2="82.5" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,2"/>
                         {month_lines_svg}
+                        <!-- Horizontal Start Price Baseline -->
+                        <line x1="0" y1="{start_y_coord}" x2="320" y2="{start_y_coord}" stroke="rgba(255,255,255,0.5)" stroke-dasharray="3,3" stroke-width="1.2"/>
                         <polyline fill="none" stroke="rgba(250, 204, 21, 0.65)" stroke-width="1.5" stroke-dasharray="3,2" points="{item['ma30_svg_points']}"/>
                         <polyline fill="none" stroke="{'#22c55e' if item['is_pos'] == 'true' else '#ef4444'}" stroke-width="2" points="{item['svg_points']}"/>
                         <line class="inline-line-x" x1="0" y1="0" x2="0" y2="110" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="1,1" style="display: none;"/>
@@ -911,6 +916,7 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
     <span>🏭 Industry-Grouped 6-Month History & Highlights (Synchronized Group Crosshairs)</span>
     <span style="font-size: 0.68rem; font-weight: normal; color: var(--text-muted); background: var(--bg-card); padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border-color);">
         <span style="color: var(--accent-yellow); font-weight: bold;">-- -</span> Yellow Dotted Line: 30D Moving Avg &nbsp;|&nbsp; 
+        <span style="color: rgba(255,255,255,0.7); font-weight: bold;">---</span> White Dotted Line: Start Price Line &nbsp;|&nbsp; 
         <span style="color: rgba(255,255,255,0.6);">┆</span> Monthly Boundaries &nbsp;|&nbsp; 
         <span style="color: rgba(255,255,255,0.4);">┄</span> Price Grid Levels
     </span>
@@ -1270,7 +1276,7 @@ try:
     subprocess.run(["git", "add", output_path], check=True)
     subprocess.run(["git", "add", index_path], check=True)
     subprocess.run(["git", "add", __file__], check=True)
-    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (Enhanced Contrast & Legend)"
+    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (Enhanced Contrast & Start Baseline)"
     subprocess.run(["git", "commit", "-m", commit_message], check=True)
     subprocess.run(["git", "push", "origin", "main"], check=True)
     print("🚀 Successfully pushed files to GitHub!")
