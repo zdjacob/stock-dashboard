@@ -25,7 +25,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Exact Countdown Applied)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Exact Countdown & High Contrast Headers)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -641,8 +641,8 @@ def build_industry_grouped_grid(items):
             cards_html += f"""
             <div class="bottom-card">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; font-family:monospace; font-size:0.75rem; {header_style} padding:3px 6px; border-radius:4px;">
-                    <span style="color:#ffffff; font-weight:bold; text-shadow:0px 1px 2px rgba(0,0,0,0.8);">${item['ticker']}</span>
-                    <span class="card-hover-display" style="color:#f8fafc; font-weight:bold; font-size:0.65rem; text-shadow:0px 1px 2px rgba(0,0,0,0.8);">Hover chart</span>
+                    <span style="color:#1e0b36; font-weight:bold; text-shadow:0px 0px 3px #ffffff, 0px 0px 5px #ffffff;">${item['ticker']}</span>
+                    <span class="card-hover-display" style="color:#ffffff; font-weight:bold; font-size:0.65rem; text-shadow:0px 1px 2px rgba(0,0,0,0.9);">Hover chart</span>
                 </div>
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
                     <span style="font-size:0.65rem; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="{item['name']}">{item['name']}</span>
@@ -1262,7 +1262,7 @@ try:
     subprocess.run(["git", "add", output_path], check=True)
     subprocess.run(["git", "add", index_path], check=True)
     subprocess.run(["git", "add", __file__], check=True)
-    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (Updated Badges & Header Key)"
+    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (High Contrast & Legend Fixed)"
     subprocess.run(["git", "commit", "-m", commit_message], check=True)
     subprocess.run(["git", "push", "origin", "main"], check=True)
     print("🚀 Successfully pushed files to GitHub!")
