@@ -25,7 +25,7 @@ tickers = [
     "TSM", "V", "VRT", "VRTX"
 ]
 
-print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - Reverted Header Customization)...")
+print("🚀 Starting Data Fetch (Jacob's Stock Dashboard - High Contrast Badges & Legends)...")
 
 session = requests.Session()
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -602,6 +602,14 @@ def get_header_bg_color(val, min_val, max_val):
     
     return f"background: rgba({r}, {g}, {b}, 0.85); border: 1px solid rgba({r}, {g}, {b}, 1.0);"
 
+def get_card_badge_style(val):
+    if val > 0:
+        return "background: rgba(0, 0, 0, 0.65); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.6); font-weight: bold;"
+    elif val < 0:
+        return "background: rgba(0, 0, 0, 0.65); color: #f87171; border: 1px solid rgba(248, 113, 113, 0.6); font-weight: bold;"
+    else:
+        return "background: rgba(0, 0, 0, 0.65); color: #f8fafc; border: 1px solid rgba(255, 255, 255, 0.3); font-weight: normal;"
+
 def build_industry_grouped_grid(items):
     industry_dict = {}
     for item in items:
@@ -623,10 +631,10 @@ def build_industry_grouped_grid(items):
             closes_json = item['chart_closes'].replace('"', '&quot;')
             dates_json = item['chart_dates'].replace('"', '&quot;')
             
-            r1m_class = "badge-pos" if item['ret_1m'] > 0 else ("badge-neg" if item['ret_1m'] < 0 else "badge-neutral")
-            r3m_class = "badge-pos" if item['ret_3m'] > 0 else ("badge-neg" if item['ret_3m'] < 0 else "badge-neutral")
-            r6m_class = "badge-pos" if item['ret_6mo'] > 0 else ("badge-neg" if item['ret_6mo'] < 0 else "badge-neutral")
-            rpeak_class = "badge-pos" if item['ret_peak_curr'] > 0 else ("badge-neg" if item['ret_peak_curr'] < 0 else "badge-neutral")
+            style_1m = get_card_badge_style(item['ret_1m'])
+            style_3m = get_card_badge_style(item['ret_3m'])
+            style_6m = get_card_badge_style(item['ret_6mo'])
+            style_peak = get_card_badge_style(item['ret_peak_curr'])
             
             header_style = get_header_bg_color(item['ret_peak_curr'], min_ret, max_ret)
 
@@ -641,16 +649,16 @@ def build_industry_grouped_grid(items):
             cards_html += f"""
             <div class="bottom-card">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; font-family:monospace; font-size:0.75rem; {header_style} padding:3px 6px; border-radius:4px;">
-                    <span style="color:#ffffff; font-weight:bold; text-shadow:0px 1px 2px rgba(0,0,0,0.8);">${item['ticker']}</span>
-                    <span class="card-hover-display" style="color:#f8fafc; font-weight:bold; font-size:0.65rem; text-shadow:0px 1px 2px rgba(0,0,0,0.8);">Hover chart</span>
+                    <span style="color:#ffffff; font-weight:bold; text-shadow:0px 1px 2px rgba(0,0,0,0.9);">${item['ticker']}</span>
+                    <span class="card-hover-display" style="color:#ffffff; font-weight:bold; font-size:0.65rem; text-shadow:0px 1px 2px rgba(0,0,0,0.9);">Hover chart</span>
                 </div>
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
                     <span style="font-size:0.65rem; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="{item['name']}">{item['name']}</span>
                     <div style="display:flex; gap:2px; flex-wrap:nowrap;">
-                        <span class="return-badge {r1m_class}" style="font-size:0.55rem; padding:1px 3px;" title="1 Month Return">{item['ret_1m']:+.1f}% 1M</span>
-                        <span class="return-badge {r3m_class}" style="font-size:0.55rem; padding:1px 3px;" title="3 Month Return">{item['ret_3m']:+.1f}% 3M</span>
-                        <span class="return-badge {r6m_class}" style="font-size:0.55rem; padding:1px 3px;" title="6 Month Return">{item['ret_6mo']:+.1f}% 6M</span>
-                        <span class="return-badge {rpeak_class}" style="font-size:0.55rem; padding:1px 3px;" title="6M Highest Price to Current Return">{item['ret_peak_curr']:+.1f}% Peak</span>
+                        <span class="return-badge" style="font-size:0.55rem; padding:1px 4px; {style_1m}" title="1 Month Return">{item['ret_1m']:+.1f}% 1M</span>
+                        <span class="return-badge" style="font-size:0.55rem; padding:1px 4px; {style_3m}" title="3 Month Return">{item['ret_3m']:+.1f}% 3M</span>
+                        <span class="return-badge" style="font-size:0.55rem; padding:1px 4px; {style_6m}" title="6 Month Return">{item['ret_6mo']:+.1f}% 6M</span>
+                        <span class="return-badge" style="font-size:0.55rem; padding:1px 4px; {style_peak}" title="6M Highest Price to Current Return">{item['ret_peak_curr']:+.1f}% Peak</span>
                     </div>
                 </div>
                 <div style="display:flex; justify-content:space-between; align-items:center; font-family:monospace; font-size:0.7rem; margin-bottom:3px;">
@@ -899,7 +907,14 @@ html_content = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><m
 </div>
 
 <!-- Section 5: Industry-Grouped 4-Column Grid with Synchronized Group Crosshairs -->
-<div class="section-title" style="margin-top: 14px;">🏭 Industry-Grouped 6-Month History & Highlights (Synchronized Group Crosshairs)</div>
+<div class="section-title" style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+    <span>🏭 Industry-Grouped 6-Month History & Highlights (Synchronized Group Crosshairs)</span>
+    <span style="font-size: 0.68rem; font-weight: normal; color: var(--text-muted); background: var(--bg-card); padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border-color);">
+        <span style="color: var(--accent-yellow); font-weight: bold;">-- -</span> Yellow Dotted Line: 30D Moving Avg &nbsp;|&nbsp; 
+        <span style="color: rgba(255,255,255,0.6);">┆</span> Monthly Boundaries &nbsp;|&nbsp; 
+        <span style="color: rgba(255,255,255,0.4);">┄</span> Price Grid Levels
+    </span>
+</div>
 {build_industry_grouped_grid(data_list)}
 
 </div>
@@ -1255,7 +1270,7 @@ try:
     subprocess.run(["git", "add", output_path], check=True)
     subprocess.run(["git", "add", index_path], check=True)
     subprocess.run(["git", "add", __file__], check=True)
-    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (Reverted Headers)"
+    commit_message = f"Auto-update stock dashboard for {today.strftime('%b %d, %Y')} (Enhanced Contrast & Legend)"
     subprocess.run(["git", "commit", "-m", commit_message], check=True)
     subprocess.run(["git", "push", "origin", "main"], check=True)
     print("🚀 Successfully pushed files to GitHub!")
@@ -1265,4 +1280,4 @@ except Exception as e:
 if "GITHUB_ACTIONS" not in os.environ:
     webbrowser.open(f"file://{os.path.abspath(output_path)}")
 
-print("\n🎉 ALL TASKS COMPLETE: Reverted script generated!")
+print("\n🎉 ALL TASKS COMPLETE: High contrast dashboard generated!")
